@@ -40,7 +40,7 @@
     </div>
 </template>
 <script>
-import {uploadCallback,typeImgByMime} from '../utils/common.js'
+import {uploadCallback,typeImgByMime,postOpenWin} from '../utils/common.js'
 import UUID from '../utils/UUID.js'
 import WebUploader from 'webuploader'
 import 'webuploader/css/webuploader.css'
@@ -53,16 +53,21 @@ export default {
     methods: {
         delFile(fileName) {
             var files = this.files_;
-            for (var i = 0, len = files.length; i < len; i++) {
+            var i = 0, len = files.length;
+            for (; i < len; i++) {
                 if (files[i].fileName === fileName) {
                     files.splice(i, 1);
                     break;
                 }
             }
+            len--;
+            for (; i < len; i++) {
+                this.fileMap[files[i].id]=i;
+            }
             this.$emit('update:files',files);
         },
         downFile(row){
-            postOpenWin('/index/downFile', {
+            postOpenWin('/api/index/downFile', {
                 pathName: this.path,
                 fileName: row.fileName,
                 fileDesc: row.fileDesc
@@ -71,7 +76,7 @@ export default {
     },
     mounted() {
         //记录每一个文件的进度
-        var fileMap = {};
+        this.fileMap = {};
         var thiz = this;
         new WebUploader.Uploader({
             swf: 'webuploader/dist/Uploader.swf',
@@ -85,12 +90,12 @@ export default {
             }
         }).on('uploadStart', function (file) {
             var files = thiz.files_;
-            fileMap[file.id] = files.length;
+            thiz.fileMap[file.id] = files.length;
             files.push({ fileDesc: file.name, typeImg: typeImgByMime(file.ext), progress: 0, isFinish: false, id: file.id });
         }).on('uploadProgress', function (file, percentage) {
-            thiz.files_[fileMap[file.id]].percentage = parseInt(percentage * 100);
+            thiz.files_[thiz.fileMap[file.id]].percentage = parseInt(percentage * 100);
         }).on('uploadSuccess', function (file, response) {
-            var fileObj = thiz.files_[fileMap[file.id]];
+            var fileObj = thiz.files_[thiz.fileMap[file.id]];
             fileObj.fileName = response.data;
             fileObj.isFinish = true;
         });

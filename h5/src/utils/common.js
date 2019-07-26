@@ -1,3 +1,5 @@
+import $ from 'jquery'
+
 //上传文件插件的回调函数
 export function uploadCallback(myApp,callback) {
     return function (file, response) {
@@ -30,7 +32,7 @@ export function uploadCallback(myApp,callback) {
             callback(file, response);
         }
     }
-};
+}
 
 /**
  * 根据附件的扩展名判断使用哪一种图片
@@ -117,4 +119,43 @@ export function typeImgByMime(ext) {
         basePath += 'ini-256.png';
     }
     return basePath;
+}
+
+
+/**
+ * 使用post的方式打开一个新窗口
+ * @url：新窗口的url地址
+ * @params：post请求参数
+ * @searchParam：url上的参数
+ */
+export function postOpenWin(url, params, searchParam) {
+    var times = new Date().getTime();
+    var input = '';
+    if (params) {
+        for (var key in params) {
+            if (params.hasOwnProperty(key))
+                input += '<textarea name="' + key + '"></textarea>';
+        }
+    }
+    if ($.type(searchParam) === 'object') {
+        for (var key in searchParam) {
+            if (searchParam.hasOwnProperty(key))
+                input += '<textarea name="' + key + '"></textarea>';
+        }
+    }
+    $('body').append('<form style="display:none;" id="' + times + '" method="post" target="_blank" action="' + url + '">' + input + '</form>');
+    if (params) {
+        for (var key in params) {
+            if (params.hasOwnProperty(key))
+                $('#' + times).find('textarea[name="' + key + '"]').val(params[key]);
+        }
+    }
+    if ($.type(searchParam) === 'object') {
+        for (var key in searchParam) {
+            if (searchParam.hasOwnProperty(key))
+                $('#' + times).find('textarea[name="' + key + '"]').val(searchParam[key]);
+        }
+    }
+    $('#' + times).submit();
+    $('#' + times).remove();
 }
