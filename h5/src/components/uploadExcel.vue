@@ -24,7 +24,7 @@ export default {
     name:'uploadExcel',
     props: ['url', 'type', 'postData'],
     data() {
-        return { id: new UUID().id, postData: {}, isUploaded :false};
+        return { id: new UUID().id, isUploaded :false};
     },
     methods:{
         submit() {

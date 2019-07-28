@@ -5,7 +5,7 @@ export function uploadCallback(myApp,callback) {
     return function (file, response) {
         //登录超时，退出登录
         if (response.code === -10 || response.code === -11) {
-            myApp.$data.isLogin = false;
+            myApp.$store.state.isLogin = false;
             if (response.code === -11) {
                 myApp.$message({ message: '强制下线，原因：当前登录用户在其它地方登录。', type: 'warning' });
             }

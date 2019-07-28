@@ -33,7 +33,7 @@ export default {
     name:'uploadImage',
     props: ['path', 'cut', 'widthOverHeight', 'imgName', 'thumbnailName'],
     data() {
-        return { id: new UUID().id, _imgName:'', percentage: 0, src: '', contentHeight: 0, contentWidth: '0',imgWidth:0,imgHeight:0,cropDialog: false, isUploaded: false, showProgress: false,cropWidth:0,cropHeight:0 };
+        return { id: new UUID().id, imgName_:'', percentage: 0, src: '', contentHeight: 0, contentWidth: '0',imgWidth:0,imgHeight:0,cropDialog: false, isUploaded: false, showProgress: false,cropWidth:0,cropHeight:0 };
     },
     methods: {
         format(percentage) {
@@ -45,7 +45,7 @@ export default {
             var thiz = this;
             this.$post('/api/index/singleImageCrop', {
                 pathName: this.path,
-                imgName: this._imgName,
+                imgName: this.imgName_,
                 imgWidth: imgAxis.x2-imgAxis.x1,
                 imgHeight: imgAxis.y2-imgAxis.y1,
                 x: cropAxis.x1-imgAxis.x1,
@@ -55,10 +55,10 @@ export default {
             },function (result) {
                 thiz.cropDialog = false;
                 var data = result.data;
-                thiz._imgName = data.imgName;
+                thiz.imgName_ = data.imgName;
                 thiz.$emit('update:imgName', data.imgName);
                 thiz.$emit('update:thumbnailName', data.thumbnailName);
-                thiz.src = '/api/index/showImage?pathName=' + thiz.path + '&imgName=' + thiz._imgName;
+                thiz.src = '/api/index/showImage?pathName=' + thiz.path + '&imgName=' + thiz.imgName_;
             });
         }
     },
@@ -88,10 +88,10 @@ export default {
         }).on('uploadSuccess', uploadCallback(this,function (file, response) {
             if (response.code === 0) {
                 var data = response.data;
-                thiz._imgName = data.imgName;
+                thiz.imgName_ = data.imgName;
                 thiz.$emit('update:imgName', data.imgName);
                 thiz.$emit('update:thumbnailName', data.thumbnailName);
-                thiz.src = '/api/index/showImage?pathName=' + thiz.path + '&imgName=' + thiz._imgName;
+                thiz.src = '/api/index/showImage?pathName=' + thiz.path + '&imgName=' + thiz.imgName_;
                 if (thiz.cut === true) {
                     var maxWidth = window.screen.width - 60;
                     var maxHeight = window.screen.height - 340;

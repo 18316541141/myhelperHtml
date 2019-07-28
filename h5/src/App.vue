@@ -64,7 +64,7 @@
         </el-tab-pane>
       </el-tabs>
     </div>
-    <div class="login-content" v-bind:class="{'logout':isLogin===false}">
+    <div class="login-content" v-bind:class="{'logout':$store.state.isLogin===false}">
       <div class="login-form-content">
         <h2 style="color:white;text-align:center;">测试后台</h2>
         <p style="color:white;text-align:center;">xxxxxxxxx运营商后台</p>
@@ -107,9 +107,13 @@ import m15 from "./menus/testMenus1/areaSelect.vue";
 import m312 from "./menus/testMenus1/charts.vue";
 import m12 from "./menus/testMenus1/uploadImage.vue";
 import m14 from "./menus/testMenus1/uploadFiles.vue";
+import m17 from "./menus/testMenus1/pageTable.vue";
+import m101 from "./menus/testMenus1/aaa-treeForm.vue";
+import m13 from "./menus/testMenus1/bigPic.vue";
+import m18 from "./menus/testMenus1/uexcel.vue";
 export default {
   components: {
-      m15,m312,m12,m14
+      m15,m312,m12,m14,m17,m101,m13,m18
   },
   data() {
     return {
@@ -119,7 +123,6 @@ export default {
       },
       leftMenus: [],
       menus: [],
-      isLogin: true,
       isCollapse: false,
       menuActive: null,
       rVercode: "/api/session/verificationCode?r=" + Math.random(),
@@ -177,7 +180,7 @@ export default {
       this.$post("/api/session/login", this.loginData,function(result) {
         if (result.code === 0) {
           var data = result.data;
-          thiz.isLogin = true;
+          thiz.$store.state.isLogin = true;
           thiz.leftMenus = data.leftMenus;
         } else {
           thiz.loginData.password = "";
