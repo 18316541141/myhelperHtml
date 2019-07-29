@@ -5,7 +5,7 @@ module.exports = {
 			plugins:[new CompressionWebpackPlugin({
 				test:/\.js$|\.html$|\.css/,
 				threshold:10240,
-				deleteOriginalAssets:true,
+				deleteOriginalAssets:false,
 			})]
 		};
 	},
