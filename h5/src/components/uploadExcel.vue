@@ -6,11 +6,7 @@
         </el-form-item>
         <el-form-item label="预览" v-if="isUploaded && type === 'form'">
             <el-tooltip effect="dark" v-bind:content="excelFileName" placement="right-start">
-                <el-image src="/images/256x256/xlsx-256.png" style="width:96px;" class="thumbnail-img">
-                    <div slot="error" class="image-slot">
-                        <i class="el-icon-picture-outline"></i>
-                    </div>
-                </el-image>
+                <img src="/images/256x256/xlsx-256.png" style="width:96px;" class="thumbnail-img"/>
             </el-tooltip>
         </el-form-item>
     </div>

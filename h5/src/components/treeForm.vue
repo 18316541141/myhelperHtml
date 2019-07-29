@@ -2,8 +2,8 @@
     <div class="tree-container">
         <div class="left-tree">
             <el-input placeholder="输入关键字进行过滤" v-model="filterText"></el-input>
-            <div class="left-tree-contain" v-bind:style="{height:height}">
-                <div class="left-tree-inner-contain">
+            <div class="left-tree-contain">
+                <div class="left-tree-inner-contain" v-bind:style="{height:height}">
                     <el-tree node-key="id" v-bind:data="treeData" v-bind:props="defaultProps" ref="tree" draggable v-on:node-click="nodeClick" v-on:node-drag-start="nodeDragStart" v-on:node-drop="nodeDrop" v-bind:filter-node-method="filterNodeMethod"></el-tree>
                 </div>
             </div>
@@ -100,7 +100,7 @@ export default {
 .tree-container>.left-tree>.left-tree-contain{
     width: 198px;
     margin-top:10px;
-    overflow: hidden;
+    overflow-x: hidden;
     border:1px solid #DCDFE6;
 }
 .tree-container>.left-tree>.left-tree-contain>.left-tree-inner-contain{

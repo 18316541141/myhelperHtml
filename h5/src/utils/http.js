@@ -27,7 +27,23 @@ export function post(url,postData,callback){
     if(callback===undefined){
         axios.post(url).then(createCallback(postData,this));
     }else{
-        axios.post(url,postData).then(createCallback(callback,this));
+        axios({
+            url: url,
+            method: 'post',
+            data:postData,
+            transformRequest: [function (data) {
+                let ret = ''
+                var connChar='';
+                for (let it in data) {
+                    if(data.hasOwnProperty(it)){
+                        ret += connChar+encodeURIComponent(it) + '=' + encodeURIComponent(data[it]);
+                        connChar='&';
+                    }
+                }
+                return ret
+            }],
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).then(createCallback(callback,this));
     }
 }
 
@@ -53,9 +69,22 @@ export function getUpdate(url,getData,callback,poolNames){
  * @param {*} poolNames 等待池名称
  */
 export function postUpdate(url,postData,callback,poolNames){
-    axios.post(url,{
-        params:postData,
-        headers:{'Real-Time-Pool': poolNames.join(',')}
+    axios({
+        url: url,
+        method: 'post',
+        data:postData,
+        transformRequest: [function (data) {
+            let ret = ''
+            var connChar='';
+            for (let it in data) {
+                if(data.hasOwnProperty(it)){
+                    ret += connChar+encodeURIComponent(it) + '=' + encodeURIComponent(data[it]);
+                    connChar='&';
+                }
+            }
+            return ret
+        }],
+        headers: {'Content-Type': 'application/x-www-form-urlencoded','Real-Time-Pool': poolNames.join(',')}
     }).then(createCallback(callback,this));
 }
 
@@ -148,7 +177,7 @@ export function realTimeGet(poolName){
         }
     }).then(function(response){
         regPoolMap[poolName].wait = false;
-        regPoolMap[poolName].version = response.headers['Real-Time-Version'];
+        regPoolMap[poolName].version = response.headers['real-time-version'];
         if(regPoolMap[poolName]!==null && regPoolMap[poolName]!==undefined){
             if (regPoolMap[poolName].count === 0) {
                 return;

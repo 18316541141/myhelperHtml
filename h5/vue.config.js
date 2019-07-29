@@ -1,4 +1,14 @@
+import CompressionWebpackPlugin from 'compression-webpack-plugin';
 module.exports = {
+	configureWebpack:config=>{
+		return {
+			plugins:[new CompressionWebpackPlugin({
+				test:/\.js$|\.html$|\.css/,
+				threshold:10240,
+				deleteOriginalAssets:false,
+			})]
+		};
+	},
 	publicPath:'/',
 	productionSourceMap: false,
 	devServer:{	

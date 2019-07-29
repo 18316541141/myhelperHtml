@@ -5,6 +5,7 @@
 </template>
 <script>
 import Viewer from 'viewerjs'
+import 'viewerjs/dist/viewer.min.css'
 import UUID from '../utils/UUID.js'
 export default {
     data(){
@@ -14,11 +15,13 @@ export default {
     },
     methods:{
         render(){
-            new Viewer(document.getElementById(this.id), {
-                url(image) {
-                    debugger;
-                    return image.datas.src.replace('?size=160', '');
-                }
+            this.$nextTick(function(){
+                var thiz=this;
+                setTimeout(() => {
+                    new Viewer(document.getElementById('imgViewer'+thiz.id), {
+                        url: 'data-original'
+                    });
+                },500);
             });
         }
     }

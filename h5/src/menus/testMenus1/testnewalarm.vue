@@ -1,0 +1,17 @@
+<template>
+    <div>
+        <el-button v-on:click="add">点击</el-button>
+    </div>
+</template>
+<script>
+export default {
+    name:'n11',
+    methods:{
+        add(){
+            this.$getUpdate('/api/NewAlarm/add', {},function(){
+
+            }, ['newsAlarm']);
+        }
+    }
+}
+</script>

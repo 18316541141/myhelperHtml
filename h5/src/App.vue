@@ -1,42 +1,66 @@
 <template>
   <div id="myApp">
-    <el-menu
-      default-active="activeIndex2"
-      class="el-menu-demo"
-      mode="horizontal"
-      background-color="#545c64"
-      text-color="#fff"
-      active-text-color="#ffd04b"
-    >
-      <el-menu-item index="1">处理中心</el-menu-item>
-      <el-submenu index="2">
-        <template slot="title">我的工作台</template>
-        <el-menu-item index="21">选项1</el-menu-item>
-        <el-menu-item index="22">选项2</el-menu-item>
-        <el-menu-item index="23">选项3</el-menu-item>
-        <el-submenu index="24">
-          <template slot="title">选项4</template>
-          <el-menu-item index="241">选项1</el-menu-item>
-          <el-menu-item index="242">选项2</el-menu-item>
-          <el-menu-item index="243">选项3</el-menu-item>
+    <el-popover placement="right" width="600" trigger="manual" v-model="alarmVisible" v-bind:offset="-150">
+      <h3>
+        最新消息提醒
+        <button type="button" class="el-dialog__headerbtn" v-on:click="alarmVisible = false">
+          <i class="el-icon-close"></i>
+        </button>
+      </h3>
+      <default-page ref="alarmTable" url="/api/index/loadNewsAlarm" v-bind:reduce-height="0" v-bind:table-height="'300px'" v-bind:post-data="alarmPostData">
+        <el-table-column prop="title" label="新消息" v-bind:show-overflow-tooltip="true" width="150px"></el-table-column>
+        <el-table-column prop="createDate" label="日期" v-bind:show-overflow-tooltip="true" width="150px"></el-table-column>
+        <el-table-column label="状态" v-bind:show-overflow-tooltip="true" width="150px">
+          <template slot-scope="scope">
+            <el-tag type="warning" v-if="scope.row.readState===0">未读</el-tag>
+            <el-tag type="success" v-if="scope.row.readState===1">已读</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" v-bind:show-overflow-tooltip="true" width="150px">
+          <template slot-scope="scope">
+            <el-button size="mini" v-on:click="leftNavSelect(scope.row.menuId)">查看</el-button>
+          </template>
+        </el-table-column>
+      </default-page>
+      <el-button slot="reference" class="alarm-btn"></el-button>
+    </el-popover>
+    <div class="top-menus">
+      <el-menu default-active="activeIndex2" class="left-top-menus" mode="horizontal">
+        <el-menu-item index="1" style="width:200px;text-align:center;">某某管理平台</el-menu-item>
+        <el-menu-item index="1">处理中心</el-menu-item>
+        <el-submenu index="2">
+          <template slot="title">我的工作台</template>
+          <el-menu-item index="21">选项1</el-menu-item>
+          <el-menu-item index="22">选项2</el-menu-item>
+          <el-menu-item index="23">选项3</el-menu-item>
+          <el-submenu index="24">
+            <template slot="title">选项4</template>
+            <el-menu-item index="241">选项1</el-menu-item>
+            <el-menu-item index="242">选项2</el-menu-item>
+            <el-menu-item index="243">选项3</el-menu-item>
+          </el-submenu>
         </el-submenu>
-      </el-submenu>
-      <el-menu-item index="3" disabled>消息中心</el-menu-item>
-      <el-menu-item index="4">
-        <a href="https://www.ele.me" target="_blank">订单管理</a>
-      </el-menu-item>
-    </el-menu>
+        <el-menu-item index="3" disabled>消息中心</el-menu-item>
+        <el-menu-item index="4">
+          <a href="https://www.ele.me" target="_blank">订单管理</a>
+        </el-menu-item>
+      </el-menu>
+      <div class="right-top-menus">
+        <el-avatar class="head-img" shape="square" v-bind:size="50" v-bind:src="'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'"></el-avatar>
+        <el-menu mode="horizontal" v-on:select="rightMenuSelect">
+          <el-submenu index="1">
+            <template slot="title">用户</template>
+            <el-menu-item index="11">基本资料</el-menu-item>
+            <el-menu-item index="12">安全设置</el-menu-item>
+            <el-menu-item index="13">最新消息</el-menu-item>
+          </el-submenu>
+          <el-menu-item index="logout">退了</el-menu-item>
+        </el-menu>
+      </div>
+    </div>
     <div class="left-menus">
       <div class="left-menus-scroll">
-        <el-menu
-          default-active="2"
-          class="el-menu-vertical-demo"
-          background-color="#545c64"
-          text-color="#fff"
-          active-text-color="#ffd04b"
-          v-on:select="leftNavSelect"
-          v-bind:collapse="isCollapse"
-        >
+        <el-menu style="min-height:100%;" default-active="2" class="left-menus-tree" v-on:select="leftNavSelect" v-bind:collapse="isCollapse">
           <el-submenu v-for="(x) in leftMenus" v-bind:index="x.id" v-bind:key="x.id">
             <template slot="title">
               <i class="el-icon-location"></i>
@@ -103,6 +127,7 @@
 
 <script>
 import jshashes from "jshashes";
+import defaultPage from './components/defaultPage.vue';
 import m15 from "./menus/testMenus1/areaSelect.vue";
 import m312 from "./menus/testMenus1/charts.vue";
 import m12 from "./menus/testMenus1/uploadImage.vue";
@@ -111,9 +136,10 @@ import m17 from "./menus/testMenus1/pageTable.vue";
 import m101 from "./menus/testMenus1/aaa-treeForm.vue";
 import m13 from "./menus/testMenus1/bigPic.vue";
 import m18 from "./menus/testMenus1/uexcel.vue";
+import n11 from "./menus/testMenus1/testnewalarm.vue";
 export default {
   components: {
-      m15,m312,m12,m14,m17,m101,m13,m18
+      m15,m312,m12,m14,m17,m101,m13,m18,defaultPage,n11
   },
   data() {
     return {
@@ -121,6 +147,8 @@ export default {
         username: "",
         password: ""
       },
+      alarmPostData:{},
+      alarmVisible:false,
       leftMenus: [],
       menus: [],
       isCollapse: false,
@@ -156,6 +184,16 @@ export default {
       }
       return null;
     },
+    rightMenuSelect(key){
+      if(key==='logout'){
+        var thiz=this;
+        this.$get('/api/session/logout',function(){
+          thiz.$store.state.isLogin=false;
+          thiz.alarmVisible=false;
+          thiz.$cancelAllPools();
+        });
+      }
+    },
     leftNavSelect(key) {
       var menus = this.menus;
       var len = menus.length;
@@ -182,11 +220,14 @@ export default {
           var data = result.data;
           thiz.$store.state.isLogin = true;
           thiz.leftMenus = data.leftMenus;
-        } else {
-          thiz.loginData.password = "";
-          thiz.loginData.vercode = "";
-          thiz.refreshVercode();
+          thiz.$regPool('newsAlarm', function () {
+              thiz.alarmVisible=true;
+              thiz.$refs.alarmTable.refresh();
+          });
         }
+        thiz.loginData.password = "";
+        thiz.loginData.vercode = "";
+        thiz.refreshVercode();
       });
     }
   },
@@ -196,10 +237,13 @@ export default {
     this.$get("/api/index/loadLoginData",function(result) {
         thiz.leftMenus = result.data.leftMenus;
     });
+    this.$regPool('newsAlarm', function () {
+        thiz.alarmVisible=true;
+        thiz.$refs.alarmTable.refresh();
+    });
   }
 };
 </script>
-
 <style>
 body {
   margin: 0;
@@ -211,10 +255,9 @@ body {
   top: 61px;
   bottom: 0;
   overflow-x: hidden;
-  background-color: rgb(84, 92, 100);
 }
 .left-menus-scroll {
-  width: 220px;
+  width: 216px;
   position: absolute;
   overflow-y: scroll;
   left: 0;
@@ -276,7 +319,7 @@ body {
 .thumbnail-img {
   box-sizing: border-box;
   border: 1px solid #ddd;
-  padding: 4px;
+  padding: 3px;
   border-radius: 4px;
   -webkit-transition: border-color 0.3s linear;
   -o-transition: border-color 0.3s linear;
@@ -290,5 +333,31 @@ body {
 .thumbnail-img:active {
   border-color: #009688;
   border-width: 1.4px;
+}
+.alarm-btn{
+  position: fixed;
+  left: 100%;
+  bottom: 300px;
+  z-index:100;
+}
+.top-menus{
+  height: 61px;
+}
+.left-top-menus{
+  position:absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+}
+.right-top-menus{
+  position:absolute;
+  top: 0;
+  right: 0;
+}
+.head-img{
+  position:absolute;
+  top: 0;
+  left: -50px;
+  top:5px;
 }
 </style>

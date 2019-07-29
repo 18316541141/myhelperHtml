@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-table v-bind:data="retData_.data.pageDataList" style="width: 100%" size="mini" v-bind:height="tableHeight" v-bind:select-on-indeterminate="true" v-bind:border="true" v-on:sort-change="sortChange" v-on:selection-change="selectionChange"
+        <el-table v-bind:data="retData_.data.pageDataList" style="width: 100%" size="mini" v-bind:height="tableHeight_" v-bind:select-on-indeterminate="true" v-bind:border="true" v-on:sort-change="sortChange" v-on:selection-change="selectionChange"
             header-cell-class-name="header-height-fit">
             <el-table-column type="selection" fixed="left" width="35px" v-if="showChecked"></el-table-column>
             <slot></slot>
@@ -13,10 +13,10 @@
 <script>
 export default {
     name:'defaultPage',
-    props:['url','postData','retData','reduceHeight','checkedDatas','showChecked'],
+    props:['url','postData','retData','reduceHeight','checkedDatas','showChecked','tableHeight'],
     data(){
         return {
-            tableHeight:window.innerHeight-148-this.reduceHeight+'px',
+            tableHeight_:this.tableHeight===undefined?window.innerHeight-148-this.reduceHeight+'px':this.tableHeight,
             retData_:{
                 data:{
                     currentPageIndex:1,
@@ -30,21 +30,23 @@ export default {
     },
     methods:{
         sizeChange(pageSize){
-            this.pageSize=pageSize;
-            this.loadPageData();
+            this.retData_.data.pageSize=pageSize;
+            this.refresh();
         },
         currentChange(currentPageIndex){
-            this.currentPageIndex=currentPageIndex;
-            this.loadPageData();
+            this.retData_.data.currentPageIndex=currentPageIndex;
+            this.refresh();
         },
-        loadPageData(){
+        refresh(){
             var thiz=this;
-            this.postData.currentPageIndex = this.currentPageIndex;
-            this.postData.pageSize=this.pageSize;
+            this.postData.currentPageIndex = this.retData_.data.currentPageIndex;
+            this.postData.pageSize=this.retData_.data.pageSize;
             this.$post(this.url,this.postData,function(result){
                 thiz.retData_=result;
                 thiz.$emit('update:retData',result);
-                thiz.tableHeight=window.innerHeight-148-thiz.reduceHeight+'px';
+                if(thiz.tableHeight===undefined){
+                    thiz.tableHeight_=window.innerHeight-148-thiz.reduceHeight+'px';
+                }
             });
         },
         sortChange(sortObj){
@@ -58,17 +60,19 @@ export default {
             }else if(sortObj.order==='ascending'){
                 this.postData['orderByAsc.'+sortObj.prop]=true;
             }
-            this.loadPageData();
+            this.refresh();
         },
         selectionChange(selection){
             this.$emit('update:checkedDatas',selection);
         }
     },
     mounted(){
-        this.loadPageData();
+        this.refresh();
         var thiz=this;
         window.addEventListener('resize',function() {
-            thiz.tableHeight=window.innerHeight-148-thiz.reduceHeight+'px';
+            if(thiz.tableHeight===undefined){
+                thiz.tableHeight_=window.innerHeight-148-thiz.reduceHeight+'px';
+            }
         },false);
     }
 }
