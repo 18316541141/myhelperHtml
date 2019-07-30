@@ -23,12 +23,11 @@
     </div>
 </template>
 <script>
-import UUID from '../utils/UUID.js'
 export default{
     name: 'areaSelectTemplate',
     props: ['type', 'deep','province','city','county','town'],
     data() {
-        return { id: new UUID().id,province_:'',city_:'',county_:'',town_:'',provinces: [], cities: [], counties: [], towns: [] };
+        return { id: this.$UUID(),province_:'',city_:'',county_:'',town_:'',provinces: [], cities: [], counties: [], towns: [] };
     },
     methods: {
         setVal(province,city,county,town){

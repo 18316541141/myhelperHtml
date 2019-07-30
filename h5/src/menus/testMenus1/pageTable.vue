@@ -37,10 +37,8 @@
     </div>
 </template>
 <script>
-import defaultPage from '../../components/defaultPage.vue'
 export default {
     name:'m17',
-    components:{defaultPage},
     data(){
         return {
             postData:{},

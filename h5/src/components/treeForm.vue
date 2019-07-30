@@ -14,7 +14,6 @@
     </div>
 </template>
 <script>
-import { types } from 'util';
 export default {
     name:'treeForm',
     props:['url'],

@@ -16,11 +16,8 @@
     </div>
 </template>
 <script>
-import imgViewer from '../../components/imgViewer.vue'
-import { setTimeout } from 'timers';
 export default {
     name:'m13',
-    components:{imgViewer},
     data(){
         return { tableData: [] };
     },

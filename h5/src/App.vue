@@ -26,7 +26,7 @@
     </el-popover>
     <div class="top-menus">
       <el-menu default-active="activeIndex2" class="left-top-menus" mode="horizontal">
-        <el-menu-item index="1" style="width:200px;text-align:center;">某某管理平台</el-menu-item>
+        <el-menu-item index="logo" style="width:200px;text-align:center;">某某管理平台</el-menu-item>
         <el-menu-item index="1">处理中心</el-menu-item>
         <el-submenu index="2">
           <template slot="title">我的工作台</template>
@@ -52,7 +52,7 @@
             <template slot="title">用户</template>
             <el-menu-item index="11">基本资料</el-menu-item>
             <el-menu-item index="12">安全设置</el-menu-item>
-            <el-menu-item index="13">最新消息</el-menu-item>
+            <el-menu-item index="newsAlarm">最新消息</el-menu-item>
           </el-submenu>
           <el-menu-item index="logout">退了</el-menu-item>
         </el-menu>
@@ -124,23 +124,8 @@
     </div>
   </div>
 </template>
-
 <script>
-import jshashes from "jshashes";
-import defaultPage from './components/defaultPage.vue';
-import m15 from "./menus/testMenus1/areaSelect.vue";
-import m312 from "./menus/testMenus1/charts.vue";
-import m12 from "./menus/testMenus1/uploadImage.vue";
-import m14 from "./menus/testMenus1/uploadFiles.vue";
-import m17 from "./menus/testMenus1/pageTable.vue";
-import m101 from "./menus/testMenus1/aaa-treeForm.vue";
-import m13 from "./menus/testMenus1/bigPic.vue";
-import m18 from "./menus/testMenus1/uexcel.vue";
-import n11 from "./menus/testMenus1/testnewalarm.vue";
 export default {
-  components: {
-      m15,m312,m12,m14,m17,m101,m13,m18,defaultPage,n11
-  },
   data() {
     return {
       loginData: {
@@ -192,6 +177,9 @@ export default {
           thiz.alarmVisible=false;
           thiz.$cancelAllPools();
         });
+      }else if(key==='newsAlarm'){
+        this.alarmVisible=true;
+        this.$refs.alarmTable.refresh();
       }
     },
     leftNavSelect(key) {
@@ -211,7 +199,7 @@ export default {
       this.menuActive = key;
     },
     login() {
-      this.loginData.password = new jshashes.SHA1().hex(
+      this.loginData.password = new this.$Hashes.SHA1().hex(
         this.loginData.password
       );
       var thiz = this;
@@ -231,7 +219,6 @@ export default {
       });
     }
   },
-  name: "myApp",
   mounted() {
     var thiz=this;
     this.$get("/api/index/loadLoginData",function(result) {
@@ -342,6 +329,8 @@ body {
 }
 .top-menus{
   height: 61px;
+  width: 100%;
+  position: relative;
 }
 .left-top-menus{
   position:absolute;

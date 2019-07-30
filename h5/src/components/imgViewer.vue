@@ -4,13 +4,10 @@
     </div>
 </template>
 <script>
-import Viewer from 'viewerjs'
-import 'viewerjs/dist/viewer.min.css'
-import UUID from '../utils/UUID.js'
 export default {
     data(){
         return {
-            id:new UUID().id
+            id:this.$UUID()
         };
     },
     methods:{

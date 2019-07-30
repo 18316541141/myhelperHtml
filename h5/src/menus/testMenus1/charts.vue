@@ -42,13 +42,8 @@
     </div>
 </template>
 <script>
-import pieChart from '../../components/pieChart.vue'
-import histogram from '../../components/histogram.vue'
 export default {
     name:'m312',
-    components:{
-        pieChart,histogram
-    },
     data(){
         return {
             myPieData:[],

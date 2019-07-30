@@ -59,11 +59,8 @@
     </div>
 </template>
 <script>
-import treeForm from '../../components/treeForm.vue'
-import { setTimeout } from 'timers';
     export default{
         name:'m101',
-        components:{treeForm},
         data() { 
             return {
                 form: {

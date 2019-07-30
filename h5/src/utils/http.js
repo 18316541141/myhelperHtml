@@ -24,6 +24,7 @@ axios.interceptors.request.use(
     }
 );
 export function post(url,postData,callback){
+    this.$openLoading();
     if(callback===undefined){
         axios.post(url).then(createCallback(postData,this));
     }else{
@@ -55,6 +56,7 @@ export function post(url,postData,callback){
  * @param {*} poolNames 等待池名称
  */
 export function getUpdate(url,getData,callback,poolNames){
+    this.$openLoading();
     axios.get(url,{
         params:getData,
         headers:{'Real-Time-Pool': poolNames.join(',')}
@@ -69,6 +71,7 @@ export function getUpdate(url,getData,callback,poolNames){
  * @param {*} poolNames 等待池名称
  */
 export function postUpdate(url,postData,callback,poolNames){
+    this.$openLoading();
     axios({
         url: url,
         method: 'post',
@@ -89,6 +92,7 @@ export function postUpdate(url,postData,callback,poolNames){
 }
 
 export function get(url,getData,callback){
+    this.$openLoading();
     if(callback===undefined){
         axios.get(url).then(createCallback(getData,this));
     }else{
@@ -96,8 +100,36 @@ export function get(url,getData,callback){
     }
 }
 
+/**
+ * 开启加载动画
+ */
+export function openLoading(){
+    this.$loadingRet = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)',
+        fullscreen :true
+    });
+    if(this.$loadingCount===undefined){
+        this.$loadingCount=0;
+    }
+    this.$loadingCount++;
+}
+
+/**
+ * 关闭加载动画
+ */
+export function closeLoading(){
+    if(this.$loadingCount-1===0){
+        this.$loadingRet.close();
+    }
+    this.$loadingCount--;
+}
+
 function createCallback(callback,myApp){
     return function(response){
+        myApp.$closeLoading();
         var data = response.data;
         //登录超时，退出登录
         if (data.code === -10 || data.code === -11) {

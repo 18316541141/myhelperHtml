@@ -13,31 +13,30 @@
         <el-progress v-if="showProgress" v-bind:percentage="percentage" v-on:format="format"></el-progress>
         <el-dialog v-bind:width="contentWidth" title="裁剪图片" v-bind:visible.sync="cropDialog" top="25px" v-bind:modal-append-to-body="true" v-bind:append-to-body="true" v-on:close="crop();">
             <div v-bind:style="{width:'100%',height:contentHeight,overflowY:'auto'}">
-                <vue-cropper ref="cropper" v-bind:img="src" v-bind:can-scale="true" v-bind:auto-crop="true" v-bind:auto-crop-width="cropWidth" 
+                <vue-cropper ref="cropper" v-bind:img="src" v-on:img-load="imgLoad" v-bind:can-scale="true" v-bind:auto-crop="true" v-bind:auto-crop-width="cropWidth" 
                     v-bind:auto-crop-height="cropHeight" v-bind:fixed="true" v-bind:fixed-number="widthOverHeight"
                     v-bind:original="true" v-bind:center-box="true">
                 </vue-cropper>
             </div>
             <div slot="footer" class="dialog-footer">
-                <el-button type="primary" v-on:click="crop();">裁剪</el-button>
+                <el-button type="primary" v-on:click="cropDialog = false">裁剪</el-button>
             </div>
         </el-dialog>
     </div>
 </template>
 <script>
-import {uploadCallback} from '../utils/common.js'
-import UUID from '../utils/UUID.js'
-import WebUploader from 'webuploader'
-import 'webuploader/css/webuploader.css'
 export default {
     name:'uploadImage',
     props: ['path', 'cut', 'widthOverHeight', 'imgName', 'thumbnailName'],
     data() {
-        return { id: new UUID().id, imgName_:'', percentage: 0, src: '', contentHeight: 0, contentWidth: '0',imgWidth:0,imgHeight:0,cropDialog: false, isUploaded: false, showProgress: false,cropWidth:0,cropHeight:0 };
+        return { id: this.$UUID(), imgName_:'', percentage: 0, src: '', contentHeight: 0, contentWidth: '0',imgWidth:0,imgHeight:0,cropDialog: false, isUploaded: false, showProgress: false,cropWidth:0,cropHeight:0 };
     },
     methods: {
         format(percentage) {
             return percentage +'%'
+        },
+        imgLoad(msg){
+            this.$closeLoading();
         },
         crop() {
             var imgAxis=this.$refs.cropper.getImgAxis();
@@ -53,7 +52,6 @@ export default {
                 w: cropAxis.x2-cropAxis.x1,
                 h: cropAxis.y2-cropAxis.y1
             },function (result) {
-                thiz.cropDialog = false;
                 var data = result.data;
                 thiz.imgName_ = data.imgName;
                 thiz.$emit('update:imgName', data.imgName);
@@ -64,7 +62,7 @@ export default {
     },
     mounted() {
         var thiz = this;
-        new WebUploader.Uploader({
+        new this.$WebUploader.Uploader({
             swf: 'webuploader/dist/Uploader.swf',//当浏览器不支持XMLHttpWebRequest时，使用flash插件上传。
             auto: true,//选中文件后自动上传
             server: '/api/index/uploadSingleImage',//处理上传文件的统一控制器
@@ -93,6 +91,7 @@ export default {
                 thiz.$emit('update:thumbnailName', data.thumbnailName);
                 thiz.src = '/api/index/showImage?pathName=' + thiz.path + '&imgName=' + thiz.imgName_;
                 if (thiz.cut === true) {
+                    thiz.$openLoading();
                     var maxWidth = window.screen.width - 60;
                     var maxHeight = window.screen.height - 340;
                     if (data.imgWidth >= maxWidth) {

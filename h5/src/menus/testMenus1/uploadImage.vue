@@ -20,12 +20,8 @@
     </div>
 </template>
 <script>
-import uploadImage from '../../components/uploadImage.vue'
 export default {
     name:'m12',
-    components:{
-        uploadImage
-    },
     data(){
         return {form:{myImgName: '', myThumbnailName:''}};
     }

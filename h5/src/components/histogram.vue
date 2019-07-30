@@ -2,17 +2,15 @@
     <div v-bind:id="'histogram'+id"></div>
 </template>
 <script>
-import UUID from '../utils/UUID.js'
-import Highcharts from 'highcharts'
 export default {
     name:'histogram',
     props: ['title', 'unit', 'rowAxisTitle', 'yAxisTitle', 'histogramData'],
     data() {
-        return { id: new UUID().id };
+        return { id: this.$UUID() };
     },
     watch: {
         histogramData: function (val) {
-            Highcharts.chart('histogram' + this.id, {
+            this.$Highcharts.chart('histogram' + this.id, {
                 chart: {
                     type: 'column'
                 },

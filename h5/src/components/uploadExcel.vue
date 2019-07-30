@@ -12,15 +12,11 @@
     </div>
 </template>
 <script>
-import {uploadCallback} from '../utils/common.js'
-import UUID from '../utils/UUID.js'
-import WebUploader from 'webuploader'
-import 'webuploader/css/webuploader.css'
 export default {
     name:'uploadExcel',
     props: ['url', 'type', 'postData'],
     data() {
-        return { id: new UUID().id, isUploaded :false};
+        return { id: this.$UUID(), isUploaded :false};
     },
     methods:{
         submit() {
@@ -29,7 +25,7 @@ export default {
     },
     mounted() {
         var thiz = this;
-        this.uploader = new WebUploader.Uploader({
+        this.uploader = new this.$WebUploader.Uploader({
             swf: 'webuploader/dist/Uploader.swf',
             auto: this.type === 'line',//选中文件后自动上传
             server: this.url,//处理上传excel的控制器
@@ -47,9 +43,9 @@ export default {
                 mimeTypes: 'application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
             }
         }).on('uploadStart', function (file) {
-            
-        }).on('uploadSuccess', uploadCallback(function (file, response) {
-
+            thiz.$openLoading();
+        }).on('uploadSuccess', uploadCallback(this,function (file, response) {
+            thiz.$closeLoading();
         })).on('error', function (type) {
             if (type === 'Q_TYPE_DENIED') {
                 thiz.$message({ message: '该文件类型可能不是Excel文件。', type: 'warning' });

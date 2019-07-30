@@ -1,13 +1,27 @@
 const CompressionWebpackPlugin = require('compression-webpack-plugin');
+const UglifyjsWebpackPlugin = require('uglifyjs-webpack-plugin')
 module.exports = {
 	configureWebpack:config=>{
-		return {
-			plugins:[new CompressionWebpackPlugin({
-				test:/\.js$|\.html$|\.css/,
-				threshold:10240,
-				deleteOriginalAssets:false,
-			})]
-		};
+		if(process.env.NODE_ENV === 'production'){
+			return {
+				plugins:[new CompressionWebpackPlugin({
+					test:/\.js$|\.html$|\.css$|\.tff$|\.woff$/,
+					threshold:10240,
+					deleteOriginalAssets:false,
+				}),new UglifyjsWebpackPlugin({
+					uglifyOptions: {
+						compress: {
+							drop_debugger: true,
+							drop_console: true,
+						},
+					},
+					sourceMap: false,
+					parallel: true,
+				})]
+			};
+		}else{
+			return {};
+		}
 	},
 	publicPath:'/',
 	productionSourceMap: false,

@@ -10,10 +10,8 @@
     </div>
 </template>
 <script>
-import uploadExcel from '../../components/uploadExcel.vue'
 export default {
     name:'m18',
-    components:{uploadExcel},
     data(){
         return {
             myPostData:{}

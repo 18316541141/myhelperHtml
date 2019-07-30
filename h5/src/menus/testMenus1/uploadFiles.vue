@@ -16,12 +16,8 @@
     </div>
 </template>
 <script>
-import uploadFiles from '../../components/uploadFiles.vue'
 export default {
     name:'m14',
-    components:{
-        uploadFiles
-    },
     data(){
         return { form: { myFiles: [] } };
     }

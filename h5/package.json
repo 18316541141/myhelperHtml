@@ -16,6 +16,7 @@
     "jcrop": "^3.0.1",
     "jquery": "^3.4.1",
     "jshashes": "^1.0.7",
+    "uglifyjs-webpack-plugin": "^2.1.3",
     "viewerjs": "^1.3.6",
     "vue": "^2.6.10",
     "vue-cropper": "^0.4.9",

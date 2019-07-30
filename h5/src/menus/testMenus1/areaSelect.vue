@@ -10,10 +10,8 @@
     </div>
 </template>
 <script>
-    import areaSelect from '../../components/areaSelect.vue'
     export default{
         name:'m15',
-        components:{areaSelect},
         data() { return { form: { myProvince: '', myCity: '', myCounty: '' } }; },
         mounted() {
             var thiz = this;

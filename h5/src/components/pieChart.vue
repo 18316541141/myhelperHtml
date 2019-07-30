@@ -2,17 +2,15 @@
     <div v-bind:id="'pieChart'+id"></div>
 </template>
 <script>
-import UUID from '../utils/UUID.js'
-import Highcharts from 'highcharts'
 export default {
     name:'pieChart',
     props: ['title', 'pieData'],
     data() {
-        return { id: new UUID().id};
+        return { id: this.$UUID()};
     },
     watch:{
         pieData: function (val) {
-            Highcharts.chart('pieChart' + this.id, {
+            this.$Highcharts.chart('pieChart' + this.id, {
                 chart: {
                     plotBackgroundColor: null,
                     plotBorderWidth: null,
