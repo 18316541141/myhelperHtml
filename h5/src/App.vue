@@ -232,9 +232,6 @@ export default {
 };
 </script>
 <style>
-body {
-  margin: 0;
-}
 .left-menus {
   width: 200px;
   position: absolute;
@@ -326,11 +323,6 @@ body {
   left: 100%;
   bottom: 300px;
   z-index:100;
-}
-.top-menus{
-  height: 61px;
-  width: 100%;
-  position: relative;
 }
 .left-top-menus{
   position:absolute;

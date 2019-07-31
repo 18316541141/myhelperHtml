@@ -88,8 +88,9 @@ Vue.prototype.$cancelPool = cancelPool;
 Vue.prototype.$cancelAllPools = cancelAllPools;
 Vue.prototype.$getUpdate = getUpdate;
 Vue.prototype.$postUpdate = postUpdate;
+
 const store = new Vuex.Store({
-  state:{isLogin: true}
+  state:{isLogin: true,loadingCount:0}
 });
 new Vue({
   el:'#app',

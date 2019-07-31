@@ -104,27 +104,37 @@ export function get(url,getData,callback){
  * 开启加载动画
  */
 export function openLoading(){
-    this.$loadingRet = this.$loading({
-        lock: true,
-        text: 'Loading',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.7)',
-        fullscreen :true
-    });
-    if(this.$loadingCount===undefined){
-        this.$loadingCount=0;
+    if(this.$store.state.loadingCount===0){
+        document.getElementById('loading-container').setAttribute('style','display:block;');
+        this.$store.state.loadingRet = this.$loading({
+            lock: true,
+            text: 'Loading',
+            spinner: 'el-icon-loading',
+            background: 'rgba(0, 0, 0, 0.7)',
+            fullscreen :true,
+            target:document.getElementById('loading-area')
+        });
     }
-    this.$loadingCount++;
+    this.$store.state.loadingCount++;
 }
 
 /**
  * 关闭加载动画
  */
 export function closeLoading(){
-    if(this.$loadingCount-1===0){
-        this.$loadingRet.close();
+    if(this.$store.state.loadingCount-1===0){
+        setTimeout(() => {
+            if(this.$store.state.loadingCount-1===0){
+                this.$store.state.loadingRet.close();
+                setTimeout(() => {
+                    document.getElementById('loading-container').setAttribute('style','display:none;');
+                }, 300);
+            }
+            this.$store.state.loadingCount--;
+        },500);
+    }else{
+        this.$store.state.loadingCount--;
     }
-    this.$loadingCount--;
 }
 
 function createCallback(callback,myApp){
