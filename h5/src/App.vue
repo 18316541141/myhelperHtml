@@ -94,10 +94,7 @@
         <p style="color:white;text-align:center;">xxxxxxxxx运营商后台</p>
         <el-form v-bind:model="loginData" label-width="0" v-on:keyup.enter.native="login();">
           <el-form-item>
-            <el-input
-              placeholder="请输入用户名"
-              v-model="loginData.username"
-              prefix-icon="el-icon-user-solid"
+            <el-input v-validate="'required|max:20'" data-vv-name="username" placeholder="请输入用户名" v-model="loginData.username" prefix-icon="el-icon-user-solid"
             ></el-input>
           </el-form-item>
           <el-form-item>
@@ -199,6 +196,7 @@ export default {
       this.menuActive = key;
     },
     login() {
+      this.$validateForm();
       this.loginData.password = new this.$Hashes.SHA1().hex(
         this.loginData.password
       );
@@ -220,6 +218,11 @@ export default {
     }
   },
   mounted() {
+    this.$validator.localize('zh_CN',{
+      username:{
+        required:'用户名不能为空'
+      }
+    });
     var thiz=this;
     this.$get("/api/index/loadLoginData",function(result) {
         thiz.leftMenus = result.data.leftMenus;

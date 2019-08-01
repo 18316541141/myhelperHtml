@@ -29,8 +29,11 @@ import UUID from './utils/UUID.js'
 import Hashes from "jshashes";
 import Highcharts from 'highcharts'
 import WebUploader from 'webuploader'
-import {uploadCallback,typeImgByMime,postOpenWin} from './utils/common.js'
+import {uploadCallback,typeImgByMime,postOpenWin,validateForm} from './utils/common.js'
 import Viewer from 'viewerjs'
+import veeValidate from 'vee-validate'
+import zh_CN from 'vee-validate/dist/locale/zh_CN';
+import VueI18n from 'vue-i18n';
 
 window.Viewer=Viewer;
 window.uploadCallback=uploadCallback;
@@ -39,9 +42,18 @@ window.postOpenWin=postOpenWin;
 
 //通用插件注册
 (function(){
-  Vue.use(ElementUI)
-  Vue.use(vueCropper)
-  Vue.use(Vuex)
+  Vue.use(VueI18n);
+  Vue.use(ElementUI);
+  Vue.use(vueCropper);
+  Vue.use(Vuex);
+  Vue.use(veeValidate,{
+    i18n:new VueI18n({
+      locale: 'zh_CN',
+    }),
+    i18nRootKey: 'validation',
+    fieldsBagName: 'fieldBags',
+    dictionary: {zh_CN}
+  });
 }());
 
 //通用组件注册
@@ -88,6 +100,7 @@ Vue.prototype.$cancelPool = cancelPool;
 Vue.prototype.$cancelAllPools = cancelAllPools;
 Vue.prototype.$getUpdate = getUpdate;
 Vue.prototype.$postUpdate = postUpdate;
+Vue.prototype.$validateForm=validateForm
 
 const store = new Vuex.Store({
   state:{isLogin: true,loadingCount:0}

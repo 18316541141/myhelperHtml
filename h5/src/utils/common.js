@@ -159,3 +159,22 @@ export function postOpenWin(url, params, searchParam) {
     $('#' + times).submit();
     $('#' + times).remove();
 }
+
+export function validateForm(){
+    var ret=true;
+    var thiz=this;
+    this.$validator.validate().then((valid) => {
+        if (valid === false) {
+            // console.log(thiz.$validator.errors.all());
+            // debugger;
+            var items=thiz.$validator.errors.items;
+            for(var i=0,len=items.length;i<len;i++){
+                debugger;
+                items[i].rule;
+                items[i].msg;
+            }
+            ret=false;
+        }
+    });
+    return ret;
+}
