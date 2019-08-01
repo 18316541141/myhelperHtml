@@ -77,7 +77,7 @@
     <div class="main-content">
       <el-tabs v-model="menuActive" v-on:tab-remove="closeNavTab" closable>
         <el-tab-pane
-          v-for="(x) in menus"
+          v-for="(x) in $store.state.menus"
           v-bind:label="x.title"
           v-bind:name="x.id"
           v-bind:key="x.id"
@@ -132,7 +132,6 @@ export default {
       alarmPostData:{},
       alarmVisible:false,
       leftMenus: [],
-      menus: [],
       isCollapse: false,
       menuActive: null,
       rVercode: "/api/session/verificationCode?r=" + Math.random(),
@@ -141,7 +140,7 @@ export default {
   },
   methods: {
     closeNavTab(targetName) {
-      var menus = this.menus;
+      var menus = this.$store.state.menus;
       for (var i = 0, len = menus.length; i < len; i++) {
         if (menus[i].id === targetName) {
           menus.splice(i, 1);
@@ -196,31 +195,37 @@ export default {
       this.menuActive = key;
     },
     login() {
-      this.$validateForm();
-      this.loginData.password = new this.$Hashes.SHA1().hex(
-        this.loginData.password
-      );
       var thiz = this;
-      this.$post("/api/session/login", this.loginData,function(result) {
-        if (result.code === 0) {
-          var data = result.data;
-          thiz.$store.state.isLogin = true;
-          thiz.leftMenus = data.leftMenus;
-          thiz.$regPool('newsAlarm', function () {
-              thiz.alarmVisible=true;
-              thiz.$refs.alarmTable.refresh();
-          });
-        }
-        thiz.loginData.password = "";
-        thiz.loginData.vercode = "";
-        thiz.refreshVercode();
+      this.$validateForm(()=>{
+        thiz.loginData.password = new this.$Hashes.SHA1().hex(
+          thiz.loginData.password
+        );
+        this.$post("/api/session/login", this.loginData,function(result) {
+          if (result.code === 0) {
+            var data = result.data;
+            thiz.$store.state.isLogin = true;
+            thiz.leftMenus = data.leftMenus;
+            thiz.$regPool('newsAlarm', function () {
+                thiz.alarmVisible=true;
+                thiz.$refs.alarmTable.refresh();
+            });
+          }
+          thiz.loginData.password = "";
+          thiz.loginData.vercode = "";
+          thiz.refreshVercode();
+        });
       });
     }
   },
   mounted() {
     this.$validator.localize('zh_CN',{
-      username:{
-        required:'用户名不能为空'
+      custom:{
+        username:{
+          required:'用户名不能为空',
+          max(fieldName,replaceArray){
+            return '用户名最大长度不能大于'+replaceArray[0]+'个字符';
+          }
+        }
       }
     });
     var thiz=this;
@@ -244,7 +249,7 @@ export default {
   overflow-x: hidden;
 }
 .left-menus-scroll {
-  width: 216px;
+  width: 217.1px;
   position: absolute;
   overflow-y: scroll;
   left: 0;

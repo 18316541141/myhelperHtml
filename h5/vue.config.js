@@ -1,6 +1,7 @@
 const CompressionWebpackPlugin = require('compression-webpack-plugin');
 const UglifyjsWebpackPlugin = require('uglifyjs-webpack-plugin')
 module.exports = {
+	productionSourceMap: true,
 	configureWebpack:config=>{
 		if(process.env.NODE_ENV === 'production'){
 			return {
@@ -20,7 +21,7 @@ module.exports = {
 				})]
 			};
 		}else{
-			return {};
+			return {devtool: 'source-map'};
 		}
 	},
 	publicPath:'/',

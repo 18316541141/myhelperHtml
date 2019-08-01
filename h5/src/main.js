@@ -103,7 +103,7 @@ Vue.prototype.$postUpdate = postUpdate;
 Vue.prototype.$validateForm=validateForm
 
 const store = new Vuex.Store({
-  state:{isLogin: true,loadingCount:0}
+  state:{isLogin: true,loadingCount:0,menus: []}
 });
 new Vue({
   el:'#app',
