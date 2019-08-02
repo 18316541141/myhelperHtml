@@ -131,7 +131,7 @@ export function closeLoading(){
                 }, 300);
             }
             this.$store.state.loadingCount--;
-        },500);
+        },400);
     }else{
         this.$store.state.loadingCount--;
     }

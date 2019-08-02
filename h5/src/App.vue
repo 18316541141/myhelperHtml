@@ -94,8 +94,7 @@
         <p style="color:white;text-align:center;">xxxxxxxxx运营商后台</p>
         <el-form v-bind:model="loginData" label-width="0" v-on:keyup.enter.native="login();">
           <el-form-item>
-            <el-input v-validate="'required|max:20'" data-vv-name="username" placeholder="请输入用户名" v-model="loginData.username" prefix-icon="el-icon-user-solid"
-            ></el-input>
+            <el-input v-validate="'required|max:20'" data-vv-name="username" placeholder="请输入用户名" v-model.trim="loginData.username" prefix-icon="el-icon-user-solid"></el-input>
           </el-form-item>
           <el-form-item>
             <el-input
@@ -170,6 +169,7 @@ export default {
         var thiz=this;
         this.$get('/api/session/logout',function(){
           thiz.$store.state.isLogin=false;
+          thiz.$store.state.menus=[];
           thiz.alarmVisible=false;
           thiz.$cancelAllPools();
         });
@@ -179,7 +179,7 @@ export default {
       }
     },
     leftNavSelect(key) {
-      var menus = this.menus;
+      var menus = this.$store.state.menus;
       var len = menus.length;
       for (var i = 0; i < len; i++) {
         if (menus[i].id === key) {
@@ -188,10 +188,10 @@ export default {
         }
       }
       var ret = this.findLeftMenuById(key);
-      menus[menus.length] = {
+      menus.push({
         title: ret.title,
         id: key
-      };
+      });
       this.menuActive = key;
     },
     login() {
@@ -249,7 +249,7 @@ export default {
   overflow-x: hidden;
 }
 .left-menus-scroll {
-  width: 217.1px;
+  width: 220px;
   position: absolute;
   overflow-y: scroll;
   left: 0;
