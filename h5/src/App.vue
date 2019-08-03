@@ -1,6 +1,6 @@
 <template>
   <div id="myApp">
-    <el-popover placement="right" width="600" trigger="manual" v-model="alarmVisible" v-bind:offset="-150">
+    <el-popover placement="right" width="600" trigger="manual" v-model="alarmVisible" v-bind:offset="-130">
       <h3>
         最新消息提醒
         <button type="button" class="el-dialog__headerbtn" v-on:click="alarmVisible = false">
@@ -61,29 +61,27 @@
     <div class="left-menus">
       <div class="left-menus-scroll">
         <el-menu style="min-height:100%;" default-active="2" class="left-menus-tree" v-on:select="leftNavSelect" v-bind:collapse="isCollapse">
-          <el-submenu v-for="(x) in leftMenus" v-bind:index="x.id" v-bind:key="x.id">
-            <template slot="title">
-              <i class="el-icon-location"></i>
-              <span v-text="x.title"></span>
-            </template>
-            <el-menu-item v-for="(y) in x.leftMenus" v-bind:index="y.id" v-bind:key="y.id">
-              <i class="el-icon-setting"></i>
-              <span slot="title" v-text="y.title"></span>
-            </el-menu-item>
-          </el-submenu>
+            <el-submenu v-for="(x) in leftMenus" v-bind:index="x.id" v-bind:key="x.id">
+              <template slot="title">
+                <i class="el-icon-location"></i>
+                <span v-text="x.title"></span>
+              </template>
+              <el-menu-item v-for="(y) in x.leftMenus" v-bind:index="y.id" v-bind:key="y.id">
+                <i class="el-icon-setting"></i>
+                <span slot="title" v-text="y.title"></span>
+              </el-menu-item>
+            </el-submenu>
         </el-menu>
       </div>
     </div>
-    <div class="main-content">
+    <div class="main-content" v-bind:style="{left:mainContentLeft}">
       <el-tabs v-model="menuActive" v-on:tab-remove="closeNavTab" closable>
-        <el-tab-pane
-          v-for="(x) in $store.state.menus"
+        <el-tab-pane v-for="(x) in $store.state.menus"
           v-bind:label="x.title"
           v-bind:name="x.id"
-          v-bind:key="x.id"
-        >
+          v-bind:key="x.id">
           <keep-alive>
-            <component v-bind:is="x.id" class="inner-container"></component>
+            <component v-bind:is="x.id" class="inner-container" v-bind:style="{left:mainContentLeft}"></component>
           </keep-alive>
         </el-tab-pane>
       </el-tabs>
@@ -134,10 +132,12 @@ export default {
       isCollapse: false,
       menuActive: null,
       rVercode: "/api/session/verificationCode?r=" + Math.random(),
-      pieData: []
+      pieData: [],
+      mainContentLeft:'201px'
     };
   },
   methods: {
+
     closeNavTab(targetName) {
       var menus = this.$store.state.menus;
       for (var i = 0, len = menus.length; i < len; i++) {
@@ -171,6 +171,7 @@ export default {
           thiz.$store.state.isLogin=false;
           thiz.$store.state.menus=[];
           thiz.alarmVisible=false;
+          thiz.$store.menus=[];
           thiz.$cancelAllPools();
         });
       }else if(key==='newsAlarm'){
@@ -218,6 +219,11 @@ export default {
     }
   },
   mounted() {
+    var thiz=this;
+    window.addEventListener('resize',function() {
+        thiz.isCollapse=window.innerWidth<=992;
+        thiz.mainContentLeft=window.innerWidth<=992?'65px':'201px';
+    },false);
     this.$validator.localize('zh_CN',{
       custom:{
         username:{
@@ -241,6 +247,7 @@ export default {
 </script>
 <style>
 .left-menus {
+  transition: width .3s linear;
   width: 200px;
   position: absolute;
   left: 0;
@@ -257,20 +264,21 @@ export default {
   bottom: 0;
 }
 .main-content {
+  transition: left .3s linear;
   position: absolute;
-  left: 201px;
   top: 61px;
   right: 0;
   bottom: 0;
 }
 .inner-container {
+  transition: left .3s linear;
   position: fixed;
-  left: 200px;
   top: 115px;
   right: 0;
   bottom: 0;
   padding: 0 8px;
   overflow: auto;
+  animation:fadeIn .5s;
 }
 .el-tabs--bottom .el-tabs__item.is-bottom:nth-child(2),
 .el-tabs--bottom .el-tabs__item.is-top:nth-child(2),
@@ -348,5 +356,8 @@ export default {
   top: 0;
   left: -50px;
   top:5px;
+}
+.left-menus{
+  animation:fadeIn 1s linear;
 }
 </style>
