@@ -2,7 +2,7 @@
     <div>
         <el-table v-bind:data="retData_.data.pageDataList" style="width: 100%" size="mini" v-bind:height="tableHeight_" v-bind:select-on-indeterminate="true" v-bind:border="true" v-on:sort-change="sortChange" v-on:selection-change="selectionChange"
             header-cell-class-name="header-height-fit">
-            <el-table-column type="selection" fixed="left" width="35px" v-if="showChecked"></el-table-column>
+            <el-table-column type="selection" fixed="left" width="39px" v-if="showChecked"></el-table-column>
             <slot></slot>
         </el-table>
         <el-pagination v-if="retData_.data.totalItemCount>0" v-bind:current-page="retData_.data.currentPageIndex" v-bind:total="retData_.data.totalItemCount" layout="sizes, prev, pager, next, jumper, ->, total, slot"

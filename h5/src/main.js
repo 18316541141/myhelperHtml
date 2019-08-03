@@ -8,7 +8,7 @@ import 'viewerjs/dist/viewer.min.css'
 import 'webuploader/css/webuploader.css'
 import App from './App.vue'
 import { openLoading, closeLoading, get, post, regPool, realTimeGet, cancelPool, cancelAllPools, getUpdate, postUpdate } from './utils/http'
-import vueCropper from 'vue-cropper'
+// import vueCropper from 'vue-cropper'
 import defaultPage from './components/defaultPage.vue';
 import m15 from "./menus/testMenus1/areaSelect.vue";
 import m312 from "./menus/testMenus1/charts.vue";
@@ -46,7 +46,7 @@ window.postOpenWin = postOpenWin;
 (function () {
   Vue.use(VueI18n);
   Vue.use(ElementUI);
-  Vue.use(vueCropper);
+  // Vue.use(vueCropper);
   Vue.use(Vuex);
   Vue.use(veeValidate, {
     i18n: new VueI18n({
@@ -69,14 +69,14 @@ window.postOpenWin = postOpenWin;
   Vue.component('default-page', defaultPage)
   Vue.component('upload-excel', uploadExcel)
   Vue.component('upload-files', uploadFiles)
-  Vue.component('upload-image', uploadImage)
+  // Vue.component('upload-image', uploadImage)
 }());
 
 //业务组件注册
 (function () {
   Vue.component('m15', m15)
   Vue.component('m312', m312)
-  Vue.component('m12', m12)
+  // Vue.component('m12', m12)
   Vue.component('m14', m14)
   Vue.component('m17', m17)
   Vue.component('m101', m101)

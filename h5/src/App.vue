@@ -1,6 +1,6 @@
 <template>
   <div id="myApp">
-    <el-popover placement="right" width="600" trigger="manual" v-model="alarmVisible" v-bind:offset="-130">
+    <el-popover placement="right" width="600" trigger="manual" v-model="alarmVisible">
       <h3>
         最新消息提醒
         <button type="button" class="el-dialog__headerbtn" v-on:click="alarmVisible = false">
@@ -8,19 +8,19 @@
         </button>
       </h3>
       <default-page ref="alarmTable" url="/api/index/loadNewsAlarm" v-bind:reduce-height="0" v-bind:table-height="'300px'" v-bind:post-data="alarmPostData">
-        <el-table-column prop="title" label="新消息" v-bind:show-overflow-tooltip="true" width="150px"></el-table-column>
-        <el-table-column prop="createDate" label="日期" v-bind:show-overflow-tooltip="true" width="150px"></el-table-column>
-        <el-table-column label="状态" v-bind:show-overflow-tooltip="true" width="150px">
-          <template slot-scope="scope">
-            <el-tag type="warning" v-if="scope.row.readState===0">未读</el-tag>
-            <el-tag type="success" v-if="scope.row.readState===1">已读</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column label="操作" v-bind:show-overflow-tooltip="true" width="150px">
-          <template slot-scope="scope">
-            <el-button size="mini" v-on:click="leftNavSelect(scope.row.menuId)">查看</el-button>
-          </template>
-        </el-table-column>
+          <el-table-column prop="title" label="新消息" v-bind:show-overflow-tooltip="true" width="150px"></el-table-column>
+          <el-table-column prop="createDate" label="日期" v-bind:show-overflow-tooltip="true" width="150px"></el-table-column>
+          <el-table-column label="状态" v-bind:show-overflow-tooltip="true" width="150px">
+            <template slot-scope="scope">
+              <el-tag type="warning" v-if="scope.row.readState===0">未读</el-tag>
+              <el-tag type="success" v-if="scope.row.readState===1">已读</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column label="操作" v-bind:show-overflow-tooltip="true" width="150px">
+            <template slot-scope="scope">
+              <el-button size="mini" v-on:click="leftNavSelect(scope.row.menuId)">查看</el-button>
+            </template>
+          </el-table-column>
       </default-page>
       <el-button slot="reference" class="alarm-btn"></el-button>
     </el-popover>
@@ -307,7 +307,7 @@ export default {
   margin: 130px auto auto;
 }
 .webuploader-pick {
-  line-height: initial;
+  line-height:unset;
 }
 .webuploader-container {
   height: 40px;
@@ -337,7 +337,7 @@ export default {
 .alarm-btn{
   position: fixed;
   left: 100%;
-  bottom: 300px;
+  bottom: 220px;
   z-index:100;
 }
 .left-top-menus{
