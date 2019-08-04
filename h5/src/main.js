@@ -6,9 +6,12 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import 'viewerjs/dist/viewer.min.css'
 import 'webuploader/css/webuploader.css'
+import "jcrop/dist/jcrop.css"
 import App from './App.vue'
 import { openLoading, closeLoading, get, post, regPool, realTimeGet, cancelPool, cancelAllPools, getUpdate, postUpdate } from './utils/http'
 // import vueCropper from 'vue-cropper'
+// import Jcrop from 'jcrop'
+import vueJcrop from 'vue-jcrop'
 import defaultPage from './components/defaultPage.vue';
 import m15 from "./menus/testMenus1/areaSelect.vue";
 import m312 from "./menus/testMenus1/charts.vue";
@@ -46,6 +49,7 @@ window.postOpenWin = postOpenWin;
 (function () {
   Vue.use(VueI18n);
   Vue.use(ElementUI);
+  Vue.use(vueJcrop);
   // Vue.use(vueCropper);
   Vue.use(Vuex);
   Vue.use(veeValidate, {
@@ -69,14 +73,14 @@ window.postOpenWin = postOpenWin;
   Vue.component('default-page', defaultPage)
   Vue.component('upload-excel', uploadExcel)
   Vue.component('upload-files', uploadFiles)
-  // Vue.component('upload-image', uploadImage)
+  Vue.component('upload-image', uploadImage)
 }());
 
 //业务组件注册
 (function () {
   Vue.component('m15', m15)
   Vue.component('m312', m312)
-  // Vue.component('m12', m12)
+  Vue.component('m12', m12)
   Vue.component('m14', m14)
   Vue.component('m17', m17)
   Vue.component('m101', m101)
@@ -102,7 +106,8 @@ Vue.prototype.$cancelPool = cancelPool;
 Vue.prototype.$cancelAllPools = cancelAllPools;
 Vue.prototype.$getUpdate = getUpdate;
 Vue.prototype.$postUpdate = postUpdate;
-Vue.prototype.$validateForm = validateForm
+Vue.prototype.$validateForm = validateForm;
+// Vue.prototype.$Jcrop=Jcrop;
 
 const store = new Vuex.Store({
   state: { isLogin: true, loadingCount: 0, menus: [] }

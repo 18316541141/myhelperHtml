@@ -15,7 +15,7 @@
                 img-name：要保存到数据库的图片名称
                 thumbnail-name：要保存到数据库的缩略图名称
             -->
-            <upload-image path="test" v-bind:cut="true" v-bind:width-over-height="[2,1]" v-bind:img-name.sync="form.myImgName" v-bind:thumbnail-name.sync="form.myThumbnailName"></upload-image>
+            <upload-image path="test" v-bind:cut="true" v-bind:show-img-max-width="500" v-bind:width-over-height="[2,1]" v-bind:img-name.sync="form.myImgName" v-bind:thumbnail-name.sync="form.myThumbnailName"></upload-image>
         </el-form>
     </div>
 </template>

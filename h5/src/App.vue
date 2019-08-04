@@ -8,15 +8,15 @@
         </button>
       </h3>
       <default-page ref="alarmTable" url="/api/index/loadNewsAlarm" v-bind:reduce-height="0" v-bind:table-height="'300px'" v-bind:post-data="alarmPostData">
-          <el-table-column prop="title" label="新消息" v-bind:show-overflow-tooltip="true" width="150px"></el-table-column>
-          <el-table-column prop="createDate" label="日期" v-bind:show-overflow-tooltip="true" width="150px"></el-table-column>
-          <el-table-column label="状态" v-bind:show-overflow-tooltip="true" width="150px">
+          <el-table-column prop="title" label="新消息" v-bind:show-overflow-tooltip="true" width="309px"></el-table-column>
+          <el-table-column prop="createDate" label="日期" v-bind:show-overflow-tooltip="true" width="145px"></el-table-column>
+          <el-table-column label="状态" v-bind:show-overflow-tooltip="true" width="70px">
             <template slot-scope="scope">
               <el-tag type="warning" v-if="scope.row.readState===0">未读</el-tag>
               <el-tag type="success" v-if="scope.row.readState===1">已读</el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="操作" v-bind:show-overflow-tooltip="true" width="150px">
+          <el-table-column label="操作" v-bind:show-overflow-tooltip="true" width="75px">
             <template slot-scope="scope">
               <el-button size="mini" v-on:click="leftNavSelect(scope.row.menuId)">查看</el-button>
             </template>
@@ -219,6 +219,9 @@ export default {
     }
   },
   mounted() {
+    if(process.env.NODE_ENV==='development'){
+      testLogin(this);
+    }
     var thiz=this;
     window.addEventListener('resize',function() {
         thiz.isCollapse=window.innerWidth<=992;
@@ -307,7 +310,7 @@ export default {
   margin: 130px auto auto;
 }
 .webuploader-pick {
-  line-height:unset;
+  line-height:normal;
 }
 .webuploader-container {
   height: 40px;

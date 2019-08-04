@@ -105,14 +105,10 @@ export function get(url,getData,callback){
  */
 export function openLoading(){
     if(this.$store.state.loadingCount===0){
-        document.getElementById('loading-container').setAttribute('style','display:block;');
-        this.$store.state.loadingRet = this.$loading({
-            lock: true,
-            text: 'Loading',
-            spinner: 'el-icon-loading',
-            background: 'rgba(0, 0, 0, 0.7)',
-            fullscreen :true,
-            target:document.getElementById('loading-area')
+        this.$store.state.loadingRet = Toast.loading({
+            duration: 0,       // 持续展示 toast
+            forbidClick: true, // 禁用背景点击
+            loadingType: 'spinner'
         });
     }
     this.$store.state.loadingCount++;
@@ -125,10 +121,7 @@ export function closeLoading(){
     if(this.$store.state.loadingCount-1===0){
         setTimeout(() => {
             if(this.$store.state.loadingCount-1===0){
-                this.$store.state.loadingRet.close();
-                setTimeout(() => {
-                    document.getElementById('loading-container').setAttribute('style','display:none;');
-                }, 300);
+                this.$store.state.loadingRet.clear();
             }
             this.$store.state.loadingCount--;
         },400);
