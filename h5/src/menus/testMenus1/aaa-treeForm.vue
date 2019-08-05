@@ -80,7 +80,6 @@
                 console.log('submit!');
             },
             nodeClick(data,node,nodeComponent){
-                debugger;
                 // this.$refs.treeForm.remove(data);
                 // this.$refs.treeForm.add({id:'asd',name:'asdasd'},node,'inner');
             },

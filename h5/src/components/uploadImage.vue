@@ -96,7 +96,7 @@ export default {
   mounted() {
     var thiz = this;
     new this.$WebUploader.Uploader({
-      swf: "webuploader/dist/Uploader.swf", //当浏览器不支持XMLHttpWebRequest时，使用flash插件上传。
+      swf: "/Uploader.swf", //当浏览器不支持XMLHttpWebRequest时，使用flash插件上传。
       auto: true, //选中文件后自动上传
       server: "/api/index/uploadSingleImage", //处理上传文件的统一控制器
       fileVal: "fileUpload", //服务端接收二进制文件的参数名称

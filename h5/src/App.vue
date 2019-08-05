@@ -219,14 +219,13 @@ export default {
     }
   },
   mounted() {
-    if(process.env.NODE_ENV==='development'){
-      testLogin(this);
-    }
     var thiz=this;
-    window.addEventListener('resize',function() {
+    var resize=function() {
         thiz.isCollapse=window.innerWidth<=992;
         thiz.mainContentLeft=window.innerWidth<=992?'65px':'201px';
-    },false);
+    };
+    resize();
+    window.addEventListener('resize',resize,false);
     this.$validator.localize('zh_CN',{
       custom:{
         username:{

@@ -164,7 +164,6 @@ export function validateForm(callback){
     var thiz=this;
     this.$validator.validate().then((valid) => {
         if (valid === false) {
-            debugger;
             var items=thiz.$validator.errors.items;
             for(var i=0,len=items.length;i<len;i++){
                 thiz.$message({ message: items[i].msg, type: "error" });

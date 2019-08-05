@@ -11,7 +11,7 @@ import App from './App.vue'
 import { openLoading, closeLoading, get, post, regPool, realTimeGet, cancelPool, cancelAllPools, getUpdate, postUpdate } from './utils/http'
 // import vueCropper from 'vue-cropper'
 // import Jcrop from 'jcrop'
-import vueJcrop from 'vue-jcrop'
+import vueJcrop from 'vue-jcrop';
 import defaultPage from './components/defaultPage.vue';
 import m15 from "./menus/testMenus1/areaSelect.vue";
 import m312 from "./menus/testMenus1/charts.vue";

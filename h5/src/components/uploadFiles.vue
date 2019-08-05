@@ -75,7 +75,7 @@ export default {
         this.fileMap = {};
         var thiz = this;
         new this.$WebUploader.Uploader({
-            swf: 'webuploader/dist/Uploader.swf',
+            swf: '/Uploader.swf',
             auto: true,
             duplicate: true,
             server: '/api/index/uploadFiles',

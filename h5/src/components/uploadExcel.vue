@@ -26,7 +26,7 @@ export default {
     mounted() {
         var thiz = this;
         this.uploader = new this.$WebUploader.Uploader({
-            swf: 'webuploader/dist/Uploader.swf',
+            swf: '/Uploader.swf',
             auto: this.type === 'line',//选中文件后自动上传
             server: this.url,//处理上传excel的控制器
             fileVal: 'fileUpload',//服务端接收二进制文件的参数名称
