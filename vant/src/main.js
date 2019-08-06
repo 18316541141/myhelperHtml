@@ -4,7 +4,6 @@ import 'animate.css/animate.css'
 import App from './App.vue'
 import Login from './Login.vue'
 import Vant from 'vant';
-import axios from 'axios';
 import VueRouter from 'vue-router'
 import 'vant/lib/index.css';
 import { uploadCallback, typeImgByMime, postOpenWin, validateForm } from './utils/common.js'
@@ -14,8 +13,23 @@ import zh_CN from 'vee-validate/dist/locale/zh_CN';
 import UUID from './utils/UUID.js'
 import Hashes from "jshashes";
 import VueI18n from 'vue-i18n';
+import WebUploader from 'webuploader';
+import Highcharts from 'highcharts'
 
 Vue.config.productionTip = false;
+Vue.use(VueI18n);
+Vue.use(Vuex);
+Vue.use(Vant);
+Vue.use(VueRouter);
+Vue.use(veeValidate, {
+  i18n: new VueI18n({
+    locale: 'zh_CN',
+  }),
+  i18nRootKey: 'validation',
+  fieldsBagName: 'fieldBags',
+  dictionary: { zh_CN }
+});
+
 Vue.prototype.$UUID = function () {
   return new UUID().id;
 }
@@ -38,29 +52,19 @@ const store = new Vuex.Store({
   state: { isLogin: true, loadingCount: 0, menus: [] }
 });
 
-Vue.use(Vant);
-Vue.use(VueRouter);
-Vue.use(Vuex);
-Vue.use(veeValidate, {
-  i18n: new VueI18n({
-    locale: 'zh_CN',
-  }),
-  i18nRootKey: 'validation',
-  fieldsBagName: 'fieldBags',
-  dictionary: { zh_CN }
-});
-
-Vue.prototype.$post = post;
-Vue.prototype.$get = get;
 
 const routes = [
   { path: '/Login', component: Login },
 ]
 
+const router = new VueRouter({
+  routes 
+});
+
 
 new Vue({
   el:'#app',
   render: h => h(App),
-  routes,
+  router,
   store
 });

@@ -105,7 +105,8 @@ export function get(url,getData,callback){
  */
 export function openLoading(){
     if(this.$store.state.loadingCount===0){
-        this.$store.state.loadingRet = Toast.loading({
+        debugger;
+        this.$store.state.loadingRet = this.$toast.loading({
             duration: 0,       // 持续展示 toast
             forbidClick: true, // 禁用背景点击
             loadingType: 'spinner'
@@ -138,35 +139,26 @@ function createCallback(callback,myApp){
         if (data.code === -10 || data.code === -11) {
             myApp.$store.state.isLogin = false;
             if (data.code === -11) {
-            myApp.$message({
-                message: "强制下线，原因：当前登录用户在其它地方登录。",
-                type: "warning"
-            });
+                myApp.$notify({message:'强制下线，原因：当前登录用户在其它地方登录。',background:'#f44'});
             }
         }
         //用户无权限，无法操作，但需要后续处理
         else if (data.code === -9) {
-            myApp.$message({
-            message: "当前用户组无操作权限！",
-            type: "warning"
-            });
+            myApp.$notify({message:'当前用户组无操作权限！',background:'#f44'});
         }
         //用户无权限，无法操作
         else if (data.code === -8) {
-            myApp.$message({
-            message: "当前用户组无操作权限！",
-            type: "warning"
-            });
+            myApp.$notify({message:'当前用户组无操作权限！',background:'#f44'});
         }
         //常规错误，
         else if (data.code === -1) {
-            myApp.$message({ message: data.msg, type: "error" });
+            myApp.$notify({message:data.msg,background:'#f44'});
             callback(data);
         }
         //成功
         else if (data.code === 0) {
             if (data.msg != null && data.msg != "") {
-                myApp.$message({ message: data.msg, type: "success" });
+                myApp.$notify({message:data.msg,background:'#07c160'});
             }
             callback(data);
         }

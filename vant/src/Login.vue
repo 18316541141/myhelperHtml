@@ -3,8 +3,8 @@
       <h2 class="h2">请输入账号密码登陆</h2>
       <form v-on:keyup.enter.native="login">
         <van-cell-group>
-          <van-field label="用户名" v-model="username" placeholder="请输入用户名" clearable required/>
-          <van-field type="password" label="密码" v-model="password" placeholder="请输入密码" clearable required/>
+          <van-field label="用户名" v-model="loginData.username" placeholder="请输入用户名" clearable required/>
+          <van-field type="password" label="密码" v-model="loginData.password" placeholder="请输入密码" clearable required/>
         </van-cell-group>
         <br/>
         <van-button type="primary" size="large" v-on:click="login">登陆</van-button>
@@ -18,9 +18,11 @@ export default {
   },
   methods:{
     login(){
+      var thiz=this;
       this.$post("/api/session/login", this.loginData,function(result) {
         if (result.code === 0) {
           var data = result.data;
+          thiz.$router.push('/Index');
         }
         thiz.loginData.password = "";
       });
