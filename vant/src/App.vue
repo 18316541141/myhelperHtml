@@ -27,7 +27,7 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style>
 .page-left-enter-active,.page-left-leave-active,.page-right-enter-active,.page-right-leave-active{
   position: fixed;
   left: 0;
@@ -44,5 +44,22 @@ export default {
 }
 .page-left-leave-to,.page-right-enter{
   transform: translateX(-100%);
+}
+.scroll-top{
+position: absolute;
+top: 0;
+left: 0;
+right: 0;
+}
+.scroll-center{
+position: absolute;
+left: 0;
+right: 0;
+}
+.scroll-bottom{
+position: absolute;
+left: 0;
+right: 0;
+bottom: 0;
 }
 </style>
