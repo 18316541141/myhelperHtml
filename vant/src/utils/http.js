@@ -105,7 +105,6 @@ export function get(url,getData,callback){
  */
 export function openLoading(){
     if(this.$store.state.loadingCount===0){
-        debugger;
         this.$store.state.loadingRet = this.$toast.loading({
             duration: 0,       // 持续展示 toast
             forbidClick: true, // 禁用背景点击

@@ -19,6 +19,9 @@ export default {
   methods:{
     login(){
       var thiz=this;
+      thiz.loginData.password = new this.$Hashes.SHA1().hex(
+        thiz.loginData.password
+      );
       this.$post("/api/session/login", this.loginData,function(result) {
         if (result.code === 0) {
           var data = result.data;

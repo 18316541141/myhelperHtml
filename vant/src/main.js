@@ -3,9 +3,10 @@ import Vuex from 'vuex'
 import 'animate.css/animate.css'
 import App from './App.vue'
 import Login from './Login.vue'
+import Index from './Index.vue'
 import Vant from 'vant';
-import VueRouter from 'vue-router'
 import 'vant/lib/index.css';
+import VueRouter from 'vue-router'
 import { uploadCallback, typeImgByMime, postOpenWin, validateForm } from './utils/common.js'
 import { openLoading, closeLoading, get, post, regPool, realTimeGet, cancelPool, cancelAllPools, getUpdate, postUpdate } from './utils/http'
 import veeValidate from 'vee-validate'
@@ -55,6 +56,7 @@ const store = new Vuex.Store({
 
 const routes = [
   { path: '/Login', component: Login },
+  { path: '/Index', component: Index },
 ]
 
 const router = new VueRouter({
