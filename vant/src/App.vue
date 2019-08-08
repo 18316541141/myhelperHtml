@@ -7,20 +7,20 @@
 export default {
   data(){
     return {
-      aniName:'page-left'
+      aniName:'pageLeft'
     };
   },
   watch: {
     $route(to, from) {
       if(from.fullPath==='/Login' && to.fullPath==='/Index'){
-        this.aniName='page-left';
+        this.aniName='pageLeft';
       }else if(from.fullPath==='/Index' && to.fullPath==='/Login'){
-        this.aniName='page-right';
+        this.aniName='pageRight';
       }else{
         if(to.fullPath.startsWith(from.fullPath)){
-          this.aniName='page-left';
+          this.aniName='pageLeft';
         }else{
-          this.aniName='page-right';
+          this.aniName='pageRight';
         }
       }
     }
@@ -28,24 +28,29 @@ export default {
 }
 </script>
 <style>
+<<<<<<< HEAD
 .page-left-enter-active,.page-left-leave-active,.page-right-enter-active,.page-right-leave-active{
+=======
+.pageLeft-enter-active,.pageLeft-leave-active,.pageRight-enter-active,.pageRight-leave-active{
+>>>>>>> 69a0f448e270f62d557cd6a78466dd7d71f22250
   position: fixed;
   left: 0;
   top: 0;
   right: 0;
   bottom: 0;
-  transition:all .3 linear;
+  transition:all .6 linear;
 }
-.page-left-enter,.page-right-leave-to{
+.pageLeft-enter,.pageRight-leave-to{
   transform: translateX(100%);
 }
-.page-left-enter-to,.page-left-leave,.page-right-enter-to,.page-right-leave{
+.pageLeft-enter-to,.pageLeft-leave,.pageRight-enter-to,.pageRight-leave{
   transform: translateX(0%);
 }
-.page-left-leave-to,.page-right-enter{
+.pageLeft-leave-to,.pageRight-enter{
   transform: translateX(-100%);
 }
 .scroll-top{
+<<<<<<< HEAD
 position: absolute;
 top: 0;
 left: 0;
@@ -61,5 +66,23 @@ position: absolute;
 left: 0;
 right: 0;
 bottom: 0;
+=======
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+.scroll-center{
+    position: absolute;
+    left: 0;
+    right: 0;
+    overflow-y: auto;
+}
+.scroll-bottom{
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+>>>>>>> 69a0f448e270f62d557cd6a78466dd7d71f22250
 }
 </style>
