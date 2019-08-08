@@ -1,26 +1,29 @@
 <template>
-  <transition v-bind:name="aniName">
-    <router-view></router-view>
-  </transition>
+  <div>
+    <transition v-bind:name="aniName">
+      <router-view></router-view>
+    </transition>
+  </div>
 </template>
 <script>
 export default {
+  name:'App',
   data(){
     return {
-      aniName:'pageLeft'
+      aniName:'page-left'
     };
   },
   watch: {
     $route(to, from) {
       if(from.fullPath==='/Login' && to.fullPath==='/Index'){
-        this.aniName='pageLeft';
+        this.aniName='page-left';
       }else if(from.fullPath==='/Index' && to.fullPath==='/Login'){
-        this.aniName='pageRight';
+        this.aniName='page-right';
       }else{
         if(to.fullPath.startsWith(from.fullPath)){
-          this.aniName='pageLeft';
+          this.aniName='page-left';
         }else{
-          this.aniName='pageRight';
+          this.aniName='page-right';
         }
       }
     }
@@ -37,12 +40,12 @@ export default {
   right: 0;
   top: 0;
   bottom: 0;
-  transition: all 0.2s linear;
+  transition: transform 0.4s linear;
 }
 
 .page-left-enter,
 .page-right-leave-to {
-  transform: translateX(-100%);
+  transform: translateX(100%);
 }
 
 .page-left-enter-to,
@@ -54,7 +57,7 @@ export default {
 
 .page-left-leave-to,
 .page-right-enter {
-  transform: translateX(100%);
+  transform: translateX(-100%);
 }
 .scroll-top{
     position: absolute;

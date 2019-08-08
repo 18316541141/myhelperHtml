@@ -16,6 +16,7 @@ import Hashes from "jshashes";
 import VueI18n from 'vue-i18n';
 import WebUploader from 'webuploader';
 import Highcharts from 'highcharts'
+import commonOutFrame from './components/outerFrame/commonOutFrame.vue'
 
 Vue.config.productionTip = false;
 Vue.use(VueI18n);
@@ -30,6 +31,9 @@ Vue.use(veeValidate, {
   fieldsBagName: 'fieldBags',
   dictionary: { zh_CN }
 });
+
+Vue.component('commonOutFrame',commonOutFrame);
+
 
 Vue.prototype.$UUID = function () {
   return new UUID().id;
