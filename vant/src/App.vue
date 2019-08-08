@@ -28,45 +28,35 @@ export default {
 }
 </script>
 <style>
-<<<<<<< HEAD
-.page-left-enter-active,.page-left-leave-active,.page-right-enter-active,.page-right-leave-active{
-=======
-.pageLeft-enter-active,.pageLeft-leave-active,.pageRight-enter-active,.pageRight-leave-active{
->>>>>>> 69a0f448e270f62d557cd6a78466dd7d71f22250
-  position: fixed;
+.page-left-enter-active,
+.page-left-leave-active,
+.page-right-leave-active,
+.page-right-enter-active {
+  position: fixed !important;
   left: 0;
-  top: 0;
   right: 0;
+  top: 0;
   bottom: 0;
-  transition:all .6 linear;
+  transition: all 0.2s linear;
 }
-.pageLeft-enter,.pageRight-leave-to{
-  transform: translateX(100%);
-}
-.pageLeft-enter-to,.pageLeft-leave,.pageRight-enter-to,.pageRight-leave{
-  transform: translateX(0%);
-}
-.pageLeft-leave-to,.pageRight-enter{
+
+.page-left-enter,
+.page-right-leave-to {
   transform: translateX(-100%);
 }
+
+.page-left-enter-to,
+.page-left-leave,
+.page-right-enter-to,
+.page-right-leave {
+  transform: translateX(0%);
+}
+
+.page-left-leave-to,
+.page-right-enter {
+  transform: translateX(100%);
+}
 .scroll-top{
-<<<<<<< HEAD
-position: absolute;
-top: 0;
-left: 0;
-right: 0;
-}
-.scroll-center{
-position: absolute;
-left: 0;
-right: 0;
-}
-.scroll-bottom{
-position: absolute;
-left: 0;
-right: 0;
-bottom: 0;
-=======
     position: absolute;
     top: 0;
     left: 0;
@@ -83,6 +73,5 @@ bottom: 0;
     left: 0;
     right: 0;
     bottom: 0;
->>>>>>> 69a0f448e270f62d557cd6a78466dd7d71f22250
 }
 </style>
