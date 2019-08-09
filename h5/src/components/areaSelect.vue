@@ -91,14 +91,13 @@ export default{
         }
     },
     mounted() {
-        var thiz = this;
         this.$get('/api/index/areaSelect',function (result) {
-            thiz.data = result.data;
-            thiz.provinces = thiz.data['provinces'];
-            thiz.cities = [];
-            thiz.counties = [];
-            thiz.towns = [];
-            thiz.setVal(thiz.province_,thiz.city_,thiz.county_,thiz.town_);
+            this.data = result.data;
+            this.provinces = this.data['provinces'];
+            this.cities = [];
+            this.counties = [];
+            this.towns = [];
+            this.setVal(this.province_,this.city_,this.county_,this.town_);
         });
     }
 }

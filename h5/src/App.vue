@@ -8,7 +8,7 @@
         </button>
       </h3>
       <default-page ref="alarmTable" url="/api/index/loadNewsAlarm" v-bind:reduce-height="0" v-bind:table-height="'300px'" v-bind:post-data="alarmPostData">
-          <el-table-column prop="title" label="新消息" v-bind:show-overflow-tooltip="true" width="309px"></el-table-column>
+          <el-table-column prop="title" label="新消息" v-bind:show-overflow-tooltip="true" width="289px"></el-table-column>
           <el-table-column prop="createDate" label="日期" v-bind:show-overflow-tooltip="true" width="145px"></el-table-column>
           <el-table-column label="状态" v-bind:show-overflow-tooltip="true" width="70px">
             <template slot-scope="scope">
@@ -90,7 +90,7 @@
       <div class="login-form-content">
         <h2 style="color:white;text-align:center;">测试后台</h2>
         <p style="color:white;text-align:center;">xxxxxxxxx运营商后台</p>
-        <el-form v-bind:model="loginData" label-width="0" v-on:keyup.enter.native="login();">
+        <el-form v-bind:model="loginData" label-width="0" v-on:keyup.enter.native="login">
           <el-form-item>
             <el-input v-validate="'required|max:20'" data-vv-name="username" placeholder="请输入用户名" v-model.trim="loginData.username" prefix-icon="el-icon-user-solid"></el-input>
           </el-form-item>
@@ -112,7 +112,7 @@
               </el-col>
             </el-row>
           </el-form-item>
-          <el-button type="primary" style="width:100%" v-on:click="login();">登录</el-button>
+          <el-button type="primary" style="width:100%" v-on:click="login">登录</el-button>
         </el-form>
       </div>
     </div>
@@ -166,13 +166,11 @@ export default {
     },
     rightMenuSelect(key){
       if(key==='logout'){
-        var thiz=this;
         this.$get('/api/session/logout',function(){
-          thiz.$store.state.isLogin=false;
-          thiz.$store.state.menus=[];
-          thiz.alarmVisible=false;
-          thiz.$store.menus=[];
-          thiz.$cancelAllPools();
+          this.$store.state.isLogin=false;
+          this.$store.state.menus.splice(0);
+          this.alarmVisible=false;
+          this.$cancelAllPools();
         });
       }else if(key==='newsAlarm'){
         this.alarmVisible=true;
@@ -196,24 +194,23 @@ export default {
       this.menuActive = key;
     },
     login() {
-      var thiz = this;
       this.$validateForm(()=>{
-        thiz.loginData.password = new this.$Hashes.SHA1().hex(
-          thiz.loginData.password
+        this.loginData.password = new this.$Hashes.SHA1().hex(
+          this.loginData.password
         );
         this.$post("/api/session/login", this.loginData,function(result) {
           if (result.code === 0) {
             var data = result.data;
-            thiz.$store.state.isLogin = true;
-            thiz.leftMenus = data.leftMenus;
-            thiz.$regPool('newsAlarm', function () {
-                thiz.alarmVisible=true;
-                thiz.$refs.alarmTable.refresh();
+            this.$store.state.isLogin = true;
+            this.leftMenus = data.leftMenus;
+            this.$regPool('newsAlarm', function () {
+                this.alarmVisible=true;
+                this.$refs.alarmTable.refresh();
             });
           }
-          thiz.loginData.password = "";
-          thiz.loginData.vercode = "";
-          thiz.refreshVercode();
+          this.loginData.password = "";
+          this.loginData.vercode = "";
+          this.refreshVercode();
         });
       });
     }
@@ -236,13 +233,12 @@ export default {
         }
       }
     });
-    var thiz=this;
     this.$get("/api/index/loadLoginData",function(result) {
-        thiz.leftMenus = result.data.leftMenus;
+        this.leftMenus = result.data.leftMenus;
     });
     this.$regPool('newsAlarm', function () {
-        thiz.alarmVisible=true;
-        thiz.$refs.alarmTable.refresh();
+        this.alarmVisible=true;
+        this.$refs.alarmTable.refresh();
     });
   }
 };

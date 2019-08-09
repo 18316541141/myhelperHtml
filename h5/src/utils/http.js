@@ -131,7 +131,7 @@ export function closeLoading(){
                 }, 300);
             }
             this.$store.state.loadingCount--;
-        },400);
+        },350);
     }else{
         this.$store.state.loadingCount--;
     }
@@ -168,14 +168,14 @@ function createCallback(callback,myApp){
         //常规错误，
         else if (data.code === -1) {
             myApp.$message({ message: data.msg, type: "error" });
-            callback(data);
+            callback.call(myApp,data);
         }
         //成功
         else if (data.code === 0) {
             if (data.msg != null && data.msg != "") {
                 myApp.$message({ message: data.msg, type: "success" });
             }
-            callback(data);
+            callback.call(myApp,data);
         }
     }
 }
@@ -242,7 +242,7 @@ export function realTimeGet(poolName){
                 thiz.$realTimeGet(poolName);
             } else if (data.code === 0) {
                 thiz.$realTimeGet(poolName);
-                regPoolMap[poolName].callback();
+                regPoolMap[poolName].callback.call(thiz);
             }
         }
     });

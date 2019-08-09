@@ -170,7 +170,7 @@ export function validateForm(callback){
                 break;
             }
         }else{
-            callback();
+            callback.call(this);
         }
     });
 }
