@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="scroll-top" style="height:46px;">
-            <van-nav-bar v-bind:title="title" v-bind:left-text="showBack?'返回':''" v-bind:left-arrow="showBack" v-on:click-left="back" v-on:click-right="clickRight">
+            <van-nav-bar v-bind:title="title" v-bind:left-text="showBack?'返回':''" v-bind:left-arrow="showBack" v-on:click-left="$router.go(-1)" v-on:click-right="clickRight">
                 <van-icon v-bind:name="rightIconName" slot="right"/>
             </van-nav-bar>
         </div>
@@ -26,9 +26,6 @@ export default {
     methods:{
         clickRight(){
             this.$emit('rightCallback');
-        },
-        back(){
-            history.back();
         },
         change(name){
             this.active=name;
