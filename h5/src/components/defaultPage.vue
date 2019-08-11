@@ -1,5 +1,16 @@
 <template>
     <div>
+        <el-dialog title="导出excel列表" v-bind:visible.sync="exportDialog" v-bind:modal-append-to-body="true"
+            v-bind:append-to-body="true" width="500px">
+            <el-table v-bind:data="exportList" height="350px">
+                <el-table-column property="text" label="内容" width="360px"></el-table-column>
+                <el-table-column property="index" label="操作" width="100px">
+                    <template slot-scope="scope">
+                        <el-button size="mini" icon="el-icon-download" @click="exportExcel(scope.row.index)">导出</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </el-dialog>
         <el-table v-bind:data="retData_.data.pageDataList" style="width: 100%" size="mini" v-bind:height="tableHeight_" v-bind:select-on-indeterminate="true" v-bind:border="true" v-on:sort-change="sortChange" v-on:selection-change="selectionChange"
             header-cell-class-name="header-height-fit">
             <el-table-column type="selection" fixed="left" width="39px" v-if="showChecked"></el-table-column>
@@ -13,9 +24,11 @@
 <script>
 export default {
     name:'defaultPage',
-    props:['url','postData','retData','reduceHeight','checkedDatas','showChecked','tableHeight'],
+    props:['url','postData','retData','reduceHeight','checkedDatas','showChecked','tableHeight','excelTitle','exportUrl'],
     data(){
         return {
+            exportList:[],
+            exportDialog:false,
             tableHeight_:this.tableHeight===undefined?window.innerHeight-148-this.reduceHeight+'px':this.tableHeight,
             retData_:{
                 data:{
@@ -29,6 +42,24 @@ export default {
         };
     },
     methods:{
+        exportExcel(currentPageIndex){
+            this.postData.currentPageIndex = currentPageIndex;
+            this.postData.pageSize=this.retData_.data.pageSize;
+            postOpenWin(this.exportUrl, this.postData);
+        },
+        export(){
+            var totalItemCount=this.retData_.data.totalItemCount;
+            if(totalItemCount<=10000){
+                this.exportExcel(1);
+            }else{
+                this.exportList.splice(0);
+                var exportLen = ((totalItemCount-totalItemCount%10000)/10000)+1;
+                for(var i=0;i<exportLen;i++){
+                    this.exportList.push({text:'“'+this.excelTitle+'”第'+(i*10000+1)+'-'+Math.min((i+1)*10000,totalItemCount)+'条数据',index:i});
+                }
+                this.exportDialog=true;
+            }
+        },
         sizeChange(pageSize){
             this.retData_.data.pageSize=pageSize;
             this.refresh();
@@ -38,14 +69,13 @@ export default {
             this.refresh();
         },
         refresh(){
-            var thiz=this;
             this.postData.currentPageIndex = this.retData_.data.currentPageIndex;
             this.postData.pageSize=this.retData_.data.pageSize;
             this.$post(this.url,this.postData,function(result){
-                thiz.retData_=result;
-                thiz.$emit('update:retData',result);
-                if(thiz.tableHeight===undefined){
-                    thiz.tableHeight_=window.innerHeight-148-thiz.reduceHeight+'px';
+                this.retData_=result;
+                this.$emit('update:retData',result);
+                if(this.tableHeight===undefined){
+                    this.tableHeight_=window.innerHeight-148-this.reduceHeight+'px';
                 }
             });
         },

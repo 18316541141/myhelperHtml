@@ -1,7 +1,7 @@
 import axios from 'axios';
 //使用缓存的url，部分url数据是需要使用缓存的，统一在这里配置
 const cacheUrls = [
-    "/index/areaSelect" //加载省、市、区、镇列表，基本不怎么变化，所以使用缓存
+    "/api/index/areaSelect", //加载省、市、区、镇列表，基本不怎么变化，所以使用缓存
 ];
 
 // var loading;
@@ -23,6 +23,32 @@ axios.interceptors.request.use(
         return Promise.reject(error);
     }
 );
+
+/**
+ * 上传文件，浏览器必须支持XMLHttpWebRequest对象
+ * @param {*} url 提交的url
+ * @param {*} postData 提交的内容，可以含有二进制文件
+ * @param {*} callback 回调函数
+ * @param {*} progress 进度更新回调函数
+ */
+export function upload(url,postData,callback,progress){
+    var thiz=this;
+    var formData=new FormData();
+    for (var it in postData) {
+        if(postData.hasOwnProperty(it)){
+            formData.append(it,postData[it]);
+        }
+    }
+    axios.post(url,formData,{
+        onUploadProgress(progressEvent) {
+            if(progress!==undefined){
+                progress.call(thiz,progressEvent);
+            }
+        },
+        headers: {'Content-Type':'multipart/form-data'}
+    }).then(createCallback(callback,this));
+}
+
 export function post(url,postData,callback){
     this.$openLoading();
     if(callback===undefined){
@@ -152,14 +178,14 @@ function createCallback(callback,myApp){
         //常规错误，
         else if (data.code === -1) {
             myApp.$notify({message:data.msg,background:'#f44'});
-            callback(data);
+            callback.call(myApp,data);
         }
         //成功
         else if (data.code === 0) {
             if (data.msg != null && data.msg != "") {
                 myApp.$notify({message:data.msg,background:'#07c160'});
             }
-            callback(data);
+            callback.call(myApp,data);
         }
     }
 }

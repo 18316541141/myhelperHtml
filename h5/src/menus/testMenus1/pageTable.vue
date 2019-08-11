@@ -4,6 +4,7 @@
             <el-breadcrumb-item>首页</el-breadcrumb-item>
             <el-breadcrumb-item>分页表格2</el-breadcrumb-item>
         </el-breadcrumb>
+        <button type="button" v-on:click="test">导出测试</button>
         <!--
             对原有的page和table组件进行封装得到的翻页组件
             url 分页请求的url
@@ -12,9 +13,11 @@
             reduce-height   整个分页组件默认铺满整个页面，设置该属性减去的高度，以实现动态高度。
             checked-datas   获取选中的数据
             show-checked    是否显示复选框列
+            excel-title     导出的excel表显示的名称
+            export-url      导出操作的url
         -->
-        <default-page url="/api/IRobotQrCodePayTask/page" v-bind:post-data="postData" v-bind:ret-data.sync="retData" v-bind:reduce-height="14" v-bind:checked-datas.sync="checkedDatas"
-            v-bind:show-checked="true">
+        <default-page ref="table" url="/api/IRobotQrCodePayTask/page" v-bind:post-data="postData" v-bind:ret-data.sync="retData" v-bind:reduce-height="14" v-bind:checked-datas.sync="checkedDatas"
+            v-bind:show-checked="true" excel-title="测试数据.xlsx" export-url="/api/IRobotQrCodePayTask/export">
             <!--
                 这里用的仍然是el-table组件的列。
             -->
@@ -47,7 +50,9 @@ export default {
         };
     },
     methods:{
-        
+        test(){
+            this.$refs.table.export();
+        }
     }
 }
 </script>
