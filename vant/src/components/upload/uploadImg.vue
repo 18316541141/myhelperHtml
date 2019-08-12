@@ -1,9 +1,13 @@
 <template>
     <div>
-        <div class="van-uploader__upload" v-bind:style="{width:previewSize,height:previewSize}" v-on:click="wxUpload">
-            <i class="van-icon van-icon-plus van-uploader__upload-icon"></i>
+        <div v-if="isWx" class="van-uploader__upload" v-bind:style="{width:previewSize,height:previewSize}" v-on:click="wxUpload">
+            <i v-if="wxUploadStatus==0" class="van-icon van-icon-plus van-uploader__upload-icon"></i>
+            <div v-if="wxUploadStatus==1" v-bind:style="{width:previewSize,height:previewSize}">
+                <img class="van-image__img" src="/api/index/showImage?pathName=test&imgName=a0963c5b45a6b1c911fbc0b7af9e993e52672739" style="object-fit: cover;"/>
+                <i class="van-icon van-icon-delete van-uploader__preview-delete" v-on:click="delImg"></i>
+            </div>
         </div>
-        <van-uploader v-model="fileList" v-bind:max-count="1" v-bind:after-read="afterRead" v-bind:preview-size="previewSize"/>
+        <van-uploader v-else v-model="fileList" v-bind:max-count="1" v-bind:after-read="afterRead" v-bind:preview-size="previewSize"/>
         <div v-show="cutRect" style="position:absolute;left:0;right:0;top:0;bottom:0;background:#323233;">
             <div v-bind:id="imgContainId" v-bind:style="{width:imgWidth+'px',height:imgHeight+'px',top:imgTop+'px',bottom:imgBottom+'px',position:'absolute'}"></div>
             <div style="position:absolute;bottom:0px;left:0;right:0;padding:10px;">
@@ -18,7 +22,7 @@ export default {
     data(){
         return {
             isWx:/MicroMessenger/.test(window.navigator.userAgent),
-	    wxUploadStatus:0,//微信版上传图片控件的状态，0：未上传、1：已上传、可删除
+	        wxUploadStatus:0,//微信版上传图片控件的状态，0：未上传、1：已上传、可删除
             imgWidth:0,
             imgHeight:0,
             imgTop:0,
@@ -31,6 +35,9 @@ export default {
         };
     },
     methods:{
+        delImg(){
+            this.wxUploadStatus=0;
+        },
         wxUpload(){
             var thiz=this;
             wx.chooseImage({
@@ -46,26 +53,26 @@ export default {
                                 if(result.code===0){
                                     if(thiz.cut===true){
                                         var data=result.data;
-					this.imgWidth=window.screen.width;
-					this.imgHeight=this.imgWidth*data.imgHeight/data.imgWidth;
-					this.imgTop=(window.screen.height-this.imgHeight-64)/2;
-					this.imgBottom=this.imgTop;
-					this.imgName_=data.imgName;
-					var image = new Image();
-					image.setAttribute('style','width:'+this.imgWidth+'px;height:'+this.imgHeight+'px;');
-					var Cropper=this.$Cropper;
-					var thiz=this;
-					thiz.cutRect=true;
-					image.onload=function(){
-					    document.getElementById(thiz.imgContainId).appendChild(image);
-					    thiz.cropperObj=new Cropper(image,{
-						aspectRatio:16/9,
-						guides:false,
-						movable:false,
-					    });
-					    thiz.cropperObj.setDragMode('crop');
-					};
-					image.src='/api/index/showImage?pathName='+this.pathName+'&imgName='+data.imgName;	
+                                        this.imgWidth=window.screen.width;
+                                        this.imgHeight=this.imgWidth*data.imgHeight/data.imgWidth;
+                                        this.imgTop=(window.screen.height-this.imgHeight-64)/2;
+                                        this.imgBottom=this.imgTop;
+                                        this.imgName_=data.imgName;
+                                        var image = new Image();
+                                        image.setAttribute('style','width:'+this.imgWidth+'px;height:'+this.imgHeight+'px;');
+                                        var Cropper=this.$Cropper;
+                                        var thiz=this;
+                                        thiz.cutRect=true;
+                                        image.onload=function(){
+                                            document.getElementById(thiz.imgContainId).appendChild(image);
+                                            thiz.cropperObj=new Cropper(image,{
+                                            aspectRatio:16/9,
+                                            guides:false,
+                                            movable:false,
+                                            });
+                                            thiz.cropperObj.setDragMode('crop');
+                                        };
+                                        image.src='/api/index/showImage?pathName='+this.pathName+'&imgName='+data.imgName;	
                                     }
                                 }
                             });

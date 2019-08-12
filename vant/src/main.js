@@ -19,6 +19,7 @@ import Highcharts from 'highcharts'
 import commonOutFrame from './components/outerFrame/commonOutFrame.vue'
 import commonInput from './components/input/commonInput.vue'
 import uploadImg from './components/upload/uploadImg.vue'
+import carNoKeyboard from './components/keyboard/carNoKeyboard.vue'
 import moment from 'moment'
 import Cropper from 'cropperjs'
 import 'cropperjs/dist/cropper.min.css'
@@ -44,7 +45,7 @@ Vue.use(veeValidate, {
 Vue.component('commonOutFrame',commonOutFrame);
 Vue.component('commonInput',commonInput);
 Vue.component('uploadImg',uploadImg);
-
+Vue.component('carNoKeyboard',carNoKeyboard);
 
 Vue.prototype.$UUID = function () {
   return new UUID().id;

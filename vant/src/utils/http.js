@@ -46,7 +46,7 @@ export function upload(url,postData,callback,progress){
             }
         },
         headers: {'Content-Type':'multipart/form-data'}
-    }).then(createCallback(callback,this));
+    }).then(createCallback(this,callback));
 }
 
 /**
@@ -165,7 +165,7 @@ export function getUpdate(url,getData,callback,poolNames){
     axios.get(url,{
         params:getData,
         headers:{'Real-Time-Pool': poolNames.join(',')}
-    }).then(createCallback(callback,this));
+    }).then(createCallback(this,callback));
 }
 
 /**
@@ -193,7 +193,7 @@ export function postUpdate(url,postData,callback,poolNames){
             return ret
         }],
         headers: {'Content-Type': 'application/x-www-form-urlencoded','Real-Time-Pool': poolNames.join(',')}
-    }).then(createCallback(callback,this));
+    }).then(createCallback(this,callback));
 }
 
 /**
@@ -226,7 +226,7 @@ export function closeLoading(){
     }
 }
 
-function createCallback(callback,myApp){
+function createCallback(myApp,callback,loadAni){
 	//相当于调用重载方法：createCallback(myApp)
     if(callback===undefined){
         loadAni=true;
@@ -261,14 +261,18 @@ function createCallback(callback,myApp){
         //常规错误，
         else if (data.code === -1) {
             myApp.$notify({message:data.msg,background:'#f44'});
-            callback.call(myApp,data);
+            if(callback!==undefined){
+                callback.call(myApp,data);
+            }
         }
         //成功
         else if (data.code === 0) {
             if (data.msg != null && data.msg != "") {
                 myApp.$notify({message:data.msg,background:'#07c160'});
             }
-            callback.call(myApp,data);
+            if(callback!==undefined){
+                callback.call(myApp,data);
+            }
         }
     }
 }

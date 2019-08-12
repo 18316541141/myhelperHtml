@@ -24,9 +24,18 @@
         <common-input v-on:search="onSearch" v-bind:date-start="createTimeStart" v-bind:like-text="likeText"></common-input>
         -->
         <!--
-            
-        -->
+            这是一个上传图片的组件。
+            @preview-size 上传组件的宽度。
+            @cut    是否启用裁剪功能
+            @path-name  上传图片的路径
+            @img-name   上传的文件名
+            @thumbnail-name 上传的文件名
         <upload-img preview-size="160px" v-bind:cut="true" path-name="test" v-bind:img-name.sync="imgName" v-bind:thumbnail-name.sync="thumbnailName"></upload-img>
+        -->
+        <!--
+            这是车牌号码内容输入键盘
+        -->
+        <car-no-keyboard></car-no-keyboard>
     </div>
 </template>
 <script>
