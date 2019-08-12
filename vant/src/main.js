@@ -22,6 +22,9 @@ import uploadImg from './components/upload/uploadImg.vue'
 import moment from 'moment'
 import Cropper from 'cropperjs'
 import 'cropperjs/dist/cropper.min.css'
+import $ from 'jquery'
+
+window.$ = $;
 
 Vue.config.productionTip = false;
 Vue.use(VueI18n);

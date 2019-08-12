@@ -18,6 +18,7 @@ export default {
     data(){
         return {
             isWx:/MicroMessenger/.test(window.navigator.userAgent),
+	    wxUploadStatus:0,//微信版上传图片控件的状态，0：未上传、1：已上传、可删除
             imgWidth:0,
             imgHeight:0,
             imgTop:0,
@@ -44,7 +45,27 @@ export default {
                             thiz.$post('/api/Index/uploadSingleWxImage',{pathName:this.pathName,serverId:res.serverId},function(result){
                                 if(result.code===0){
                                     if(thiz.cut===true){
-                                        
+                                        var data=result.data;
+					this.imgWidth=window.screen.width;
+					this.imgHeight=this.imgWidth*data.imgHeight/data.imgWidth;
+					this.imgTop=(window.screen.height-this.imgHeight-64)/2;
+					this.imgBottom=this.imgTop;
+					this.imgName_=data.imgName;
+					var image = new Image();
+					image.setAttribute('style','width:'+this.imgWidth+'px;height:'+this.imgHeight+'px;');
+					var Cropper=this.$Cropper;
+					var thiz=this;
+					thiz.cutRect=true;
+					image.onload=function(){
+					    document.getElementById(thiz.imgContainId).appendChild(image);
+					    thiz.cropperObj=new Cropper(image,{
+						aspectRatio:16/9,
+						guides:false,
+						movable:false,
+					    });
+					    thiz.cropperObj.setDragMode('crop');
+					};
+					image.src='/api/index/showImage?pathName='+this.pathName+'&imgName='+data.imgName;	
                                     }
                                 }
                             });
@@ -52,31 +73,6 @@ export default {
                     });
                 }
             });
-        },
-        crop(){
-            if(this.cropperObj!==null){
-                var cropBoxData=this.cropperObj.getCropBoxData();
-                this.$post("/api/index/singleImageCrop",{
-                    pathName: this.pathName,
-                    imgName: this.imgName_,
-                    imgWidth: parseInt(this.imgWidth),
-                    imgHeight: parseInt(this.imgHeight),
-                    x: parseInt(cropBoxData.left),
-                    y: parseInt(cropBoxData.top),
-                    w: parseInt(cropBoxData.width),
-                    h: parseInt(cropBoxData.height)
-                },function(result) {
-                    var data = result.data;
-                    this.imgName_=data.imgName;
-                    this.$emit("update:imgName", data.imgName);
-                    this.$emit("update:thumbnailName", data.thumbnailName);
-                    this.cutRect=false;
-                    this.cropperObj.destroy();
-                    document.getElementById(this.imgContainId).innerHTML='';
-                    this.fileList.splice(0);
-                    this.fileList.push({isImageFile: true,url:"/api/index/showImage?type=.jpg&pathName=" + this.pathName + "&imgName=" + data.imgName});
-                });
-            }
         },
         afterRead(file) {
             this.$upload('/api/Index/uploadSingleImage',{
@@ -109,6 +105,31 @@ export default {
                     }
                 }
             });
+        },
+        crop(){
+            if(this.cropperObj!==null){
+                var cropBoxData=this.cropperObj.getCropBoxData();
+                this.$post("/api/index/singleImageCrop",{
+                    pathName: this.pathName,
+                    imgName: this.imgName_,
+                    imgWidth: parseInt(this.imgWidth),
+                    imgHeight: parseInt(this.imgHeight),
+                    x: parseInt(cropBoxData.left),
+                    y: parseInt(cropBoxData.top),
+                    w: parseInt(cropBoxData.width),
+                    h: parseInt(cropBoxData.height)
+                },function(result) {
+                    var data = result.data;
+                    this.imgName_=data.imgName;
+                    this.$emit("update:imgName", data.imgName);
+                    this.$emit("update:thumbnailName", data.thumbnailName);
+                    this.cutRect=false;
+                    this.cropperObj.destroy();
+                    document.getElementById(this.imgContainId).innerHTML='';
+                    this.fileList.splice(0);
+                    this.fileList.push({isImageFile: true,url:"/api/index/showImage?type=.jpg&pathName=" + this.pathName + "&imgName=" + data.imgName});
+                });
+            }
         }
     },
     mounted(){

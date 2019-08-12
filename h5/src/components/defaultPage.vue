@@ -68,7 +68,14 @@ export default {
             this.retData_.data.currentPageIndex=currentPageIndex;
             this.refresh();
         },
-        refresh(){
+        /**
+         * 刷新列表
+         * @param {*} loadAni 刷新时是否显示加载动画，默认是显示
+         */
+        refresh(loadAni){
+            if(loadAni===undefined){
+                loadAni=true;
+            }
             this.postData.currentPageIndex = this.retData_.data.currentPageIndex;
             this.postData.pageSize=this.retData_.data.pageSize;
             this.$post(this.url,this.postData,function(result){
@@ -77,7 +84,7 @@ export default {
                 if(this.tableHeight===undefined){
                     this.tableHeight_=window.innerHeight-148-this.reduceHeight+'px';
                 }
-            });
+            },loadAni);
         },
         sortChange(sortObj){
             for (var key in this.postData) {

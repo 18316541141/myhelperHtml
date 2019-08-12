@@ -37,7 +37,9 @@ import Viewer from 'viewerjs'
 import veeValidate from 'vee-validate'
 import zh_CN from 'vee-validate/dist/locale/zh_CN';
 import VueI18n from 'vue-i18n';
+import $ from 'jquery'
 
+window.$ = $;
 window.Viewer = Viewer;
 window.uploadCallback = uploadCallback;
 window.typeImgByMime = typeImgByMime;

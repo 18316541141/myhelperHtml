@@ -28,8 +28,8 @@ export default {
       }
 
       //当目标浏览器是个微信浏览器时，调用微信api认证配置。
-      if(this.$useWxApiUrls.indexOf(to)>-1 && /MicroMessenger/.test(window.navigator.userAgent)){
-        this.$get('/api/Session/wxCfg',function(result){
+      if(this.$useWxApiUrls.indexOf(to.fullPath)>-1 && /MicroMessenger/.test(window.navigator.userAgent)){
+        this.$get('/api/Index/wxCfg',{routerPath:to.fullPath},function(result){
           wx.config({
             debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
             appId: '', // 必填，公众号的唯一标识

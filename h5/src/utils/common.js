@@ -1,5 +1,3 @@
-import $ from 'jquery'
-
 //上传文件插件的回调函数
 export function uploadCallback(myApp,callback) {
     return function (file, response) {

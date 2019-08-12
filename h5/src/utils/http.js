@@ -4,7 +4,6 @@ const cacheUrls = [
     "/index/areaSelect" //加载省、市、区、镇列表，基本不怎么变化，所以使用缓存
 ];
 
-// var loading;
 //请求拦截器
 axios.interceptors.request.use(
     function(config) {
@@ -23,16 +22,96 @@ axios.interceptors.request.use(
         return Promise.reject(error);
     }
 );
-export function post(url,postData,callback){
-    this.$openLoading();
-    if(callback===undefined){
-        axios.post(url).then(createCallback(postData,this));
-    }else{
-        axios({
-            url: url,
-            method: 'post',
-            data:postData,
-            transformRequest: [function (data) {
+
+/**
+ * 提交get请求
+ * @param {*} url 请求的url
+ * @param {*} getData 请求参数
+ * @param {*} callback 回调函数
+ * @param {*} loadAni 是否显示加载动画，默认是true
+ */
+export function get(url,getData,callback,loadAni){
+    //如果符合，表示使用重载方法：post(url)
+    if(getData===undefined){
+        loadAni=true;
+    }
+    //如果符合，表示使用重载方法：post(url, loadAni)
+    else if($.type(getData)==='boolean' && callback===undefined){
+        getData=undefined;
+        loadAni=getData;
+    }
+    //如果符合，表示使用重载方法：post(url, getData)
+    else if($.type(getData)==='object' && callback===undefined){
+        loadAni=true;
+    }
+    //如果符合，表示使用重载方法：post(url, callback)
+    else if($.type(getData)==='function' && callback===undefined){
+        callback=getData;
+        getData=undefined;
+        loadAni=true;
+    }
+    //如果符合，表示使用重载方法：post(url, getData, loadAni)
+    else if($.type(getData)==='object' && $.type(callback)==='boolean' && loadAni===undefined){
+        loadAni=callback;
+        callback=undefined;
+    }
+    //如果符合，表示使用重载方法：post(url, callback, loadAni)
+    else if($.type(getData)==='function' && $.type(callback)==='boolean' && loadAni===undefined){
+        loadAni=callback;
+        callback=getData;
+    }
+    if(loadAni===true){
+        this.$openLoading();
+    }
+    axios.get(url,{params:getData}).then(createCallback(this,callback,loadAni));
+}
+
+/**
+ * 提交post请求
+ * @param {*} url 请求的url
+ * @param {*} postData 请求参数
+ * @param {*} callback 回调函数
+ * @param {*} loadAni 是否显示加载动画，默认是true
+ */
+export function post(url,postData,callback,loadAni){
+    //如果符合，表示使用重载方法：post(url)
+    if(postData===undefined){
+        loadAni=true;
+    }
+    //如果符合，表示使用重载方法：post(url, loadAni)
+    else if($.type(postData)==='boolean' && callback===undefined){
+        postData=undefined;
+        loadAni=postData;
+    }
+    //如果符合，表示使用重载方法：post(url, postData)
+    else if($.type(postData)==='object' && callback===undefined){
+        loadAni=true;
+    }
+    //如果符合，表示使用重载方法：post(url, callback)
+    else if($.type(postData)==='function' && callback===undefined){
+        callback=postData;
+        postData=undefined;
+        loadAni=true;
+    }
+    //如果符合，表示使用重载方法：post(url, postData, loadAni)
+    else if($.type(postData)==='object' && $.type(callback)==='boolean' && loadAni===undefined){
+        loadAni=callback;
+        callback=undefined;
+    }
+    //如果符合，表示使用重载方法：post(url, callback, loadAni)
+    else if($.type(postData)==='function' && $.type(callback)==='boolean' && loadAni===undefined){
+        loadAni=callback;
+        callback=postData;
+    }
+    if(loadAni===true){
+        this.$openLoading();
+    }
+    axios({
+        url: url,
+        method: 'post',
+        data:postData,
+        transformRequest: [function (data) {
+            if($.type(data)==='object'){
                 let ret = ''
                 var connChar='';
                 for (let it in data) {
@@ -42,10 +121,10 @@ export function post(url,postData,callback){
                     }
                 }
                 return ret
-            }],
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        }).then(createCallback(callback,this));
-    }
+            }
+        }],
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+    }).then(createCallback(this,callback,loadAni));
 }
 
 /**
@@ -60,7 +139,7 @@ export function getUpdate(url,getData,callback,poolNames){
     axios.get(url,{
         params:getData,
         headers:{'Real-Time-Pool': poolNames.join(',')}
-    }).then(createCallback(callback,this));
+    }).then(createCallback(this,callback));
 }
 
 /**
@@ -88,16 +167,7 @@ export function postUpdate(url,postData,callback,poolNames){
             return ret
         }],
         headers: {'Content-Type': 'application/x-www-form-urlencoded','Real-Time-Pool': poolNames.join(',')}
-    }).then(createCallback(callback,this));
-}
-
-export function get(url,getData,callback){
-    this.$openLoading();
-    if(callback===undefined){
-        axios.get(url).then(createCallback(getData,this));
-    }else{
-        axios.get(url,{params:getData}).then(createCallback(callback,this));
-    }
+    }).then(createCallback(this,callback));
 }
 
 /**
@@ -137,45 +207,68 @@ export function closeLoading(){
     }
 }
 
-function createCallback(callback,myApp){
+/**
+ * 创建ajax异步请求的回调函数。
+ * @param {*} myApp vue对象
+ * @param {*} callback 回调函数
+ * @param {*} loadAni 是否启用加载动画，默认是true
+ */
+function createCallback(myApp,callback,loadAni){
+    //相当于调用重载方法：createCallback(myApp)
+    if(callback===undefined){
+        loadAni=true;
+    //相当于调用重载方法：createCallback(myApp,loadAni)
+    }else if($.type(callback)==='boolean' && loadAni===undefined){
+        loadAni=callback;
+        callback=undefined;
+    //相当于调用重载方法：createCallback(myApp,callback)
+    }else if($.type(callback)==='function' && loadAni===undefined){
+        loadAni=true;
+    }
     return function(response){
-        myApp.$closeLoading();
+        if(loadAni===true){
+            myApp.$closeLoading();
+        }
         var data = response.data;
         //登录超时，退出登录
         if (data.code === -10 || data.code === -11) {
             myApp.$store.state.isLogin = false;
             if (data.code === -11) {
-            myApp.$message({
-                message: "强制下线，原因：当前登录用户在其它地方登录。",
-                type: "warning"
-            });
+                myApp.$message({
+                    message: "强制下线，原因：当前登录用户在其它地方登录。",
+                    type: "warning"
+                });
             }
         }
         //用户无权限，无法操作，但需要后续处理
         else if (data.code === -9) {
             myApp.$message({
-            message: "当前用户组无操作权限！",
-            type: "warning"
+                message: "当前用户组无操作权限！",
+                type: "warning"
             });
         }
         //用户无权限，无法操作
         else if (data.code === -8) {
             myApp.$message({
-            message: "当前用户组无操作权限！",
-            type: "warning"
+                message: "当前用户组无操作权限！",
+                type: "warning"
             });
         }
         //常规错误，
         else if (data.code === -1) {
             myApp.$message({ message: data.msg, type: "error" });
-            callback.call(myApp,data);
+            if(callback!==undefined){
+                callback.call(myApp,data);
+            }
         }
         //成功
         else if (data.code === 0) {
             if (data.msg != null && data.msg != "") {
                 myApp.$message({ message: data.msg, type: "success" });
             }
-            callback.call(myApp,data);
+            if(callback!==undefined){
+                callback.call(myApp,data);
+            }
         }
     }
 }
