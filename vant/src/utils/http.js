@@ -326,10 +326,7 @@ export function realTimeGet(poolName){
                 thiz.$cancelAllPools();
                 thiz.$store.state.isLogin = false;
                 if (data.code === -11) {
-                    thiz.$message({
-                        message: "强制下线，原因：当前登录用户在其它地方登录。",
-                        type: "warning"
-                    });
+                    thiz.$notify({message:'强制下线，原因：当前登录用户在其它地方登录。',background:'#f44'});
                 }
                 if (regPoolMap[poolName].count > 0) {
                     regPoolMap[poolName].count--;
