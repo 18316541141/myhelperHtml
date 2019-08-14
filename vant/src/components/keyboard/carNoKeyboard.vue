@@ -8,7 +8,7 @@
       <van-checkbox slot="button" v-model="isNewEnergy">新能源汽车</van-checkbox>
     </van-field>
     <div class="area-keyboard" v-bind:class="{'keyboard-up':showAreaKeyboard}">
-      <div class="keyboard-head"><span class="keyboard-finish">完成</span></div>
+      <div class="keyboard-head"><span class="keyboard-finish" v-on:click="showAreaKeyboard=false">完成</span></div>
       <div class="keyboard-body">
           <i class="car-no-key" v-on:click="chooseArea='京';">京</i>
           <i class="car-no-key" v-on:click="chooseArea='沪';">沪</i>
@@ -45,7 +45,7 @@
       </div>
     </div>
     <div class="text-keyboard" v-bind:class="{'keyboard-up':showTextKeyboard}">
-      <div class="keyboard-head"><span class="keyboard-finish">完成</span></div>
+      <div class="keyboard-head"><span class="keyboard-finish" v-on:click="showTextKeyboard=false">完成</span></div>
       <div class="keyboard-body">
         <i class="car-no-key" v-on:click="writeText('1')">1</i>
         <i class="car-no-key" v-on:click="writeText('2')">2</i>
@@ -101,6 +101,14 @@ export default {
       chooseText:'',
     };
   },
+  watch:{
+    isNewEnergy(val){
+      if(val===false && this.chooseText.length>6){
+        this.chooseText=this.chooseText.substring(0,6);
+        this.$emit('finish',this.chooseText);
+      }
+    }
+  },
   methods:{
     writeText(input){
       if(this.chooseText==='' && input!=='del' && /[\d\u4e00-\u9fa5]/g.test(input)){
@@ -108,11 +116,18 @@ export default {
         return;
       }
       if(input==='del'){
-        if( this.chooseText.length>0){
+        if(this.chooseText.length>0){
           this.chooseText=this.chooseText.substring(0,this.chooseText.length-1);
         }
       }else{
+        if((this.isNewEnergy===false && this.chooseText.length===6) || (this.isNewEnergy===true && this.chooseText.length===7)){
+          this.$notify({message:'车牌号码不能超过6位，新能源车牌号码不能超过7位！',background:'#f44'});
+          return;
+        }
         this.chooseText=this.chooseText+input;
+        if((this.isNewEnergy===false && this.chooseText.length===6) || (this.isNewEnergy===true && this.chooseText.length===7)){
+          this.$emit('finish',this.chooseText);
+        }
       }
     }
   }
@@ -165,7 +180,7 @@ export default {
     user-select: none;
     -ms-user-select: none;
 }
-.car-no-key:active{
+.car-no-key:active,.keyboard-finish:active{
   background-color: rgba(242,243,245, 1)
 }
 </style>

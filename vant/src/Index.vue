@@ -21,6 +21,8 @@
             @search 点击搜索时触发
             @date-start 日期搜索条件的值，格式是：yyyy-MM-dd
             @like-text  关键字的值
+            @current 是否指代当前时间单位。例如：一周内，当current=true，仅包含当前周，当current=false,包含7天前到今天。
+            @placeholder 模糊搜索框的文字提示。
         <common-input v-on:search="onSearch" v-bind:date-start="createTimeStart" v-bind:like-text="likeText"></common-input>
         -->
         <!--
@@ -34,21 +36,42 @@
         -->
         <!--
             这是车牌号码内容输入键盘
+            @finish 当输入的值是个车牌号码时，触发回调
+        <car-no-keyboard v-on:finish="finish"></car-no-keyboard>
         -->
-        <car-no-keyboard></car-no-keyboard>
+        <!--
+            这是一个滚动分页组件
+            @url    分页查询url
+            @post-data  请求参数
+            @load   每次加载完后回调。
+        -->
+        <scroller-page url="/api/IRobotQrCodePayTask/page"  v-bind:post-data="postData"  v-on:load="load">
+            <div v-for="(irobotQrCodePayTask) in pageDataList" v-bind:key="irobotQrCodePayTask.irOrderNo">
+                <div>{{irobotQrCodePayTask.irOrderNo}}</div>
+            </div>
+        </scroller-page>
     </div>
 </template>
 <script>
 export default {
     data(){
         return {
+            postData:{},
+            retData:{},
             likeText:'',
             createTimeStart:null,
             imgName:null,
-            thumbnailName:null
+            thumbnailName:null,
+            pageDataList:[],
         };
     },
     methods:{
+        load(retData){
+            this.pageDataList.push(...retData.pageDataList);
+        },
+        finish(val){
+            debugger;
+        },
         rightCallback(){
             alert('asdasdasd');
         },

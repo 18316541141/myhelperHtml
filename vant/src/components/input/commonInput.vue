@@ -1,6 +1,6 @@
 <template>
     <div>
-        <van-search placeholder="请输入搜索关键词" v-model="value" show-action>
+        <van-search v-bind:placeholder="placeholder" v-model="value" show-action>
             <span slot="label" v-on:click="show=true" v-text="name">当天</span>
             <div slot="action" @click="onSearch">搜索</div>
         </van-search>
@@ -9,7 +9,7 @@
 </template>
 <script>
 export default {
-    props:['dateStart','likeText'],
+    props:['dateStart','likeText','placeholder','current'],
     data(){
         return {
             name:'当天',
@@ -30,17 +30,44 @@ export default {
             this.name=action.name;
             var d = new Date();
             if(index === 1){
-                d.setDate(d.getDate()-7);
+                if(this.current===true){
+                    d.setDate(d.getDate()-(d.getDay()-1));
+                }else{
+                    d.setDate(d.getDate()-7);
+                }
             }else if(index === 2){
+                var monBefore=d.getMonth();
                 d.setDate(d.getDate()-15);
+                var monAfter=d.getMonth();
+                if(this.current===true && monAfter<monBefore){
+                    d.setDate(1);
+                    d.setMonth(d.getMonth()+1);
+                }
             }else if(index === 3){
-                d.setMonth(d.getMonth()-1);
+                if(this.current===true){
+                    d.setDate(1);
+                }else{
+                    d.setMonth(d.getMonth()-1);
+                }
             }else if(index === 4){
-                d.setMonth(d.getMonth()-3);
+                if(this.current===true){
+                    d.setMonth(d.getMonth()-2);
+                }else{
+                    d.setMonth(d.getMonth()-3);
+                }
             }else if(index === 5){
-                d.setMonth(d.getMonth()-6);
+                if(this.current===true){
+                    d.setMonth(d.getMonth()-5);
+                }else{
+                    d.setMonth(d.getMonth()-6);
+                }
             }else if(index === 6){
-                d.setFullYear(d.getFullYear()-1);
+                if(this.current===true){
+                    d.setMonth(1);
+                    d.setDate(1);
+                }else{
+                    d.setFullYear(d.getFullYear()-1);
+                }
             }else if(index === 6){
                 this.$emit('update:dateStart',null);
                 this.show=false;

@@ -20,6 +20,7 @@ import commonOutFrame from './components/outerFrame/commonOutFrame.vue'
 import commonInput from './components/input/commonInput.vue'
 import uploadImg from './components/upload/uploadImg.vue'
 import carNoKeyboard from './components/keyboard/carNoKeyboard.vue'
+import scrollerPage from './components/page/scrollerPage.vue'
 import moment from 'moment'
 import Cropper from 'cropperjs'
 import 'cropperjs/dist/cropper.min.css'
@@ -46,6 +47,7 @@ Vue.component('commonOutFrame',commonOutFrame);
 Vue.component('commonInput',commonInput);
 Vue.component('uploadImg',uploadImg);
 Vue.component('carNoKeyboard',carNoKeyboard);
+Vue.component('scrollerPage',scrollerPage);
 
 Vue.prototype.$UUID = function () {
   return new UUID().id;
