@@ -358,4 +358,13 @@ export default {
 .left-menus{
   animation:fadeIn 1s linear;
 }
+.fade-enter-active,.fade-leave-active{
+  transition: opacity .4s linear;
+}
+.fade-enter,.fade-leave-to{
+  opacity: 0;
+}
+.fade-enter-to,.fade-leave{
+  opacity: 1;
+}
 </style>

@@ -6,7 +6,7 @@
                 <el-table-column property="text" label="内容" width="360px"></el-table-column>
                 <el-table-column property="index" label="操作" width="100px">
                     <template slot-scope="scope">
-                        <el-button size="mini" icon="el-icon-download" @click="exportExcel(scope.row.index)">导出</el-button>
+                        <el-button size="mini" icon="el-icon-download" @click="exportExcel(scope.row.index,scope.row.excelType)">导出</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -42,37 +42,57 @@ export default {
         };
     },
     methods:{
-        exportExcel(currentPageIndex){
+        exportExcel(currentPageIndex,excelType){
             this.postData.currentPageIndex = currentPageIndex;
             this.postData.pageSize=this.retData_.data.pageSize;
+	    this.postData.excelType=excelType;
             postOpenWin(this.exportUrl, this.postData);
         },
-        export(){
+        export(excelType){
             var totalItemCount=this.retData_.data.totalItemCount;
             if(totalItemCount<=10000){
-                this.exportExcel(1);
+                this.exportExcel(1,excelType);
             }else{
                 this.exportList.splice(0);
                 var exportLen = ((totalItemCount-totalItemCount%10000)/10000)+1;
                 for(var i=0;i<exportLen;i++){
-                    this.exportList.push({text:'“'+this.excelTitle+'”第'+(i*10000+1)+'-'+Math.min((i+1)*10000,totalItemCount)+'条数据',index:i});
+                    this.exportList.push({text:'“'+this.excelTitle+'”第'+(i*10000+1)+'-'+Math.min((i+1)*10000,totalItemCount)+'条数据',index:i,excelType:excelType});
                 }
                 this.exportDialog=true;
             }
         },
         sizeChange(pageSize){
             this.retData_.data.pageSize=pageSize;
-            this.refresh();
-        },
-        currentChange(currentPageIndex){
-            this.retData_.data.currentPageIndex=currentPageIndex;
-            this.refresh();
+            this.search();
         },
         /**
-         * 刷新列表
+         * 当前页码发生变化时触发
+         */
+        currentChange(currentPageIndex){
+            this.retData_.data.currentPageIndex=currentPageIndex;
+            this.search();
+        },
+        /**
+         * 刷新列表，和查询的区别在于会清除查询参数
+         */
+        refresh(){
+            for(var key in this.postData){
+                if(this.postData.hasOwnProperty(key)){
+                    if(key==='currentPageIndex'){
+                        this.postData.currentPageIndex=1;
+                    }else if(key==='pageSize'){
+                        continue;
+                    }else{
+                        this.postData[key]=null
+                    }
+                }
+            }
+        },
+        /**
+         * 查询列表
          * @param {*} loadAni 刷新时是否显示加载动画，默认是显示
          */
-        refresh(loadAni){
+        search(loadAni){
             if(loadAni===undefined){
                 loadAni=true;
             }
@@ -97,14 +117,14 @@ export default {
             }else if(sortObj.order==='ascending'){
                 this.postData['orderByAsc.'+sortObj.prop]=true;
             }
-            this.refresh();
+            this.search();
         },
         selectionChange(selection){
             this.$emit('update:checkedDatas',selection);
         }
     },
     mounted(){
-        this.refresh();
+        this.search();
         var thiz=this;
         window.addEventListener('resize',function() {
             if(thiz.tableHeight===undefined){
