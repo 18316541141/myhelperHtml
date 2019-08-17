@@ -246,6 +246,9 @@ function createCallback(myApp,callback,loadAni){
                 message: "当前用户组无操作权限！",
                 type: "warning"
             });
+			if(callback!==undefined){
+                callback.call(myApp,data);
+            }
         }
         //用户无权限，无法操作
         else if (data.code === -8) {
