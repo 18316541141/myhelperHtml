@@ -17,7 +17,9 @@ import VueI18n from 'vue-i18n';
 import WebUploader from 'webuploader';
 import Highcharts from 'highcharts'
 import commonOutFrame from './components/outerFrame/commonOutFrame.vue'
+import topFrame from './components/outerFrame/topFrame.vue'
 import commonInput from './components/input/commonInput.vue'
+import statusInput from './components/input/statusInput.vue'
 import uploadImg from './components/upload/uploadImg.vue'
 import carNoKeyboard from './components/keyboard/carNoKeyboard.vue'
 import scrollerPage from './components/page/scrollerPage.vue'
@@ -44,7 +46,9 @@ Vue.use(veeValidate, {
 });
 
 Vue.component('commonOutFrame',commonOutFrame);
+Vue.component('topFrame',topFrame);
 Vue.component('commonInput',commonInput);
+Vue.component('statusInput',statusInput);
 Vue.component('uploadImg',uploadImg);
 Vue.component('carNoKeyboard',carNoKeyboard);
 Vue.component('scrollerPage',scrollerPage);

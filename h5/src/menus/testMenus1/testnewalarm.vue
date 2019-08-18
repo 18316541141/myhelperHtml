@@ -8,7 +8,7 @@ export default {
     name:'n11',
     methods:{
         add(){
-            this.$getUpdate('/api/NewAlarm/add', {},function(){
+            this.$getUpdate('/api/newAlarm/add', {},function(){
 
             }, ['newsAlarm']);
         }

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <van-search v-bind:placeholder="placeholder" v-model="value" show-action>
+        <van-search v-bind:placeholder="placeholder" v-model="value" show-action shape="round">
             <span slot="label" v-on:click="show=true" v-text="name">当天</span>
             <div slot="action" @click="onSearch">搜索</div>
         </van-search>

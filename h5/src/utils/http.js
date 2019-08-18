@@ -1,7 +1,7 @@
 import axios from 'axios';
 //使用缓存的url，部分url数据是需要使用缓存的，统一在这里配置
 const cacheUrls = [
-    "/index/areaSelect" //加载省、市、区、镇列表，基本不怎么变化，所以使用缓存
+    "/api/index/areaSelect" //加载省、市、区、镇列表，基本不怎么变化，所以使用缓存
 ];
 
 //请求拦截器
@@ -199,10 +199,12 @@ export function closeLoading(){
                 setTimeout(() => {
                     document.getElementById('loading-container').setAttribute('style','display:none;');
                 }, 300);
+                this.$store.state.loadingCount--;
+            }else if(this.$store.state.loadingCount>0){
+                this.$store.state.loadingCount--;
             }
-            this.$store.state.loadingCount--;
         },350);
-    }else{
+    }else if(this.$store.state.loadingCount>0){
         this.$store.state.loadingCount--;
     }
 }

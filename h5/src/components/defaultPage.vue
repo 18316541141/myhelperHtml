@@ -87,6 +87,7 @@ export default {
                     }
                 }
             }
+            this.search();
         },
         /**
          * 查询列表

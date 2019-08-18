@@ -16,6 +16,14 @@
             {name:'setting',icon:'setting-o',info:'40',title:'设置'}
         ]" select-tab="home"></common-out-frame>
         -->
+        <!--
+            顶部选项卡
+            @title  大标题
+            @show-back  是否显示后退按钮
+            @rightCallback  右边点击事件
+            @right-icon-name    右边字体图标
+        <top-frame title="测试标题" v-bind:show-back="true" v-on:rightCallback="rightCallback" right-icon-name="search"></top-frame>
+        -->
         <!-- 
             含有日期、关键字搜索的通用搜索框。
             @search 点击搜索时触发
@@ -23,7 +31,15 @@
             @like-text  关键字的值
             @current 是否指代当前时间单位。例如：一周内，当current=true，仅包含当前周，当current=false,包含7天前到今天。
             @placeholder 模糊搜索框的文字提示。
-        <common-input v-on:search="onSearch" v-bind:date-start="createTimeStart" v-bind:like-text="likeText"></common-input>
+        <common-input v-on:search="onSearch" v-bind:date-start.sync="createTimeStart" v-bind:like-text="likeText"></common-input>
+        -->
+        <!--
+            状态、关键字的搜索框
+            @search 点击搜索时触发
+            @options 状态选项，name是状态的描述，value是状态的值
+            @status 状态
+            @like-text 关键字的值
+        <status-input v-on:search="onSearch" v-bind:options="[{name:'启用',value:1},{name:'禁用',value:0}]" v-bind:status.sync="status" v-bind:like-text="likeText"></status-input>
         -->
         <!--
             这是一个上传图片的组件。
@@ -44,12 +60,13 @@
             @url    分页查询url
             @post-data  请求参数
             @load   每次加载完后回调。
-        -->
         <scroller-page url="/api/IRobotQrCodePayTask/page"  v-bind:post-data="postData"  v-on:load="load">
             <div v-for="(irobotQrCodePayTask) in pageDataList" v-bind:key="irobotQrCodePayTask.irOrderNo">
                 <div>{{irobotQrCodePayTask.irOrderNo}}</div>
             </div>
         </scroller-page>
+        -->
+        
     </div>
 </template>
 <script>
@@ -63,6 +80,7 @@ export default {
             imgName:null,
             thumbnailName:null,
             pageDataList:[],
+            status:null,
         };
     },
     methods:{
@@ -76,6 +94,7 @@ export default {
             alert('asdasdasd');
         },
         onSearch(a,b,c){
+            this.status;
             debugger;
         },
     }
