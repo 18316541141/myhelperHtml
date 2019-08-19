@@ -83,7 +83,7 @@ export default {
                     }else if(key==='pageSize'){
                         continue;
                     }else{
-                        this.postData[key]=null
+                        this.postData[key]='';
                     }
                 }
             }

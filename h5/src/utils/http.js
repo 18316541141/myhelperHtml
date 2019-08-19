@@ -60,6 +60,10 @@ export function get(url,getData,callback,loadAni){
         loadAni=callback;
         callback=getData;
     }
+	//如果符合，表示使用重载方法：post(url, getData, callback)
+	else if($.type(getData)==='object' && $.type(callback)==='function' && loadAni===undefined){
+		loadAni=true;
+	}
     if(loadAni===true){
         this.$openLoading();
     }
@@ -103,6 +107,10 @@ export function post(url,postData,callback,loadAni){
         loadAni=callback;
         callback=postData;
     }
+	//如果符合，表示使用重载方法：post(url, postData, callback)
+	else if($.type(postData)==='object' && $.type(callback)==='function' && loadAni===undefined){
+		loadAni=true;
+	}
     if(loadAni===true){
         this.$openLoading();
     }
