@@ -44,8 +44,8 @@ export default {
     methods:{
         exportExcel(currentPageIndex,excelType){
             this.postData.currentPageIndex = currentPageIndex;
-            this.postData.pageSize=this.retData_.data.pageSize;
-	    this.postData.excelType=excelType;
+            this.postData.pageSize=10000;
+	        this.postData.excelType=excelType;
             postOpenWin(this.exportUrl, this.postData);
         },
         export(excelType){

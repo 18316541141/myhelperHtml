@@ -26,7 +26,7 @@ export default {
           this.aniName='page-right';
         }
       }
-
+      
       //当目标浏览器是个微信浏览器时，调用微信api认证配置。
       if(/MicroMessenger/.test(window.navigator.userAgent) && this.$useWxApiUrls.indexOf(to.fullPath)>-1){
         this.$get('/api/Index/wxCfg',{routerPath:to.fullPath},function(result){

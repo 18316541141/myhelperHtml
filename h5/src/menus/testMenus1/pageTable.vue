@@ -19,11 +19,11 @@
                 <el-button size="medium" v-on:click="$refs.table.refresh()" icon="el-icon-refresh">刷新</el-button>
             </el-form-item>
             <el-form-item>
-                <el-dropdown>
+                <el-dropdown v-on:command="exportExcel">
                     <el-button size="medium" type="success" icon="el-icon-download">导出excel</el-button>
                     <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item v-on:click="$refs.table.export('xlsx')">xlsx格式</el-dropdown-item>
-                        <el-dropdown-item v-on:click="$refs.table.export('xls')">xls格式</el-dropdown-item>
+                        <el-dropdown-item command="xlsx">xlsx格式</el-dropdown-item>
+                        <el-dropdown-item command="xls">xls格式</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
             </el-form-item>
@@ -88,6 +88,9 @@ export default {
         };
     },
     methods:{
+        exportExcel(command){
+            this.$refs.table.export(command);
+        },
         test(){
             this.$refs.table.export('xlsx');
         },
