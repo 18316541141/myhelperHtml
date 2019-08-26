@@ -169,10 +169,22 @@ export function post(url,postData,callback,loadAni){
  * @param {*} poolNames 等待池名称
  */
 export function getUpdate(url,getData,callback,poolNames){
+    //相当于重载：getUpdate(url,poolNames)
+    if($.type(getData)==='array' && callback===undefined && poolNames===undefined){
+        getData={'realTimePools':getData.join(',')};
+    }
+    //相当于重载：getUpdate(url,getData,poolNames)
+    else if($.type(getData)==='object' && $.type(callback)==='array' && poolNames===undefined){
+        getData['realTimePools']=callback.join(',');
+        callback=undefined;
+    }
+    //相当于重载：getUpdate(url,getData,callback,poolNames)
+    else if($.type(getData)==='object' && $.type(callback)==='function' && $.type(poolNames)==='array'){
+        getData['realTimePools']=poolNames.join(',');
+    }
     this.$openLoading();
     axios.get(url,{
-        params:getData,
-        headers:{'Real-Time-Pool': poolNames.join(',')}
+        params:getData
     }).then(createCallback(this,callback));
 }
 
@@ -184,6 +196,31 @@ export function getUpdate(url,getData,callback,poolNames){
  * @param {*} poolNames 等待池名称
  */
 export function postUpdate(url,postData,callback,poolNames){
+    //相当于重载：postUpdate(url,poolNames)
+    if($.type(postData)==='array' && callback===undefined && poolNames===undefined){
+        if(url.indexOf('?')>=0){
+            url+='&realTimePools='+postData.join(',');
+        }else{
+            url+='?realTimePools='+postData.join(',');
+        }
+    }
+    //相当于重载：postUpdate(url,postUpdate,poolNames)
+    else if($.type(postData)==='object' && $.type(callback)==='array' && poolNames===undefined){
+        if(url.indexOf('?')>=0){
+            url+='&realTimePools='+callback.join(',');
+        }else{
+            url+='?realTimePools='+callback.join(',');
+        }
+        callback=undefined;
+    }
+    //相当于重载：postUpdate(url,getData,callback,poolNames)
+    else if($.type(postUpdate)==='object' && $.type(callback)==='function' && $.type(poolNames)==='array'){
+        if(url.indexOf('?')>=0){
+            url+='&realTimePools='+poolNames.join(',');
+        }else{
+            url+='?realTimePools='+poolNames.join(',');
+        }
+    }
     this.$openLoading();
     axios({
         url: url,
@@ -199,8 +236,7 @@ export function postUpdate(url,postData,callback,poolNames){
                 }
             }
             return ret
-        }],
-        headers: {'Content-Type': 'application/x-www-form-urlencoded','Real-Time-Pool': poolNames.join(',')}
+        }]
     }).then(createCallback(this,callback));
 }
 
@@ -318,33 +354,38 @@ export function realTimeGet(poolName){
     regPoolMap[poolName].wait = true;
     var thiz=this;
     axios.get('/api/index/realTime',{
-        headers:{
-            'Real-Time-Pool': poolName, 
-            'Real-Time-Version': regPoolMap[poolName].version
+        params:{
+            'realTimePool': poolName, 
+            'realTimeVersion': regPoolMap[poolName].version
         }
     }).then(function(response){
-        regPoolMap[poolName].wait = false;
-        regPoolMap[poolName].version = response.headers['real-time-version'];
+        var data=response.data;
         if(regPoolMap[poolName]!==null && regPoolMap[poolName]!==undefined){
             if (regPoolMap[poolName].count === 0) {
                 return;
             }
-            var data=response.data;
             if (data.code === -10 || data.code === -11) {
                 thiz.$cancelAllPools();
                 thiz.$store.state.isLogin = false;
                 if (data.code === -11) {
-                    thiz.$notify({message:'强制下线，原因：当前登录用户在其它地方登录。',background:'#f44'});
+                    thiz.$message({
+                        message: "强制下线，原因：当前登录用户在其它地方登录。",
+                        type: "warning"
+                    });
                 }
                 if (regPoolMap[poolName].count > 0) {
                     regPoolMap[poolName].count--;
                     thiz.$realTimeGet(poolName);
                 }
             } else if (data.code === 1) {
+                regPoolMap[poolName].wait = false;
+                regPoolMap[poolName].version = data.data['realTimeVersion'];
                 thiz.$realTimeGet(poolName);
             } else if (data.code === 0) {
+                regPoolMap[poolName].wait = false;
+                regPoolMap[poolName].version = data.data['realTimeVersion'];
                 thiz.$realTimeGet(poolName);
-                regPoolMap[poolName].callback();
+                regPoolMap[poolName].callback.call(thiz);
             }
         }
     });
