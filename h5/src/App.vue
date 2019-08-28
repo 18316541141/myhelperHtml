@@ -108,7 +108,7 @@
                 <el-input placeholder="验证码" v-model="loginData.vercode"></el-input>
               </el-col>
               <el-col v-bind:span="12" style="text-align:right;">
-                <img v-bind:src="rVercode" v-on:click="refreshVercode();" />
+                <img v-bind:src="rVercode" v-on:click="refreshVercode();" style="height:40px;"/>
               </el-col>
             </el-row>
           </el-form-item>
