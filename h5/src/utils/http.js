@@ -378,15 +378,13 @@ export function realTimeGet(poolName){
                     regPoolMap[poolName].count--;
                     thiz.$realTimeGet(poolName);
                 }
-            } else if (data.code === 1) {
+            } else if (data.code === 1 || data.code === 0) {
                 regPoolMap[poolName].wait = false;
                 regPoolMap[poolName].version = data.data['realTimeVersion'];
                 thiz.$realTimeGet(poolName);
-            } else if (data.code === 0) {
-                regPoolMap[poolName].wait = false;
-                regPoolMap[poolName].version = data.data['realTimeVersion'];
-                thiz.$realTimeGet(poolName);
-                regPoolMap[poolName].callback.call(thiz);
+                if (data.code === 0) {
+                    regPoolMap[poolName].callback.call(thiz);
+                }
             }
         }
     });
