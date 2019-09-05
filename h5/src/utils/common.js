@@ -160,7 +160,7 @@ export function postOpenWin(url, params, searchParam) {
 
 export function validateForm(callback){
     var thiz=this;
-    this.$validator.validate().then((valid) => {
+    this.$validator.validate().then(function(valid){
         if (valid === false) {
             var items=thiz.$validator.errors.items;
             for(var i=0,len=items.length;i<len;i++){
