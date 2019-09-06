@@ -42,7 +42,7 @@
 <script>
 export default {
     name:'uploadFiles',
-    props: ['fileDescWidth', 'path', 'files'],
+    props: ['fileDescWidth', 'files'],
     data() {
         return { id:this.$UUID(), files_: []};
     },
@@ -64,7 +64,6 @@ export default {
         },
         downFile(row){
             postOpenWin('/api/index/downFile', {
-                pathName: this.path,
                 fileName: row.fileName,
                 fileDesc: row.fileDesc
             });
@@ -81,9 +80,6 @@ export default {
             server: '/api/index/uploadFiles',
             pick: { id: '#uploadFiles' + this.id },
             fileVal: 'fileUploads',
-            formData: {
-                pathName: this.path //上传时的路径参数
-            }
         }).on('uploadStart', function (file) {
             var files = thiz.files_;
             thiz.fileMap[file.id] = files.length;

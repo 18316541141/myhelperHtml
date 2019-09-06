@@ -11,7 +11,7 @@
                 path：文件上传的路径，用于区分模块
                 files：绑定文件列表，用于记录保存数据库的文件名称
             -->
-            <upload-files file-desc-width="200px" path="test" v-bind:files.sync="form.myFiles"></upload-files>
+            <upload-files file-desc-width="200px" v-bind:files.sync="form.myFiles"></upload-files>
         </el-form>
     </div>
 </template>

@@ -126,4 +126,20 @@ export default {
     right: 0;
     bottom: 0;
 }
+/* 编辑或新增表单的样式 */
+.form-body{
+  position: absolute;
+  top:84px;
+  left: 20px;
+  right: 20px;
+  bottom: 71px;
+  overflow-y: auto;
+}
+.form-bottom{
+  position: absolute;
+  bottom:30px;
+  left: 20px;
+  right: 20px;
+  background:white;
+}
 </style>

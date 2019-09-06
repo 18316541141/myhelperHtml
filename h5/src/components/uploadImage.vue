@@ -40,7 +40,7 @@
 <script>
 export default {
   name: "uploadImage",
-  props: ["path", "cut", "widthOverHeight", "imgName", "thumbnailName",'showImgMaxWidth'],
+  props: ["cut", "widthOverHeight", "imgName", "thumbnailName",'showImgMaxWidth'],
   data() {
     return {
       rect: [0, 0, 0, 0],
@@ -70,7 +70,6 @@ export default {
       this.$post(
         "/api/index/singleImageCrop",
         {
-          pathName: this.path,
           imgName: this.imgName_,
           imgWidth: this.imgWidth,
           imgHeight: this.imgHeight,
@@ -85,9 +84,7 @@ export default {
           thiz.$emit("update:imgName", data.imgName);
           thiz.$emit("update:thumbnailName", data.thumbnailName);
           thiz.src =
-            "/api/index/showImage?pathName=" +
-            thiz.path +
-            "&imgName=" +
+            "/api/index/showImage?imgName=" +
             thiz.imgName_;
         }
       );
@@ -100,7 +97,6 @@ export default {
       auto: true, //选中文件后自动上传
       server: "/api/index/uploadSingleImage", //处理上传文件的统一控制器
       fileVal: "fileUpload", //服务端接收二进制文件的参数名称
-      formData: { pathName: thiz.path }, //每次上传时要提供一个上传目录，让服务端确认保存位置
       duplicate: true,
       pick: {
         id: "#uploadImage" + thiz.id, //生成上传插件的位置
@@ -128,7 +124,7 @@ export default {
             thiz.imgName_ = data.imgName;
             thiz.$emit("update:imgName", data.imgName);
             thiz.$emit("update:thumbnailName", data.thumbnailName);
-            thiz.src = "/api/index/showImage?pathName=" + thiz.path + "&imgName=" + thiz.imgName_;
+            thiz.src = "/api/index/showImage?imgName=" + thiz.imgName_;
             if (thiz.cut === true) {
               thiz.$openLoading();
               thiz.cropDialog = true;
