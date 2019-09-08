@@ -97,7 +97,7 @@
           <el-form-item>
             <el-input
               placeholder="请输入密码"
-              v-model="loginData.password"
+              v-model.trim="loginData.password"
               show-password
               prefix-icon="el-icon-unlock"
             ></el-input>
@@ -105,7 +105,7 @@
           <el-form-item>
             <el-row>
               <el-col v-bind:span="12">
-                <el-input placeholder="验证码" v-model="loginData.vercode"></el-input>
+                <el-input placeholder="验证码" v-model.trim="loginData.vercode"></el-input>
               </el-col>
               <el-col v-bind:span="12" style="text-align:right;">
                 <img v-bind:src="rVercode" v-on:click="refreshVercode();" style="height:40px;"/>
@@ -366,5 +366,25 @@ export default {
 }
 .fade-enter-to,.fade-leave{
   opacity: 1;
+}
+/* 编辑或新增表单的样式 */
+.form-body{
+  position: absolute;
+  top:84px;
+  left: 20px;
+  right: 20px;
+  bottom: 71px;
+  overflow-y: auto;
+}
+.form-bottom{
+  position: absolute;
+  bottom:30px;
+  left: 20px;
+  right: 20px;
+  background:white;
+}
+/* 消息弹框的浮动样式，确保消息弹框始终在最前面 */
+.message-float{
+  z-index: 20086 !important;
 }
 </style>

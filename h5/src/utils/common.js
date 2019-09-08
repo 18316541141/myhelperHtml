@@ -164,7 +164,7 @@ export function validateForm(callback){
         if (valid === false) {
             var items=thiz.$validator.errors.items;
             for(var i=0,len=items.length;i<len;i++){
-                thiz.$message({ message: items[i].msg, type: "error" });
+                thiz.$message({ message: items[i].msg, type: "error",customClass:'message-float',showClose:true });
                 break;
             }
         }else{

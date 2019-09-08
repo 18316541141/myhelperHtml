@@ -282,7 +282,9 @@ function createCallback(myApp,callback,loadAni){
             if (data.code === -11) {
                 myApp.$message({
                     message: "强制下线，原因：当前登录用户在其它地方登录。",
-                    type: "warning"
+                    type: "warning",
+					customClass:'message-float',
+					showClose:true
                 });
             }
         }
@@ -290,7 +292,9 @@ function createCallback(myApp,callback,loadAni){
         else if (data.code === -9) {
             myApp.$message({
                 message: "当前用户组无操作权限！",
-                type: "warning"
+                type: "warning",
+				customClass:'message-float',
+				showClose:true
             });
 			if(callback!==undefined){
                 callback.call(myApp,data);
@@ -300,12 +304,14 @@ function createCallback(myApp,callback,loadAni){
         else if (data.code === -8) {
             myApp.$message({
                 message: "当前用户组无操作权限！",
-                type: "warning"
+                type: "warning",
+				customClass:'message-float',
+				showClose:true
             });
         }
         //常规错误，
         else if (data.code === -1) {
-            myApp.$message({ message: data.msg, type: "error" });
+            myApp.$message({ message: data.msg, type: "error",customClass:'message-float',showClose:true });
             if(callback!==undefined){
                 callback.call(myApp,data);
             }
@@ -313,7 +319,7 @@ function createCallback(myApp,callback,loadAni){
         //成功
         else if (data.code === 0) {
             if (data.msg != null && data.msg != "") {
-                myApp.$message({ message: data.msg, type: "success" });
+                myApp.$message({ message: data.msg, type: "success",customClass:'message-float',showClose:true });
             }
             if(callback!==undefined){
                 callback.call(myApp,data);

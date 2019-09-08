@@ -162,7 +162,28 @@ const store = new Vuex.Store({
 new Vue({
   el: '#app',
   store,
-  render: h => h(App)
+  render: h => h(App),
+  mounted(){
+    //自定义基于veeValidate的校验规则
+    //字符长度限制，rangeLength:6,20 字符长度在6-20之间才能通过校验
+    this.$validator.extend('rangeLength', {
+      validate(value,params) {
+        return value.length>=parseInt(params[0]) && value.length<=parseInt(params[1]);
+      }
+    });
+    //字符长度限制，length:32 字符长度只能是32才能通过校验
+    this.$validator.extend('length', {
+      validate(value,params) {
+        return value.length==parseInt(params[0]);
+      }
+    });
+    //等值限制，equalTo:abc 字符必须等于abc才能通过验证
+    this.$validator.extend('equalTo',{
+      validate(value,params) {
+        return value===params[0];
+      }
+    });
+  }
 });
 
 //异步加载静态图片素材
