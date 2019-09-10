@@ -1,6 +1,7 @@
 import '@babel/polyfill'
 import Vue from 'vue'
 import Vuex from 'vuex'
+import moment from 'moment'
 import 'animate.css/animate.css'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
@@ -86,6 +87,15 @@ window.postOpenWin = postOpenWin;
     }
   });
   
+  //时钟指令，会使得元素的内容变成一个时钟，需要用户传入日期的显示格式，日期的格式规则参考moment.js
+  Vue.directive('clock',{
+    inserted(el, binding) {
+      el.innerText = moment().format(binding.value);
+      setInterval(function(){
+        el.innerText= moment().format(binding.value);
+      },1000);
+    }
+  });
 }());
 
 //通用组件注册
