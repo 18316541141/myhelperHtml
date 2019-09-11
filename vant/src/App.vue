@@ -142,4 +142,14 @@ export default {
   right: 20px;
   background:white;
 }
+@media (max-height: 450px) {
+  /* 当键盘显示时，为节省空间，使用该样式隐藏底部的功能 */
+  .show-keyboard-hide{
+    display: none;
+  }
+  /* 当键盘显示时，为节省空间，使用该样式消除滚动部分的底部距离 */
+  .show-keyboard-bottom{
+    bottom:0;
+  }
+}
 </style>
