@@ -21,6 +21,7 @@ import m101 from "./menus/testMenus1/aaa-treeForm.vue";
 import m13 from "./menus/testMenus1/bigPic.vue";
 import m18 from "./menus/testMenus1/uexcel.vue";
 import n11 from "./menus/testMenus1/testnewalarm.vue";
+import logEntityList from "./menus/system/LogEntityList.vue";
 import areaSelect from './components/areaSelect.vue';
 import treeForm from './components/treeForm.vue';
 import imgViewer from './components/imgViewer.vue';
@@ -123,6 +124,7 @@ window.postOpenWin = postOpenWin;
   Vue.component('m13', m13)
   Vue.component('m18', m18)
   Vue.component('n11', n11)
+  Vue.component('logEntity',logEntityList);
 }());
 
 Vue.config.productionTip = false
@@ -143,6 +145,7 @@ Vue.prototype.$cancelAllPools = cancelAllPools;
 Vue.prototype.$getUpdate = getUpdate;
 Vue.prototype.$postUpdate = postUpdate;
 Vue.prototype.$validateForm = validateForm;
+Vue.prototype.$moment = moment;
 // Vue.prototype.$Jcrop=Jcrop;
 
 const store = new Vuex.Store({

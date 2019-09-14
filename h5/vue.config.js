@@ -30,7 +30,7 @@ module.exports = {
 		compress: true,
 		proxy:{
 			'/api':{
-				target:'http://localhost:8088/',
+				target:'http://localhost:46054/',
 				ws:true,
 				changOrigin: true,
 				pathRewrite: {
