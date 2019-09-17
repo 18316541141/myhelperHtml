@@ -22,6 +22,7 @@ import m13 from "./menus/testMenus1/bigPic.vue";
 import m18 from "./menus/testMenus1/uexcel.vue";
 import n11 from "./menus/testMenus1/testnewalarm.vue";
 import logEntityList from "./menus/system/LogEntityList.vue";
+import heartbeatEntityList from "./menus/system/HeartbeatEntityList.vue";
 import areaSelect from './components/areaSelect.vue';
 import treeForm from './components/treeForm.vue';
 import imgViewer from './components/imgViewer.vue';
@@ -125,6 +126,7 @@ window.postOpenWin = postOpenWin;
   Vue.component('m18', m18)
   Vue.component('n11', n11)
   Vue.component('logEntity',logEntityList);
+  Vue.component('heartbeatEntity',heartbeatEntityList);
 }());
 
 Vue.config.productionTip = false
