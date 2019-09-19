@@ -82,7 +82,6 @@ window.postOpenWin = postOpenWin;
       }, false);
     }
   });
-
   //时钟指令，会使得元素的内容变成一个时钟，需要用户传入日期的显示格式，日期的格式规则参考moment.js
   Vue.directive('clock', {
     inserted(el, binding) {

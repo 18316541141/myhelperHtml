@@ -56,6 +56,17 @@
                   clearTimeout(id);
               };
       }());
+      //标题移动效果
+      (function(){	
+        var title=document.title;
+        if(title.length>10){
+          setInterval(function(){
+            var title=document.title;
+            document.title=title.substring(1, title.length)+title.charAt(0);
+          }, 400);
+          title = null;
+        }
+      }());
     </script>
     <!-- built files will be auto injected -->
   </body>
