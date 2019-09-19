@@ -137,7 +137,6 @@ export default {
     };
   },
   methods: {
-
     closeNavTab(targetName) {
       var menus = this.$store.state.menus;
       for (var i = 0, len = menus.length; i < len; i++) {
@@ -203,10 +202,10 @@ export default {
             var data = result.data;
             this.$store.state.isLogin = true;
             this.leftMenus = data.leftMenus;
-            this.$regPool('newsAlarm', function () {
-                this.alarmVisible=true;
-                this.$refs.alarmTable.refresh();
-            });
+            // this.$regPool('newsAlarm', function () {
+            //     this.alarmVisible=true;
+            //     this.$refs.alarmTable.refresh();
+            // });
           }
           this.loginData.password = "";
           this.loginData.vercode = "";
@@ -313,25 +312,6 @@ export default {
 .el-dialog {
   margin: 0 auto;
 }
-/*缩略图的外边框装饰样式*/
-.thumbnail-img {
-  box-sizing: border-box;
-  border: 1px solid #ddd;
-  padding: 3px;
-  border-radius: 4px;
-  -webkit-transition: border-color 0.3s linear;
-  -o-transition: border-color 0.3s linear;
-  transition: border-color 0.3s linear;
-}
-
-.thumbnail-img:hover {
-  border-color: #5fb878;
-}
-
-.thumbnail-img:active {
-  border-color: #009688;
-  border-width: 1.4px;
-}
 .alarm-btn{
   position: fixed;
   left: 100%;
@@ -357,34 +337,5 @@ export default {
 }
 .left-menus{
   animation:fadeIn 1s linear;
-}
-.fade-enter-active,.fade-leave-active{
-  transition: opacity .4s linear;
-}
-.fade-enter,.fade-leave-to{
-  opacity: 0;
-}
-.fade-enter-to,.fade-leave{
-  opacity: 1;
-}
-/* 编辑或新增表单的样式 */
-.form-body{
-  position: absolute;
-  top:84px;
-  left: 20px;
-  right: 20px;
-  bottom: 71px;
-  overflow-y: auto;
-}
-.form-bottom{
-  position: absolute;
-  bottom:30px;
-  left: 20px;
-  right: 20px;
-  background:white;
-}
-/* 消息弹框的浮动样式，确保消息弹框始终在最前面 */
-.message-float{
-  z-index: 20086 !important;
 }
 </style>

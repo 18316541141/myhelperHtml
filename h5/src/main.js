@@ -3,6 +3,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import moment from 'moment'
 import 'animate.css/animate.css'
+import './common/css/common.css'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import 'viewerjs/dist/viewer.min.css'
@@ -12,17 +13,9 @@ import App from './App.vue'
 import { openLoading, closeLoading, get, post, regPool, realTimeGet, cancelPool, cancelAllPools, getUpdate, postUpdate } from './utils/http'
 import vueJcrop from 'vue-jcrop';
 import defaultPage from './components/defaultPage.vue';
-import m15 from "./menus/testMenus1/areaSelect.vue";
-import m312 from "./menus/testMenus1/charts.vue";
-import m12 from "./menus/testMenus1/uploadImage.vue";
-import m14 from "./menus/testMenus1/uploadFiles.vue";
-import m17 from "./menus/testMenus1/pageTable.vue";
-import m101 from "./menus/testMenus1/aaa-treeForm.vue";
-import m13 from "./menus/testMenus1/bigPic.vue";
-import m18 from "./menus/testMenus1/uexcel.vue";
-import n11 from "./menus/testMenus1/testnewalarm.vue";
-import logEntityList from "./menus/system/LogEntityList.vue";
-import heartbeatEntityList from "./menus/system/HeartbeatEntityList.vue";
+import logEntityList from "./common/menus/system/LogEntityList.vue";
+import heartbeatEntityList from "./common/menus/system/HeartbeatEntityList.vue";
+import { menuReg, componentReg, directiveReg } from './componentReg.js';
 import areaSelect from './components/areaSelect.vue';
 import treeForm from './components/treeForm.vue';
 import imgViewer from './components/imgViewer.vue';
@@ -67,6 +60,7 @@ window.postOpenWin = postOpenWin;
 
 //自定义指令
 (function () {
+  directiveReg(Vue);
   //按钮倒数指令，按钮点击后会进入倒数状态（倒数时不能点击），倒数完毕后才可以点击。
   Vue.directive('countDown', {
     inserted(el, binding) {
@@ -88,20 +82,21 @@ window.postOpenWin = postOpenWin;
       }, false);
     }
   });
-  
+
   //时钟指令，会使得元素的内容变成一个时钟，需要用户传入日期的显示格式，日期的格式规则参考moment.js
-  Vue.directive('clock',{
+  Vue.directive('clock', {
     inserted(el, binding) {
       el.innerText = moment().format(binding.value);
-      setInterval(function(){
-        el.innerText= moment().format(binding.value);
-      },1000);
+      setInterval(function () {
+        el.innerText = moment().format(binding.value);
+      }, 1000);
     }
   });
 }());
 
 //通用组件注册
 (function () {
+  componentReg(Vue);
   Vue.component('default-page', defaultPage)
   Vue.component('tree-form', treeForm)
   Vue.component('area-select', areaSelect)
@@ -116,17 +111,9 @@ window.postOpenWin = postOpenWin;
 
 //业务组件注册
 (function () {
-  Vue.component('m15', m15)
-  Vue.component('m312', m312)
-  Vue.component('m12', m12)
-  Vue.component('m14', m14)
-  Vue.component('m17', m17)
-  Vue.component('m101', m101)
-  Vue.component('m13', m13)
-  Vue.component('m18', m18)
-  Vue.component('n11', n11)
-  Vue.component('logEntity',logEntityList);
-  Vue.component('heartbeatEntity',heartbeatEntityList);
+  menuReg(Vue);
+  Vue.component('logEntity', logEntityList);
+  Vue.component('heartbeatEntity', heartbeatEntityList);
 }());
 
 Vue.config.productionTip = false
