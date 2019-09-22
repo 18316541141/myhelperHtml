@@ -10,25 +10,25 @@ import 'viewerjs/dist/viewer.min.css'
 import 'webuploader/css/webuploader.css'
 import "jcrop/dist/jcrop.css"
 import App from './App.vue'
-import { openLoading, closeLoading, get, post, regPool, realTimeGet, cancelPool, cancelAllPools, getUpdate, postUpdate } from './utils/http'
+import { openLoading, closeLoading, get, post, regPool, realTimeGet, cancelPool, cancelAllPools, getUpdate, postUpdate } from './common/utils/http'
 import vueJcrop from 'vue-jcrop';
-import defaultPage from './components/defaultPage.vue';
+import defaultPage from './common/components/defaultPage.vue';
 import logEntityList from "./common/menus/system/LogEntityList.vue";
 import heartbeatEntityList from "./common/menus/system/HeartbeatEntityList.vue";
 import { menuReg, componentReg, directiveReg } from './componentReg.js';
-import areaSelect from './components/areaSelect.vue';
-import treeForm from './components/treeForm.vue';
-import imgViewer from './components/imgViewer.vue';
-import pieChart from './components/pieChart.vue';
-import histogram from './components/histogram.vue';
-import uploadExcel from './components/uploadExcel.vue';
-import uploadFiles from './components/uploadFiles.vue';
-import uploadImage from './components/uploadImage.vue';
-import UUID from './utils/UUID.js'
+import areaSelect from './common/components/areaSelect.vue';
+import treeForm from './common/components/treeForm.vue';
+import imgViewer from './common/components/imgViewer.vue';
+import pieChart from './common/components/pieChart.vue';
+import histogram from './common/components/histogram.vue';
+import uploadExcel from './common/components/uploadExcel.vue';
+import uploadFiles from './common/components/uploadFiles.vue';
+import uploadImage from './common/components/uploadImage.vue';
+import UUID from './common/utils/UUID.js'
 import Hashes from "jshashes";
 import Highcharts from 'highcharts'
 import WebUploader from 'webuploader'
-import { uploadCallback, typeImgByMime, postOpenWin, validateForm } from './utils/common.js'
+import { uploadCallback, typeImgByMime, postOpenWin, validateForm } from './common/utils/common.js'
 import Viewer from 'viewerjs'
 import veeValidate from 'vee-validate'
 import zh_CN from 'vee-validate/dist/locale/zh_CN';
