@@ -83,12 +83,12 @@
           v-on:select="leftNavSelect"
           v-bind:collapse="isCollapse"
         >
-          <el-submenu v-for="(x) in leftMenus" v-bind:index="x.id" v-bind:key="x.id">
+          <el-submenu v-for="(x) in leftMenus" v-bind:index="x.name" v-bind:key="x.name">
             <template slot="title">
               <i class="el-icon-location"></i>
               <span v-text="x.title"></span>
             </template>
-            <el-menu-item v-for="(y) in x.leftMenus" v-bind:index="y.id" v-bind:key="y.id">
+            <el-menu-item v-for="(y) in x.leftMenus" v-bind:index="y.name" v-bind:key="y.name">
               <i class="el-icon-setting"></i>
               <span slot="title" v-text="y.title"></span>
             </el-menu-item>
@@ -101,8 +101,8 @@
         <el-tab-pane
           v-for="(x) in $store.state.menus"
           v-bind:label="x.title"
-          v-bind:name="x.id"
-          v-bind:key="x.id"
+          v-bind:name="x.name"
+          v-bind:key="x.name"
         >
           <keep-alive>
             <component
@@ -176,7 +176,7 @@ export default {
     closeNavTab(targetName) {
       var menus = this.$store.state.menus;
       for (var i = 0, len = menus.length; i < len; i++) {
-        if (menus[i].id === targetName) {
+        if (menus[i].name === targetName) {
           menus.splice(i, 1);
           break;
         }
@@ -185,48 +185,48 @@ export default {
     refreshVercode() {
       this.rVercode = "/api/session/verificationCode?r=" + Math.random();
     },
-    findLeftMenuById(id) {
+    findLeftMenuByName(name) {
       var leftMenus = this.leftMenus;
       var len_i = leftMenus.length;
       for (var i = 0; i < len_i; i++) {
         var childMenus = leftMenus[i].leftMenus;
         var len_j = childMenus.length;
         for (var j = 0; j < len_j; j++) {
-          if (childMenus[j].id === id) {
+          if (childMenus[j].name === name) {
             return childMenus[j];
           }
         }
       }
       return null;
     },
-    rightMenuSelect(key) {
-      if (key === "logout") {
+    rightMenuSelect(name) {
+      if (name === "logout") {
         this.$get("/api/session/logout", function() {
           this.$store.state.isLogin = false;
           this.$store.state.menus.splice(0);
           this.alarmVisible = false;
           this.$cancelAllPools();
         });
-      } else if (key === "newsAlarm") {
+      } else if (name === "newsAlarm") {
         this.alarmVisible = true;
         this.$refs.alarmTable.refresh();
       }
     },
-    leftNavSelect(key) {
+    leftNavSelect(name) {
       var menus = this.$store.state.menus;
       var len = menus.length;
       for (var i = 0; i < len; i++) {
-        if (menus[i].id === key) {
-          this.menuActive = key;
+        if (menus[i].name === name) {
+          this.menuActive = name;
           return;
         }
       }
-      var ret = this.findLeftMenuById(key);
+      var ret = this.findLeftMenuByName(name);
       menus.push({
         title: ret.title,
-        id: key
+        name: name
       });
-      this.menuActive = key;
+      this.menuActive = name;
     },
     login() {
       this.$validateForm(() => {
