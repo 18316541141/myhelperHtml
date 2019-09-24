@@ -7,40 +7,38 @@
     <br />
     <el-form v-bind:inline="true" v-bind:model="postData">
       <el-form-item>
-        <el-form-item>
-          <el-select
-            size="medium"
-            v-model="postData.Level"
-            placeholder="日志等级"
-            clearable
-            style="width:120px;"
-          >
-            <el-option :key="0" :label="'INFO'" :value="'INFO'"></el-option>
-            <el-option :key="1" :label="'WARN'" :value="'WARN'"></el-option>
-            <el-option :key="2" :label="'ERROR'" :value="'ERROR'"></el-option>
-            <el-option :key="3" :label="'FATAL'" :value="'FATAL'"></el-option>
-          </el-select>
-        </el-form-item>
+        <el-select
+          size="medium"
+          v-model="postData.level"
+          placeholder="日志等级"
+          clearable
+          style="width:120px;"
+        >
+          <el-option :key="0" :label="'INFO'" :value="'INFO'"></el-option>
+          <el-option :key="1" :label="'WARN'" :value="'WARN'"></el-option>
+          <el-option :key="2" :label="'ERROR'" :value="'ERROR'"></el-option>
+          <el-option :key="3" :label="'FATAL'" :value="'FATAL'"></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item>
         <el-input
           size="medium"
-          v-model="postData.ThreadNoLike"
+          v-model="postData.threadNoLike"
           placeholder="线程号"
           clearable
           style="width:100px;"
         ></el-input>
       </el-form-item>
       <el-form-item>
-        <el-input size="medium" v-model="postData.MessageLike" placeholder="日志内容" style="width:150px;" clearable></el-input>
+        <el-input size="medium" v-model="postData.messageLike" placeholder="日志内容" style="width:150px;" clearable></el-input>
       </el-form-item>
       <el-form-item>
-        <el-input size="medium" v-model="postData.ExceptionLike" placeholder="堆栈信息" style="width:150px;" clearable></el-input>
+        <el-input size="medium" v-model="postData.exceptionLike" placeholder="堆栈信息" style="width:150px;" clearable></el-input>
       </el-form-item>
       <el-form-item>
         <el-input
           size="medium"
-          v-model="postData.ProjectNameLike"
+          v-model="postData.projectNameLike"
           placeholder="日志发生的命名空间"
           clearable
           style="width:170px;"
@@ -49,7 +47,7 @@
       <el-form-item>
         <el-input
           size="medium"
-          v-model="postData.TypeNameLike"
+          v-model="postData.typeNameLike"
           placeholder="日志发生的类"
           clearable
           style="width:150px;"
@@ -58,7 +56,7 @@
       <el-form-item>
         <el-input
           size="medium"
-          v-model="postData.FuncNameLike"
+          v-model="postData.funcNameLike"
           placeholder="日志发生的方法名"
           clearable
           style="width:170px;"
@@ -71,7 +69,7 @@
           value-format="yyyy-MM-dd HH:mm:ss"
           type="datetime"
           placeholder="日志起始日期"
-          v-model="postData.CreateDateStart"
+          v-model="postData.createDateStart"
           style="width:195px;"
         ></el-date-picker>
       </el-form-item>
@@ -82,7 +80,7 @@
           value-format="yyyy-MM-dd HH:mm:ss"
           type="datetime"
           placeholder="日志结束日期"
-          v-model="postData.CreateDateEnd"
+          v-model="postData.createDateEnd"
           style="width:195px;"
         ></el-date-picker>
       </el-form-item>
@@ -108,52 +106,52 @@
       export-url="/api/LogEntity/export"
     >
       <el-table-column
-        prop="CreateDate"
+        prop="createDate"
         label="日志日期"
         sortable="custom"
         v-bind:show-overflow-tooltip="true"
         width="150px"
       ></el-table-column>
       <el-table-column
-        prop="Level"
+        prop="level"
         label="日志分级"
         v-bind:show-overflow-tooltip="true"
         width="100px"
       ></el-table-column>
       <el-table-column
-        prop="ThreadNo"
+        prop="threadNo"
         label="线程号"
         width="100px"
         v-bind:show-overflow-tooltip="true"
       ></el-table-column>
       <el-table-column
-        prop="Message"
+        prop="message"
         label="日志内容"
         v-bind:show-overflow-tooltip="true"
       ></el-table-column>
       <el-table-column
-        prop="Exception"
+        prop="exception"
         label="堆栈信息"
         v-bind:show-overflow-tooltip="true"
       ></el-table-column>
       <el-table-column
-        prop="ProjectName"
+        prop="projectName"
         label="日志发生的项目名"
         v-bind:show-overflow-tooltip="true"
       ></el-table-column>
       <el-table-column
-        prop="TypeName"
+        prop="typeName"
         label="日志发生的类"
         v-bind:show-overflow-tooltip="true"
       ></el-table-column>
       <el-table-column
-        prop="FuncName"
+        prop="funcName"
         label="日志发生的方法名称"
         v-bind:show-overflow-tooltip="true"
       ></el-table-column>
       <el-table-column label="操作" fixed="right" width="100px">
         <template slot-scope="scope">
-          <el-button size="small" type="primary" v-on:click="edit(scope.row.Id)">查看</el-button>
+          <el-button size="small" type="primary" v-on:click="edit(scope.row.id)">查看</el-button>
         </template>
       </el-table-column>
     </default-page>
@@ -172,7 +170,7 @@
               <el-input
                 v-validate="'required|rangeLength:6,20|between:6,20'"
                 data-vv-name="formData_CreateDate"
-                v-model="formData.CreateDate"
+                v-model="formData.createDate"
                 placeholder="请填写日志日期"
                 readonly
               ></el-input>
@@ -181,7 +179,7 @@
               <el-input
                 v-validate="'required|rangeLength:6,20|between:6,20'"
                 data-vv-name="formData_Level"
-                v-model="formData.Level"
+                v-model="formData.level"
                 placeholder="请填写日志分级"
                 readonly
               ></el-input>
@@ -190,7 +188,7 @@
               <el-input
                 v-validate="'required|rangeLength:6,20|between:6,20'"
                 data-vv-name="formData_ThreadNo"
-                v-model="formData.ThreadNo"
+                v-model="formData.threadNo"
                 placeholder="请填写线程号"
                 readonly
               ></el-input>
@@ -199,7 +197,7 @@
               <el-input
                 v-validate="'required|rangeLength:6,20|between:6,20'"
                 data-vv-name="formData_ProjectName"
-                v-model="formData.ProjectName"
+                v-model="formData.projectName"
                 readonly
               ></el-input>
             </el-form-item>
@@ -207,7 +205,7 @@
               <el-input
                 v-validate="'required|rangeLength:6,20|between:6,20'"
                 data-vv-name="formData_TypeName"
-                v-model="formData.TypeName"
+                v-model="formData.typeName"
                 readonly
               ></el-input>
             </el-form-item>
@@ -215,7 +213,7 @@
               <el-input
                 v-validate="'required|rangeLength:6,20|between:6,20'"
                 data-vv-name="formData_FuncName"
-                v-model="formData.FuncName"
+                v-model="formData.funcName"
                 readonly
               ></el-input>
             </el-form-item>
@@ -223,7 +221,7 @@
               <el-input
                 v-validate="'required|rangeLength:6,20|between:6,20'"
                 data-vv-name="formData_Message"
-                v-model="formData.Message"
+                v-model="formData.message"
                 placeholder="请填写日志内容"
                 resize="none"
                 readonly
@@ -235,7 +233,7 @@
               <el-input
                 v-validate="'required|rangeLength:6,20|between:6,20'"
                 data-vv-name="formData_Exception"
-                v-model="formData.Exception"
+                v-model="formData.exception"
                 resize="none"
                 readonly
                 type="textarea"
@@ -421,26 +419,26 @@ export default {
     return {
       //仅用于存放新增表单、编辑表单的数据
       formData: {
-        Level: "",
-        ThreadNo: "",
-        Message: "",
-        ProjectName: "",
-        TypeName: "",
-        FuncName: ""
+        level: "",
+        threadNo: "",
+        message: "",
+        projectName: "",
+        typeName: "",
+        funcName: ""
       },
       //仅用于存放查询参数的数据
       postData: {
-        CreateDateStart: this.$moment()
+        createDateStart: this.$moment()
           .subtract("seconds", 1800)
           .format("YYYY-MM-DD HH:mm:ss"),
-        CreateDateEnd: this.$moment().format("YYYY-MM-DD HH:mm:ss"),
-        Level: "",
-        ThreadNoLike: "",
-        MessageLike: "",
-        ProjectNameLike: "",
-        TypeNameLike: "",
-        FuncNameLike: "",
-        ExceptionLike: ""
+        createDateEnd: this.$moment().format("YYYY-MM-DD HH:mm:ss"),
+        level: "",
+        threadNoLike: "",
+        messageLike: "",
+        projectNameLike: "",
+        typeNameLike: "",
+        funcNameLike: "",
+        exceptionLike: ""
       },
       retData: {}, //仅用于存放分页查询的返回结果
       checkedDatas: [], //仅用于存放当前分页表格勾选项

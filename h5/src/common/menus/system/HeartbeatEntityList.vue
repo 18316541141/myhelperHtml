@@ -7,7 +7,7 @@
 		<br>
         <el-form v-bind:inline="true" v-bind:model="postData">
 			<el-form-item>
-				<el-input size="medium" v-model="postData.RobotIdLike" placeholder="机器人编号" clearable></el-input>
+				<el-input size="medium" v-model="postData.robotIdLike" placeholder="机器人编号" clearable></el-input>
 			</el-form-item>
 			<el-form-item>
 				<el-date-picker
@@ -16,7 +16,7 @@
 				value-format="yyyy-MM-dd HH:mm:ss"
 				type="datetime"
 				placeholder="起始心跳时间"
-				v-model="postData.LastHeartbeatTimeStart"
+				v-model="postData.lastHeartbeatTimeStart"
 				style="width:195px;"
 				></el-date-picker>
 			</el-form-item>
@@ -27,7 +27,7 @@
 				value-format="yyyy-MM-dd HH:mm:ss"
 				type="datetime"
 				placeholder="结束心跳时间"
-				v-model="postData.LastHeartbeatTimeEnd"
+				v-model="postData.lastHeartbeatTimeEnd"
 				style="width:195px;"
 				></el-date-picker>
 			</el-form-item>
@@ -39,9 +39,9 @@
             </el-form-item>
 		</el-form>
 		<default-page ref="table" url="/api/HeartbeatEntity/page" v-bind:post-data="postData" v-bind:ret-data.sync="retData" v-bind:reduce-height="120">
-			<el-table-column prop="LastHeartbeatTime" label="最近一次的心跳时间" sortable="custom" v-bind:show-overflow-tooltip="true"></el-table-column>
-			<el-table-column prop="RobotId" label="机器人id" sortable="custom" v-bind:show-overflow-tooltip="true"></el-table-column>
-			<el-table-column prop="StatusDesc" label="运行状态" sortable="custom" v-bind:show-overflow-tooltip="true"></el-table-column>
+			<el-table-column prop="lastHeartbeatTime" label="最近一次的心跳时间" sortable="custom" v-bind:show-overflow-tooltip="true"></el-table-column>
+			<el-table-column prop="robotId" label="机器人id" sortable="custom" v-bind:show-overflow-tooltip="true"></el-table-column>
+			<el-table-column prop="statusDesc" label="运行状态" sortable="custom" v-bind:show-overflow-tooltip="true"></el-table-column>
         </default-page>
 		
         <!-- 抄考代码
@@ -167,9 +167,9 @@ export default {
 		return {
 			//仅用于存放查询参数的数据
 			postData:{
-				LastHeartbeatTimeStart:'',
-				LastHeartbeatTimeEnd:'',
-				RobotIdLike:'',
+				lastHeartbeatTimeStart:'',
+				lastHeartbeatTimeEnd:'',
+				robotIdLike:'',
 			},
 			retData:{},		//仅用于存放分页查询的返回结果
 		};
