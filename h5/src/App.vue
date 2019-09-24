@@ -106,7 +106,7 @@
         >
           <keep-alive>
             <component
-              v-bind:is="x.id"
+              v-bind:is="x.name"
               class="inner-container"
               v-bind:style="{left:mainContentLeft}"
             ></component>
