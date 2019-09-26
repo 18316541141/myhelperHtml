@@ -258,6 +258,12 @@ new Vue({
   render: h => h(App),
   mounted() {
     //自定义基于veeValidate的校验规则
+	//字符串必须是数字的限制，must_num 字符串必须是数字
+	this.$validator.extend('must_num',{
+		validate(value) {
+			return value === null || value === '' || /^\d+$/.test(value);
+		}
+	});
     //字符长度限制，rangeLength:6,20 字符长度在6-20之间才能通过校验
     this.$validator.extend('rangeLength', {
       validate(value, params) {
