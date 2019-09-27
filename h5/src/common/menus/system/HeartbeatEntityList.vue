@@ -1,50 +1,96 @@
 ﻿<template>
-    <div>
-		<el-breadcrumb separator-class="el-icon-arrow-right">
-            <el-breadcrumb-item>系统管理</el-breadcrumb-item>
-			<el-breadcrumb-item>心跳监测</el-breadcrumb-item>
-        </el-breadcrumb>
-		<br>
-        <el-form v-bind:inline="true" v-bind:model="postData">
-			<el-form-item>
-				<el-input size="medium" v-model="postData.robotIdLike" placeholder="机器人编号" clearable></el-input>
-			</el-form-item>
-			<el-form-item>
-				<el-date-picker
-				clearable
-				size="medium"
-				value-format="yyyy-MM-dd HH:mm:ss"
-				type="datetime"
-				placeholder="起始心跳时间"
-				v-model="postData.lastHeartbeatTimeStart"
-				style="width:195px;"
-				></el-date-picker>
-			</el-form-item>
-			<el-form-item>
-				<el-date-picker
-				clearable
-				size="medium"
-				value-format="yyyy-MM-dd HH:mm:ss"
-				type="datetime"
-				placeholder="结束心跳时间"
-				v-model="postData.lastHeartbeatTimeEnd"
-				style="width:195px;"
-				></el-date-picker>
-			</el-form-item>
-            <el-form-item>
-                <el-button size="medium" type="primary" v-on:click="$refs.table.search()" icon="el-icon-search">查询</el-button>
-            </el-form-item>
-            <el-form-item>
-                <el-button size="medium" v-on:click="$refs.table.refresh()" icon="el-icon-refresh">刷新</el-button>
-            </el-form-item>
-		</el-form>
-		<default-page ref="table" url="/api/HeartbeatEntity/page" v-bind:post-data="postData" v-bind:ret-data.sync="retData" v-bind:reduce-height="120">
-			<el-table-column prop="lastHeartbeatTime" label="最近一次的心跳时间" sortable="custom" v-bind:show-overflow-tooltip="true"></el-table-column>
-			<el-table-column prop="robotId" label="机器人id" sortable="custom" v-bind:show-overflow-tooltip="true"></el-table-column>
-			<el-table-column prop="statusDesc" label="运行状态" sortable="custom" v-bind:show-overflow-tooltip="true"></el-table-column>
-        </default-page>
-		
-        <!-- 抄考代码
+  <div>
+    <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb-item>系统管理</el-breadcrumb-item>
+      <el-breadcrumb-item>心跳监测</el-breadcrumb-item>
+    </el-breadcrumb>
+    <br />
+    <el-form v-bind:inline="true" v-bind:model="postData">
+      <el-form-item>
+        <el-input size="medium" style="width:150px;" v-model="postData.robotIpLike" placeholder="机器人的ip地址" clearable></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-input size="medium" style="width:150px;" v-model="postData.remarkLike" placeholder="机器人备注" clearable></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-input size="medium" style="width:150px;" v-model="postData.extendFieldLike" placeholder="扩展字段" clearable></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-date-picker
+          clearable
+          size="medium"
+          value-format="yyyy-MM-dd HH:mm:ss"
+          type="datetime"
+          placeholder="起始心跳时间"
+          v-model="postData.lastHeartbeatTimeStart"
+          style="width:195px;"
+        ></el-date-picker>
+      </el-form-item>
+      <el-form-item>
+        <el-date-picker
+          clearable
+          size="medium"
+          value-format="yyyy-MM-dd HH:mm:ss"
+          type="datetime"
+          placeholder="结束心跳时间"
+          v-model="postData.lastHeartbeatTimeEnd"
+          style="width:195px;"
+        ></el-date-picker>
+      </el-form-item>
+      <el-form-item>
+        <el-button
+          size="medium"
+          type="primary"
+          v-on:click="$refs.table.search()"
+          icon="el-icon-search"
+        >查询</el-button>
+      </el-form-item>
+      <el-form-item>
+        <el-button size="medium" v-on:click="$refs.table.refresh()" icon="el-icon-refresh">刷新</el-button>
+      </el-form-item>
+    </el-form>
+    <default-page
+      ref="table"
+      url="/api/HeartbeatEntity/page"
+      v-bind:post-data="postData"
+      v-bind:ret-data.sync="retData"
+      v-bind:reduce-height="120"
+    >
+      <el-table-column type="expand">
+        <template slot-scope="props">
+          <el-form label-position="left" inline class="demo-table-expand">
+            {{props.row.extendField}}
+          </el-form>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="lastHeartbeatTime"
+        label="最近一次的心跳时间"
+        sortable="custom"
+        v-bind:show-overflow-tooltip="true"
+      ></el-table-column>
+      <el-table-column
+        prop="robotIp"
+        label="机器人ip"
+        sortable="custom"
+        v-bind:show-overflow-tooltip="true"
+      ></el-table-column>
+      <el-table-column
+        prop="remark"
+        label="机器人备注"
+        sortable="custom"
+        v-bind:show-overflow-tooltip="true"
+        width="150px"
+      ></el-table-column>
+      <el-table-column
+        prop="statusDesc"
+        label="运行状态"
+        sortable="custom"
+        v-bind:show-overflow-tooltip="true"
+      ></el-table-column>
+    </default-page>
+
+    <!-- 抄考代码
         标题部分：
         <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item>一级菜单</el-breadcrumb-item>
@@ -158,23 +204,25 @@
 				</el-form>
 			</div>
 		</el-dialog>
-        -->
-    </div>
+    -->
+  </div>
 </template>
 <script>
 export default {
-	data(){
-		return {
-			//仅用于存放查询参数的数据
-			postData:{
-				lastHeartbeatTimeStart:'',
-				lastHeartbeatTimeEnd:'',
-				robotIdLike:'',
-			},
-			retData:{},		//仅用于存放分页查询的返回结果
-		};
-	}
-    /* 抄考代码
+  data() {
+    return {
+      //仅用于存放查询参数的数据
+      postData: {
+        lastHeartbeatTimeStart: "",
+        lastHeartbeatTimeEnd: "",
+        robotIpLike: "",
+        remarkLike: "",
+        extendFieldLike: ""
+      },
+      retData: {} //仅用于存放分页查询的返回结果
+    };
+  }
+  /* 抄考代码
         数据部分（和列表部分配合使用）：
         data(){
             return {
@@ -323,5 +371,5 @@ export default {
 			}
         }
     */
-}
+};
 </script>

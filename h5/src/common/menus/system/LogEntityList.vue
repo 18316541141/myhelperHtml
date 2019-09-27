@@ -101,7 +101,7 @@
       url="/api/LogEntity/page"
       v-bind:post-data="postData"
       v-bind:ret-data.sync="retData"
-      v-bind:reduce-height="120"
+      v-bind:reduce-height="170"
       excel-title="测试数据.xlsx"
       export-url="/api/LogEntity/export"
     >
