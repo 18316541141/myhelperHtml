@@ -19,11 +19,11 @@
                 <el-button size="medium" v-on:click="$refs.table.refresh()" icon="el-icon-refresh">刷新</el-button>
             </el-form-item>
             <el-form-item>
-                <el-dropdown v-on:command="exportExcel">
+                <el-dropdown>
                     <el-button size="medium" type="success" icon="el-icon-download">导出excel</el-button>
                     <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item command="xlsx">xlsx格式</el-dropdown-item>
-                        <el-dropdown-item command="xls">xls格式</el-dropdown-item>
+                        <el-dropdown-item v-on:click="$refs.table.export('xlsx')">xlsx格式</el-dropdown-item>
+                        <el-dropdown-item v-on:click="$refs.table.export('xls')">xls格式</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
             </el-form-item>
@@ -54,8 +54,8 @@
             excel-title     导出的excel表显示的名称
             export-url      导出操作的url
         -->
-        <default-page ref="table" url="/api/IRobotQrCodePayTask/page" v-bind:post-data="postData" v-bind:ret-data.sync="retData" v-bind:reduce-height="120" v-bind:checked-datas.sync="checkedDatas"
-            v-bind:show-checked="true" excel-title="测试数据.xlsx" export-url="/api/IRobotQrCodePayTask/export">
+        <default-page ref="table" :url="$store.state.proxyApi+'/IRobotQrCodePayTask/page'" v-bind:post-data="postData" v-bind:ret-data.sync="retData" v-bind:reduce-height="120" v-bind:checked-datas.sync="checkedDatas"
+            v-bind:show-checked="true" excel-title="测试数据.xlsx" :export-url="$store.state.proxyApi+'/IRobotQrCodePayTask/export'">
             <!--
                 这里用的仍然是el-table组件的列。
             -->
@@ -88,9 +88,6 @@ export default {
         };
     },
     methods:{
-        exportExcel(command){
-            this.$refs.table.export(command);
-        },
         test(){
             this.$refs.table.export('xlsx');
         },

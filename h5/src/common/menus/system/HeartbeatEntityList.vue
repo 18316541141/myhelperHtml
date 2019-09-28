@@ -7,13 +7,31 @@
     <br />
     <el-form v-bind:inline="true" v-bind:model="postData">
       <el-form-item>
-        <el-input size="medium" style="width:150px;" v-model="postData.robotIpLike" placeholder="机器人的ip地址" clearable></el-input>
+        <el-input
+          size="medium"
+          style="width:170px;"
+          v-model="postData.robotMacLike"
+          placeholder="机器人的mac地址"
+          clearable
+        ></el-input>
       </el-form-item>
       <el-form-item>
-        <el-input size="medium" style="width:150px;" v-model="postData.remarkLike" placeholder="机器人备注" clearable></el-input>
+        <el-input
+          size="medium"
+          style="width:150px;"
+          v-model="postData.remarkLike"
+          placeholder="机器人备注"
+          clearable
+        ></el-input>
       </el-form-item>
       <el-form-item>
-        <el-input size="medium" style="width:150px;" v-model="postData.extendFieldLike" placeholder="扩展字段" clearable></el-input>
+        <el-input
+          size="medium"
+          style="width:150px;"
+          v-model="postData.extendFieldLike"
+          placeholder="扩展字段"
+          clearable
+        ></el-input>
       </el-form-item>
       <el-form-item>
         <el-date-picker
@@ -51,7 +69,7 @@
     </el-form>
     <default-page
       ref="table"
-      url="/api/HeartbeatEntity/page"
+      :url="$store.state.proxyApi+'/HeartbeatEntity/page'"
       v-bind:post-data="postData"
       v-bind:ret-data.sync="retData"
       v-bind:reduce-height="120"
@@ -59,35 +77,33 @@
       <el-table-column type="expand">
         <template slot-scope="props">
           <el-form label-position="left" inline class="demo-table-expand">
-            {{props.row.extendField}}
+            <el-form-item label="扩展内容">
+              <code v-text="props.row.extendField"></code>
+            </el-form-item>
           </el-form>
         </template>
       </el-table-column>
-      <el-table-column
-        prop="lastHeartbeatTime"
-        label="最近一次的心跳时间"
-        sortable="custom"
-        v-bind:show-overflow-tooltip="true"
-      ></el-table-column>
-      <el-table-column
-        prop="robotIp"
-        label="机器人ip"
-        sortable="custom"
-        v-bind:show-overflow-tooltip="true"
-      ></el-table-column>
-      <el-table-column
-        prop="remark"
-        label="机器人备注"
-        sortable="custom"
-        v-bind:show-overflow-tooltip="true"
-        width="150px"
-      ></el-table-column>
-      <el-table-column
-        prop="statusDesc"
-        label="运行状态"
-        sortable="custom"
-        v-bind:show-overflow-tooltip="true"
-      ></el-table-column>
+      <el-table-column label="最近一次的心跳时间" sortable="custom" v-bind:show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          <i class="el-icon-time"></i>
+          {{ scope.row.lastHeartbeatTime }}
+        </template>
+      </el-table-column>
+      <el-table-column prop="robotMac" label="机器人ip"></el-table-column>
+      <el-table-column prop="remark" label="机器人备注" width="150px"></el-table-column>
+      <el-table-column label="运行状态">
+        <template slot-scope="scope">
+          <el-tag
+            size="medium"
+            :type="scope.row.status===1?'success':'danger'"
+          >{{ scope.row.statusDesc }}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" fixed="right">
+        <template slot-scope="scope">
+          <el-button size="small" type="danger" v-on:click="del(scope.row.id)">删除</el-button>
+        </template>
+      </el-table-column>
     </default-page>
 
     <!-- 抄考代码
@@ -158,8 +174,8 @@
         </el-form>
 ------------------------------------------------------------------------------------------------------
         列表部分：
-        <default-page ref="table" url="/api/HeartbeatEntity/page" v-bind:post-data="postData" v-bind:ret-data.sync="retData" v-bind:reduce-height="120" v-bind:checked-datas.sync="checkedDatas"
-            v-bind:show-checked="true" excel-title="测试数据.xlsx" export-url="/api/HeartbeatEntity/export">
+        <default-page ref="table" url="/HeartbeatEntity/page" v-bind:post-data="postData" v-bind:ret-data.sync="retData" v-bind:reduce-height="120" v-bind:checked-datas.sync="checkedDatas"
+            v-bind:show-checked="true" excel-title="测试数据.xlsx" export-url="/HeartbeatEntity/export">
 
                     <el-table-column prop="Id" label="主键id" sortable="custom" v-bind:show-overflow-tooltip="true" width="150px"></el-table-column>
               
@@ -215,12 +231,28 @@ export default {
       postData: {
         lastHeartbeatTimeStart: "",
         lastHeartbeatTimeEnd: "",
-        robotIpLike: "",
+        robotMacLike: "",
         remarkLike: "",
         extendFieldLike: ""
       },
       retData: {} //仅用于存放分页查询的返回结果
     };
+  },
+  methods: {
+    //删除一条数据
+    del(key) {
+      var thiz=this;
+      this.$prompt('该信息删除后无法还原，是否确认删除？如果是请输入“确认删除”。', '删除提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        inputPattern: /^确认删除$/,
+        inputErrorMessage: '请输入“确认删除”',
+      }).then(({ value }) => {;
+        thiz.$post(thiz.$store.state.proxyApi+"/HeartbeatEntity/del", { id: key }, function(result) {
+          thiz.$refs.table.refresh();
+        });
+      });
+    }
   }
   /* 抄考代码
         数据部分（和列表部分配合使用）：

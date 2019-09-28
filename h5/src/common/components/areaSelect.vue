@@ -91,7 +91,7 @@ export default{
         }
     },
     mounted() {
-        this.$get('/api/index/areaSelect',function (result) {
+        this.$get(this.$store.state.proxyApi+'/index/areaSelect',function (result) {
             this.data = result.data;
             this.provinces = this.data['provinces'];
             this.cities = [];

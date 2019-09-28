@@ -137,7 +137,7 @@ Vue.prototype.$moment = moment;
 // Vue.prototype.$Jcrop=Jcrop;
 
 const store = new Vuex.Store({
-  state: { isLogin: true, loadingCount: 0, menus: [] }
+  state: { isLogin: true, loadingCount: 0, menus: [], proxyApi:'/api' }
 });
 
 //自定义过滤器

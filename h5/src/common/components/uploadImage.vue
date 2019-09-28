@@ -68,7 +68,7 @@ export default {
     crop() {
       var thiz = this;
       this.$post(
-        "/api/index/singleImageCrop",
+        this.$store.state.proxyApi+"/index/singleImageCrop",
         {
           imgName: this.imgName_,
           imgWidth: this.imgWidth,
@@ -84,7 +84,7 @@ export default {
           thiz.$emit("update:imgName", data.imgName);
           thiz.$emit("update:thumbnailName", data.thumbnailName);
           thiz.src =
-            "/api/index/showImage?imgName=" +
+            thiz.$store.state.proxyApi+"/index/showImage?imgName=" +
             thiz.imgName_;
         }
       );
@@ -95,7 +95,7 @@ export default {
     new this.$WebUploader.Uploader({
       swf: "/Uploader.swf", //当浏览器不支持XMLHttpWebRequest时，使用flash插件上传。
       auto: true, //选中文件后自动上传
-      server: "/api/index/uploadSingleImage", //处理上传文件的统一控制器
+      server: thiz.$store.state.proxyApi+"/index/uploadSingleImage", //处理上传文件的统一控制器
       fileVal: "fileUpload", //服务端接收二进制文件的参数名称
       duplicate: true,
       pick: {
@@ -124,7 +124,7 @@ export default {
             thiz.imgName_ = data.imgName;
             thiz.$emit("update:imgName", data.imgName);
             thiz.$emit("update:thumbnailName", data.thumbnailName);
-            thiz.src = "/api/index/showImage?imgName=" + thiz.imgName_;
+            thiz.src = thiz.$store.state.proxyApi+"/index/showImage?imgName=" + thiz.imgName_;
             if (thiz.cut === true) {
               thiz.$openLoading();
               thiz.cropDialog = true;

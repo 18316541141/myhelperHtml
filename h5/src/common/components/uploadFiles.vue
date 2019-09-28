@@ -63,7 +63,7 @@ export default {
             this.$emit('update:files',files);
         },
         downFile(row){
-            postOpenWin('/api/index/downFile', {
+            postOpenWin(this.$store.state.proxyApi+'/index/downFile', {
                 fileName: row.fileName,
                 fileDesc: row.fileDesc
             });
@@ -77,7 +77,7 @@ export default {
             swf: '/Uploader.swf',
             auto: true,
             duplicate: true,
-            server: '/api/index/uploadFiles',
+            server: thiz.$store.state.proxyApi+'/index/uploadFiles',
             pick: { id: '#uploadFiles' + this.id },
             fileVal: 'fileUploads',
         }).on('uploadStart', function (file) {
