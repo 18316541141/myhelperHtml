@@ -237,6 +237,7 @@ export default {
           if (result.code === 0) {
             var data = result.data;
             this.$store.state.isLogin = true;
+            this.$store.state.username = this.loginData.username;
             this.leftMenus = data.leftMenus;
             // this.$regPool('newsAlarm', function () {
             //     this.alarmVisible=true;
@@ -276,6 +277,8 @@ export default {
     });
     this.$get("/api/index/loadLoginData", function(result) {
       this.leftMenus = result.data.leftMenus;
+      this.$store.state.username = result.data.username;
+      this.$store.state.isLogin = true;
     });
     // this.$regPool("newsAlarm", function() {
     //   this.alarmVisible = true;

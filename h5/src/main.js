@@ -137,7 +137,13 @@ Vue.prototype.$moment = moment;
 // Vue.prototype.$Jcrop=Jcrop;
 
 const store = new Vuex.Store({
-  state: { isLogin: true, loadingCount: 0, menus: [], proxyApi:'/api' }
+  state: { 
+    isLogin: true, //是否登录
+    loadingCount: 0, //等待池中正在加载的请求数
+    menus: [], //已打开的菜单列表
+    proxyApi:'/api', //反向代理匹配的前缀
+    username:'' //登录的用户名
+  }
 });
 
 //自定义过滤器

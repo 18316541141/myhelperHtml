@@ -7,6 +7,15 @@
     <br />
     <el-form v-bind:inline="true" v-bind:model="postData">
       <el-form-item>
+        <el-input
+          size="medium"
+          v-model="postData.usernameLike"
+          placeholder="日志用户名"
+          clearable
+          style="width:150px;"
+        ></el-input>
+      </el-form-item>
+      <el-form-item>
         <el-select
           size="medium"
           v-model="postData.level"
@@ -106,6 +115,13 @@
       :export-url="$store.state.proxyApi+'/LogEntity/export'"
     >
       <el-table-column
+        prop="username"
+        label="日志用户名"
+        sortable="custom"
+        v-bind:show-overflow-tooltip="true"
+        width="180px"
+      ></el-table-column>
+      <el-table-column
         prop="createDate"
         label="日志日期"
         sortable="custom"
@@ -166,10 +182,15 @@
       <div style="width:100%;height:730px;overflow-y:auto;">
         <el-form ref="form" v-bind:model="formData" label-width="80px">
           <div class="form-body">
+            <el-form-item label="用户名">
+              <el-input
+                v-model="formData.username"
+                placeholder="用户名"
+                readonly
+              ></el-input>
+            </el-form-item>
             <el-form-item label="日志日期">
               <el-input
-                v-validate="'required|rangeLength:6,20|between:6,20'"
-                data-vv-name="formData_CreateDate"
                 v-model="formData.createDate"
                 placeholder="请填写日志日期"
                 readonly
@@ -177,8 +198,6 @@
             </el-form-item>
             <el-form-item label="日志分级">
               <el-input
-                v-validate="'required|rangeLength:6,20|between:6,20'"
-                data-vv-name="formData_Level"
                 v-model="formData.level"
                 placeholder="请填写日志分级"
                 readonly
@@ -186,8 +205,6 @@
             </el-form-item>
             <el-form-item label="线程号">
               <el-input
-                v-validate="'required|rangeLength:6,20|between:6,20'"
-                data-vv-name="formData_ThreadNo"
                 v-model="formData.threadNo"
                 placeholder="请填写线程号"
                 readonly
@@ -195,32 +212,24 @@
             </el-form-item>
             <el-form-item label="项目名称">
               <el-input
-                v-validate="'required|rangeLength:6,20|between:6,20'"
-                data-vv-name="formData_ProjectName"
                 v-model="formData.projectName"
                 readonly
               ></el-input>
             </el-form-item>
             <el-form-item label="类">
               <el-input
-                v-validate="'required|rangeLength:6,20|between:6,20'"
-                data-vv-name="formData_TypeName"
                 v-model="formData.typeName"
                 readonly
               ></el-input>
             </el-form-item>
             <el-form-item label="方法名称">
               <el-input
-                v-validate="'required|rangeLength:6,20|between:6,20'"
-                data-vv-name="formData_FuncName"
                 v-model="formData.funcName"
                 readonly
               ></el-input>
             </el-form-item>
             <el-form-item label="日志内容">
               <el-input
-                v-validate="'required|rangeLength:6,20|between:6,20'"
-                data-vv-name="formData_Message"
                 v-model="formData.message"
                 placeholder="请填写日志内容"
                 resize="none"
@@ -231,8 +240,6 @@
             </el-form-item>
             <el-form-item label="堆栈信息">
               <el-input
-                v-validate="'required|rangeLength:6,20|between:6,20'"
-                data-vv-name="formData_Exception"
                 v-model="formData.exception"
                 resize="none"
                 readonly
@@ -424,7 +431,8 @@ export default {
         message: "",
         projectName: "",
         typeName: "",
-        funcName: ""
+        funcName: "",
+        username: ""
       },
       //仅用于存放查询参数的数据
       postData: {
@@ -438,7 +446,8 @@ export default {
         projectNameLike: "",
         typeNameLike: "",
         funcNameLike: "",
-        exceptionLike: ""
+        exceptionLike: "",
+        usernameLike: this.$store.state.username
       },
       retData: {}, //仅用于存放分页查询的返回结果
       checkedDatas: [], //仅用于存放当前分页表格勾选项
