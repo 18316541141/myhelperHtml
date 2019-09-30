@@ -245,10 +245,10 @@
     <div class="layui-body">
       <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
         <ul class="layui-tab-title">
-
+          <li ng-repeat="x in menus" data-menu-name="{{x.name}}" ng-class="{true:'layui-this',false:''}[$last]"><span ng-bind="x.title"></span> <i class="layui-icon layui-unselect layui-tab-close" ng-click="close(x.name);">ဆ</i> </li>
         </ul>
         <div class="layui-tab-content main-content">
-
+          <div ng-repeat="x in menus" class="layui-tab-item" ng-class="{true:'layui-show',false:''}[$last]" ng-include="x.url"></div>
         </div>
       </div>
     </div>

@@ -1,0 +1,69 @@
+<template>
+    <div id="data-table-{{id}}" lay-filter="dataTable{{id}}"></div>
+</template>
+<script>
+    export default function pageDataTable() {
+        return {
+            restrict: 'EA',
+            scope: { url: "@", tableToolbar: "@", showCheckCol: "@", showDefaultOperCol: "@", height: "@", postData: "=", cols: "=", perms: "=" },
+            controller: function ($scope, $timeout, $myHttp) {
+                $scope.id = new UUID().id;
+                if ($scope.cols === undefined) {
+                    throw new Error('请设置cols的值');
+                }
+                if ($scope.postData === undefined) {
+                    $scope.postData = {};
+                }
+                var tempArray = $scope.cols;
+                if ($scope.showCheckCol === 'true') {
+                    tempArray.length += 1;
+                    for (var i = tempArray.length - 1; i > 0; i--) {
+                        tempArray[i] = tempArray[i - 1];
+                    }
+                    tempArray[0] = { type: 'checkbox', LAY_CHECKED: false, fixed: 'left' };
+                }
+                $scope.$on('searchPage', function () {
+                    layuiTable.reload($scope.id + '-checked', { page: { curr: 1 }, where: $scope.postData });
+                });
+                $timeout(function () {
+                    layuiTable.render({
+                        elem: '#data-table-' + $scope.id,
+                        height: $scope.height,
+                        url: $scope.url,
+                        toolbar: $scope.tableToolbar,
+                        id: $scope.id + '-checked',
+                        done: function (res, curr, count) {
+                            $scope.$emit('done', res, curr, count);
+                        },
+                        cols: [$scope.cols],
+                        where: $scope.postData
+                    });
+                    layuiTable.on('sort(dataTable' + $scope.id + ')', function (obj) {
+                        if (obj.type === "asc") {
+                            for (var key in $scope.postData) {
+                                if ($scope.postData.hasOwnProperty(key) && key.indexOf('orderByDesc') === 0) {
+                                    $scope.postData[key] = false;
+                                }
+                            }
+                            $scope.postData['orderByAsc.' + obj.field] = true;
+                        } else if (obj.type === "desc") {
+                            for (var key in $scope.postData) {
+                                if ($scope.postData.hasOwnProperty(key) && key.indexOf('orderByAsc') === 0) {
+                                    $scope.postData[key] = false;
+                                }
+                            }
+                            $scope.postData['orderByDesc.' + obj.field] = true;
+                        }
+                        layuiTable.reload($scope.id + '-checked', { page: { curr: 1 }, where: $scope.postData });
+                    });
+                    layuiTable.on('toolbar(dataTable' + $scope.id + ')', function (obj) {
+                        $scope.$emit('tableOper', obj.event, obj.data);
+                    });
+                    layuiTable.on('tool(dataTable' + $scope.id + ')', function (obj) {
+                        $scope.$emit('rowOper', obj.event, obj.data);
+                    });
+                });
+            }
+        };
+    }
+</script>

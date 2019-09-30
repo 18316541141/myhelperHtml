@@ -1,0 +1,32 @@
+<template>
+    <select id="{{id}}" lay-filter="{{id}}">
+        <option ng-repeat="x in options" value="{{x.value}}">{{x.text}}</option>
+    </select>
+</template>
+<script>
+    export default function mySelect() {
+        return {
+            restrict: 'EA',
+            scope: { options: "=", value: "=" },
+            controller: function ($scope, $timeout) {
+                $scope.id = new UUID().id;
+                $timeout(function () {
+                    var select = document.getElementById($scope.id);
+                    select.selectedIndex = 0;
+                    for (var i = 0, len = select.options.length; i < len; i++) {
+                        if (select.options[i].value === ($scope.value + '')) {
+                            select.selectedIndex = i;
+                            break;
+                        }
+                    }
+                    layuiForm.render('select');
+                    var scope = $scope;
+                    layuiForm.on('select(' + $scope.id + ')', function (data) {
+                        scope.value = data.value;
+                        scope.$apply();
+                    });
+                });
+            }
+        };
+    }
+</script>

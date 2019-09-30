@@ -1,0 +1,27 @@
+<template>
+    <input type="text" class="layui-input" id="{{id}}" placeholder="{{placeholder}}" ng-model="value" style="width:{{width}}px;"/>
+</template>
+<script>
+    export default function datetime() {
+        return {
+            restrict: 'EA',
+            scope: { placeholder: "@", format: "@",value:"=",width:"@" },
+            controller: function ($scope,$timeout) {
+                $scope.id = new UUID().id;
+                $timeout(function () {
+                    layuiLaydate.render({
+                        elem: '#' + $scope.id,
+                        type: 'datetime',
+                        format: $scope.format,
+                    });
+                    $('#' + $scope.id).click(function () {
+                        $('#layui-laydate' + $(this).attr('lay-key')).one('click', '.laydate-btns-clear,.laydate-btns-now,.laydate-btns-confirm', function () {
+                            $scope.value = $('#' + $scope.id).val();
+                            $scope.$apply();
+                        });
+                    });
+                });
+            }
+        };
+    }
+</script>

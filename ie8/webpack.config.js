@@ -10,11 +10,15 @@ module.exports = {
     module: {
         rules: [
             {
+                test: /\.ang\.html$/,
+                loader: path.resolve(__dirname, 'src/common/static-loader/angular-loader.js'),
+            },
+            {
                 test: /\.css$/,
                 loader: ['style-loader', 'css-loader']
             },
             {
-                test: /\.(woff|woff2|eot|ttf|otf|svg|gif|png)$/,
+                test: /\.(woff|woff2|eot|ttf|otf|svg|gif|png|xml)$/,
                 use: [{
                     loader: 'file-loader',
                     options: {
