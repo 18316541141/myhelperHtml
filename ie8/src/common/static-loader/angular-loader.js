@@ -12,7 +12,7 @@ module.exports = function (source) {
       for(var j=0,len_j=lines.length;j<len_j;j++){
         templateHtml+=lines[j]+'\\r\\n';
       }
-      templateHtml='\''+templateHtml.replace(/'/,'\\\'')+'\'';
+      templateHtml='\''+templateHtml.replace(/'/g,'\\\'')+'\'';
       break;
     }
   }

@@ -1,0 +1,27 @@
+<template>
+    <input type="checkbox" ng-if="type==='switch'" lay-skin="switch" lay-text="{{title}}" id="{{id}}" filter="{{id}}">
+    <input type="checkbox" ng-if="type==='primary'" lay-skin="primary" title="{{title}}" id="{{id}}" filter="{{id}}">
+</template>
+<script>
+    export default function myCheckbox() {
+        return {
+            restrict: 'EA',
+            /**
+             * type：表示复选框类型：switch（开关型）、primary（选择型）
+             * title: 复选框描述文字，当type===switch时，使用on|off格式表示两种状态，
+             *  当type===primary直接填写标题
+             */
+            scope: { type:'@',title:'@',checked:'=' },
+            controller: function ($scope,$timeout) {
+                $scope.id = new UUID().id;
+                $timeout(function () {
+                    layuiForm.render('checkbox');
+                    layuiForm.on('switch('+$scope.id+')', function(data){
+                        $scope.checked=data.elem.checked;
+                        $scope.$apply();
+                    });
+                });
+            }
+        };
+    }
+</script>

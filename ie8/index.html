@@ -245,10 +245,13 @@
     <div class="layui-body">
       <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
         <ul class="layui-tab-title">
-          <li ng-repeat="x in menus" data-menu-name="{{x.name}}" ng-class="{true:'layui-this',false:''}[$last]"><span ng-bind="x.title"></span> <i class="layui-icon layui-unselect layui-tab-close" ng-click="close(x.name);">ဆ</i> </li>
+          <li ng-repeat="x in menus" data-menu-name="{{x.name}}" ng-class="{true:'layui-this',false:''}[$last]"><span
+              ng-bind="x.title"></span> <i class="layui-icon layui-unselect layui-tab-close"
+              ng-click="close(x.name);">ဆ</i> </li>
         </ul>
         <div class="layui-tab-content main-content">
-          <div ng-repeat="x in menus" class="layui-tab-item" ng-class="{true:'layui-show',false:''}[$last]" ng-include="x.url"></div>
+          <div ng-repeat="x in menus" class="layui-tab-item" ng-class="{true:'layui-show',false:''}[$last]"
+            ng-include="x.url"></div>
         </div>
       </div>
     </div>
@@ -265,18 +268,19 @@
           <h2 style="color:white;">测试后台</h2>
           <p style="color:white;">xxxxxxxxx运营商后台</p>
         </div>
-        <form class="layadmin-user-login-box layadmin-user-login-body layui-form" name="loginForm" novalidate="">
+        <form ng-submit="login();" class="layadmin-user-login-box layadmin-user-login-body layui-form" name="loginForm"
+          novalidate>
           <div class="layui-form-item">
             <label class="layadmin-user-login-icon layui-icon layui-icon-username"
               for="LAY-user-login-username"></label>
-            <input ng-required2="" ng-maxlength2="20" type="text" name="username" ng-model="loginData.username"
+            <input ng-required2 ng-maxlength2="20" type="text" name="username" ng-model="loginData.username"
               id="LAY-user-login-username" lay-verify="required" placeholder="用户名" class="layui-input"
               autocomplate="off">
           </div>
           <div class="layui-form-item">
             <label class="layadmin-user-login-icon layui-icon layui-icon-password"
               for="LAY-user-login-password"></label>
-            <input ng-required2="" ng-maxlength2="20" type="password" name="password" ng-model="loginData.password"
+            <input ng-required2 ng-maxlength2="20" type="password" name="password" ng-model="loginData.password"
               id="LAY-user-login-password" lay-verify="required" placeholder="密码" class="layui-input"
               autocomplate="off">
           </div>
@@ -285,13 +289,14 @@
               <div class="layui-col-xs7">
                 <label class="layadmin-user-login-icon layui-icon layui-icon-vercode"
                   for="LAY-user-login-vercode"></label>
-                <input ng-required2="" ng-length="4" type="text" name="vercode" ng-model="loginData.vercode"
+                <input ng-required2 ng-length="4" type="text" name="vercode" ng-model="loginData.vercode"
                   id="LAY-user-login-vercode" lay-verify="required" placeholder="图形验证码" class="layui-input"
                   autocomplate="off">
               </div>
               <div class="layui-col-xs5">
                 <div style="margin-left: 10px;">
-                  <img class="layadmin-user-login-codeimg" id="LAY-user-get-vercode">
+                  <img ng-click="refreshVercode()" ng-src="{{'/api/session/verificationCode?r='+loginData.rNum}}"
+                    class="layadmin-user-login-codeimg" id="LAY-user-get-vercode">
                 </div>
               </div>
             </div>
@@ -309,6 +314,19 @@
     </div>
   </div>
   <script type="text/javascript" src="my-first-webpack.bundle.js"></script>
+  <script>
+    //标题移动效果
+    (function () {
+      var title = document.title;
+      if (title.length > 10) {
+        setInterval(function () {
+          var title = document.title;
+          document.title = title.substring(1, title.length) + title.charAt(0);
+        }, 400);
+        title = null;
+      }
+    }());
+  </script>
 </body>
 
 </html>

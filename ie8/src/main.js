@@ -17,8 +17,19 @@ import '@ztree/ztree_v3/js/jquery.ztree.core.min.js';
 import '@ztree/ztree_v3/js/jquery.ztree.excheck.min.js';
 import '@ztree/ztree_v3/css/metroStyle/metroStyle.css';
 import './common/utils/ng-layer.js';
+import ngRequired2 from './common/validate/ngRequired2.js';
+import ngLength from './common/validate/ngLength.js';
+import ngMinlength2 from './common/validate/ngMinlength2.js';
+import ngMaxlength2 from './common/validate/ngMaxlength2.js';
+import ngMinDouble from './common/validate/ngMinDouble.js';
+import ngMaxDouble from './common/validate/ngMaxDouble.js';
+import ngUrl from './common/validate/ngUrl.js';
+import ngMobile from './common/validate/ngMobile.js';
+import ngEqualTo from './common/validate/ngEqualTo.js';
+import ngIsInt from './common/validate/ngIsInt.js';
 import datetime from './common/components/datetime.ang.html';
 import mySelect from './common/components/mySelect.ang.html';
+import myCheckbox from './common/components/myCheckbox.ang.html';
 import pageDataTable from './common/components/pageDataTable.ang.html';
 import editLogEntity from './common/menus/system/editLogEntity.js';
 import heartbeatEntity from './common/menus/system/heartbeatEntity.js';
@@ -88,6 +99,7 @@ window.layuiTable.set({
 (function () {
     window.myApp.directive('datetime', datetime);
     window.myApp.directive('mySelect', mySelect);
+    window.myApp.directive('myCheckbox', myCheckbox);
     window.myApp.directive('pageDataTable', pageDataTable);
 }());
 
@@ -96,6 +108,20 @@ window.layuiTable.set({
     window.myApp.controller('editLogEntity', editLogEntity);
     window.myApp.controller('heartbeatEntity', heartbeatEntity);
     window.myApp.controller('logEntity', logEntity);
+}());
+
+//注册通用校验
+(function () {
+    window.myApp.directive('ngRequired2', ngRequired2);
+    window.myApp.directive('ngLength', ngLength);
+    window.myApp.directive('ngMinlength2', ngMinlength2);
+    window.myApp.directive('ngMaxlength2', ngMaxlength2);
+    window.myApp.directive('ngMinDouble', ngMinDouble);
+    window.myApp.directive('ngMaxDouble', ngMaxDouble);
+    window.myApp.directive('ngUrl', ngUrl);
+    window.myApp.directive('ngMobile', ngMobile);
+    window.myApp.directive('ngEqualTo', ngEqualTo);
+    window.myApp.directive('ngIsInt', ngIsInt);
 }());
 
 window.myApp.controller('main-body', function ($scope, $myHttp, $timeout) {
@@ -173,18 +199,104 @@ window.myApp.controller('main-body', function ($scope, $myHttp, $timeout) {
         });
     };
 
+    var username = $.cookie('username');
+    var password = $.cookie('password');
+    $scope.loginData = {
+        username: username == 'null' ? '' : username,
+        password: password == 'null' ? '' : password,
+        vercode: "",
+        rememberPassword: $.cookie('rememberPassword') === 'true',
+        rNum : Math.random()
+    };
+
+    $scope.refreshVercode = function () {
+        $scope.loginData.rNum = Math.random();
+    };
+
     /**
      * 退出登陆的方法
      */
     $scope.logout = function () {
         $myHttp.get('/api/session/logout').mySuccess(logoutCallback);
-        $realTime.cancelAll();
+        // $realTime.cancelAll();
+    };
+
+    $scope.login = function () {
+        $.cookie('username', $scope.loginData.username);
+        if ($('#rememberPassword').prop('checked')) {
+            $.cookie('password', $scope.loginData.password);
+            $.cookie('rememberPassword', true);
+        } else {
+            $.cookie('password', null);
+            $.cookie('rememberPassword', null);
+        }
+        if (validate($scope.loginForm)) {
+            $scope.loginData.password = new Hashes.SHA1().hex($scope.loginData.password);
+            $myHttp.post('/api/session/login', $scope.loginData).mySuccess(function (result) {
+                if (result.code === -1) {
+                    $scope.loginData.rNum = Math.random();
+                    $scope.loginData.password = '';
+                    $scope.loginData.vercode = '';
+                } else if (result.code == 0) {
+                    $scope.menus = [];
+                    $scope.leftMenus = result.data.leftMenus;
+                    var username = $.cookie('username');
+                    var password = $.cookie('password');
+                    $scope.loginData = {
+                        rNum: Math.random(),
+                        username: username == 'null' ? '' : username,
+                        password: password == 'null' ? '' : password,
+                        vercode: "",
+                        rememberPassword: $.cookie('rememberPassword') === 'true'
+                    };
+                    $timeout(function () {
+                        $('.layui-nav-bar').remove();
+                        layuiElement.render('nav');
+                        $('#login-page').removeClass('logout');
+                    });
+                    $realTime.regPool('newsAlarm', function () {
+                        $scope.newAlarm();
+                        layuiTable.reload('20190703120431-checked', {});
+                    });
+                }
+            });
+        }
     };
 });
 
 registerHttp();
 
-
+/**
+ * 表单校验
+ * @formObj angularjs的表单对象
+ * @return 返回true校验通过，否则校验不过
+ */
+function validate(formObj) {
+    if (formObj.$invalid) {
+        var formName = formObj.$name;
+        for (var key1 in formObj) {
+            if (formObj.hasOwnProperty(key1) && key1.indexOf('$') != 0) {
+                if (formObj[key1].$invalid) {
+                    var error = formObj[key1].$error;
+                    var messages = formObj[key1].$messages;
+                    for (var key2 in error) {
+                        if (error.hasOwnProperty(key2) && error[key2] === true) {
+                            var tipIndex = layuiLayer.tips(messages[key2], $('[name="' + formName + '"] [name="' + key1 + '"]'), {
+                                tips: 1,
+                                time: 3000
+                            });
+                            $('[name="' + formName + '"] [name="' + key1 + '"]').one('blur', function () {
+                                layuiLayer.close(tipIndex);
+                            });
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return true;
+}
 
 /**
  * 退出登录的回调方法
