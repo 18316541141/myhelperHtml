@@ -1,0 +1,81 @@
+<template>
+    <div>
+        <div id="uploadExcel{{id}}" ng-if="type == 'line'">上传Excel</div>
+        <div class="layui-form-item" ng-if="type == 'form'">
+            <label class="layui-form-label">上传Excel</label>
+            <div class="layui-input-block">
+                <div id="uploadExcel{{id}}">选择Excel</div>
+            </div>
+        </div>
+        <div ng-show="isUploaded && type == 'form'" class="layui-form-item">
+            <label class="layui-form-label">预览</label>
+            <div class="layui-input-block">
+                <img ng-mouseover="showTip($event)" ng-mouseleave="hideTip();" src="images/256x256/xlsx-256.png"
+                    width="96" class="thumbnail-img" />
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    export default function uploadExcel() {
+        return {
+            restrict: 'EA',
+            scope: { url: "@", type: "@", postData: "=" },
+            controller: function ($scope, $timeout) {
+                $scope.id = new UUID().id;
+                if ($scope.postData === undefined) {
+                    $scope.postData = {};
+                }
+                $scope.$on('submit', function (event) {
+                    $scope.uploader.upload();
+                });
+                var tipIndex;
+                $scope.showTip = function (e) {
+                    if (tipIndex === undefined) {
+                        tipIndex = layuiLayer.tips($scope.excelFileName, e.target, {
+                            tips: 2,
+                            time: -1
+                        });
+                    }
+                };
+                $scope.hideTip = function () {
+                    layuiLayer.close(tipIndex);
+                    tipIndex = undefined;
+                };
+                $timeout(function () {
+                    var index;
+                    $scope.uploader = new WebUploader.Uploader({
+                        swf: 'plugin/webuploader/Uploader.swf',//当浏览器不支持XMLHttpWebRequest时，使用flash插件上传。
+                        auto: $scope.type === 'line',//选中文件后自动上传
+                        server: $scope.url,//处理上传excel的控制器
+                        fileVal: 'fileUpload',//服务端接收二进制文件的参数名称
+                        formData: $scope.postData,//每次上传时上传的数据
+                        duplicate: true,
+                        pick: {
+                            id: '#uploadExcel' + $scope.id,//生成上传插件的位置
+                            multiple: false //每次只能选一个文件
+                        },
+                        //允许上传的图片格式后缀
+                        accept: {
+                            title: 'excel',
+                            extensions: 'xls,xlsx',
+                            mimeTypes: 'application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                        }
+                    }).on('uploadStart', function (file) {
+                        index = layuiLayer.load(0);
+                    }).on('uploadSuccess', uploadCallback(function (file, response) {
+                        layuiLayer.close(index);
+                    })).on('error', function (type) {
+                        if (type === 'Q_TYPE_DENIED') {
+                            layuiLayer.msg('该文件类型可能不是Excel文件。', { icon: 5, anim: 6 });
+                        }
+                    }).on('beforeFileQueued', function (file) {
+                        $scope.isUploaded = true;
+                        $scope.excelFileName = file.name;
+                        $scope.$apply();
+                    });
+                });
+            }
+        };
+    }
+</script>

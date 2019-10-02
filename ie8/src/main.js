@@ -31,11 +31,18 @@ import datetime from './common/components/datetime.ang.html';
 import mySelect from './common/components/mySelect.ang.html';
 import myCheckbox from './common/components/myCheckbox.ang.html';
 import pageDataTable from './common/components/pageDataTable.ang.html';
+import pieChart from './common/components/pieChart.ang.html';
+import histogram from './common/components/histogram.ang.html';
+import uploadFiles from './common/components/uploadFiles.ang.html';
+import uploadExcel from './common/components/uploadExcel.ang.html';
+import treeForm from './common/components/treeForm.ang.html';
 import editLogEntity from './common/menus/system/editLogEntity.js';
 import heartbeatEntity from './common/menus/system/heartbeatEntity.js';
 import logEntity from './common/menus/system/logEntity.js';
 import moment from 'moment';
+import $realTime from './common/factory/$realTime.js';
 
+window.Highcharts = Highcharts;
 window.UUID = UUID;
 window.moment = moment;
 window.angular = angular;
@@ -101,6 +108,11 @@ window.layuiTable.set({
     window.myApp.directive('mySelect', mySelect);
     window.myApp.directive('myCheckbox', myCheckbox);
     window.myApp.directive('pageDataTable', pageDataTable);
+    window.myApp.directive('pieChart', pieChart);
+    window.myApp.directive('histogram', histogram);
+    window.myApp.directive('uploadFiles', uploadFiles);
+    window.myApp.directive('uploadExcel', uploadExcel);
+    window.myApp.directive('treeForm', treeForm);
 }());
 
 //注册通用菜单
@@ -122,6 +134,12 @@ window.layuiTable.set({
     window.myApp.directive('ngMobile', ngMobile);
     window.myApp.directive('ngEqualTo', ngEqualTo);
     window.myApp.directive('ngIsInt', ngIsInt);
+}());
+
+//注册业务组件
+(function(){
+    window.myApp.factory('$realTime',$realTime);
+
 }());
 
 window.myApp.controller('main-body', function ($scope, $myHttp, $timeout) {

@@ -1,0 +1,49 @@
+<template>
+    <div id="histogram{{id}}"></div>
+</template>
+<script>
+    export default function histogram() {
+        return {
+            restrict: 'EA',
+            scope: { title: "@", unit: "@", rowAxisTitle: "=", yAxisTitle: "=", histogramData: "=" },
+            controller: function ($scope, $timeout) {
+                $scope.id = new UUID().id;
+                $timeout(function () {
+                    Highcharts.chart('histogram' + $scope.id, {
+                        chart: {
+                            type: 'column'
+                        },
+                        title: {
+                            text: $scope.title
+                        },
+                        xAxis: {
+                            categories: $scope.rowAxisTitle,
+                            crosshair: true
+                        },
+                        yAxis: {
+                            min: 0,
+                            title: {
+                                text: $scope.yAxisTitle//'降雨量 (mm)'
+                            }
+                        },
+                        tooltip: {
+                            // head + 每个 point + footer 拼接成完整的 table
+                            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                                '<td style="padding:0"><b>{point.y:.1f} ' + $scope.unit + '</b></td></tr>',
+                            footerFormat: '</table>',
+                            shared: true,
+                            useHTML: true
+                        },
+                        plotOptions: {
+                            column: {
+                                borderWidth: 0
+                            }
+                        },
+                        series: $scope.histogramData
+                    });
+                });
+            }
+        };
+    }
+</script>

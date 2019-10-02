@@ -1,0 +1,126 @@
+<template>
+    <div class="tree-container" id="{{id}}">
+        <div class="left-tree">
+            <input placeholder="按节点名称搜索" autocomplete="off" class="layui-input" ng-model="searchParam"
+                ng-blur="search()" />
+            <div class="left-tree-contain">
+                <div id="tree-{{id}}" class="ztree layui-side-scroll"></div>
+            </div>
+        </div>
+        <div class="right-content" ng-transclude></div>
+    </div>
+</template>
+<script>
+    export default function treeForm() {
+        /**
+         * 注册树表单标签。
+         * 通过<tree-form> ...表单元素... </tree-form>快速构建树表单标签。
+         */
+        return {
+            restrict: 'EA',
+            transclude: true,
+            scope: { url: "@", targetController: "@" },
+            controller: function ($scope, $myHttp) {
+                $scope.id = new UUID().id;
+                //还原最近一次移动的节点，只能还原一步
+                $scope.$on('restoreNode', function (event) {
+                    if ($scope.dragNode === null || $scope.referenceNode === null) {
+                        return;
+                    }
+                    $scope.ztree.moveNode($scope.referenceNode,$scope.dragNode,$scope.referenceType);
+                });
+                //删除节点
+                $scope.$on('delNode', function (event, id) {
+                    var nodes = $scope.ztree.getNodesByParam("id", id, null);
+                    if (nodes.length === 0)
+                        throw new Error('找不到该节点，删除失败！');
+                    $scope.ztree.removeNode(nodes[0], false);
+                });
+                //节点重命名
+                $scope.$on('rename', function (event, id, name) {
+                    var nodes = $scope.ztree.getNodesByParam("id", id, null);
+                    if (nodes.length === 0)
+                        throw new Error('找不到该节点，编辑失败！');
+                    nodes[0].name = name;
+                    $scope.ztree.updateNode(nodes[0]);
+                });
+                //重新加载树
+                $scope.$on('reloadTree', function (event) {
+                    $scope.loadTree();
+                });
+                $scope.search = function () {
+                    var ztree = $scope.ztree;
+                    if ($.type($scope.searchParam) === 'string' && ($scope.searchParam = $.trim($scope.searchParam)).length > 0) {
+                        ztree.hideNodes(ztree.getNodesByParam("isHidden", false));
+                        var nodes = ztree.getNodesByParamFuzzy('name', $scope.searchParam, null);
+                        var showNodes = [];
+                        for (var i = 0, len = nodes.length; i < len; i++) {
+                            var tempNode = nodes[i];
+                            do {
+                                showNodes[showNodes.length] = tempNode;
+                            } while ((tempNode = tempNode.getParentNode()) != null);
+                        }
+                        ztree.showNodes(showNodes);
+                        ztree.expandAll(true);
+                    } else {
+                        ztree.showNodes(ztree.getNodes());
+                    }
+                };
+                $scope.loadTree = function () {
+                    $myHttp.get($scope.url).mySuccess(function (result) {
+                        $scope.ztree = $.fn.zTree.init($('#tree-' + $scope.id), {
+                            view: {
+                                showLine: false
+                            },
+                            edit: {
+                                enable: true,
+                                showRemoveBtn: false,
+                                showRenameBtn: false,
+                                drag: {
+                                    prev: true,
+                                    inner: true,
+                                    next: true,
+                                    isMove: true
+                                }
+                            },
+                            callback: {
+                                beforeDrag: function (treeId, treeNodes) {
+                                    $scope.dragNode = treeNodes[0];
+                                    var tempNode = treeNodes[0].getPreNode();
+                                    if (tempNode !== null) {
+                                        $scope.referenceNode = tempNode;
+                                        $scope.referenceType = 'next';
+                                        return;
+                                    }
+                                    tempNode = treeNodes[0].getNextNode();
+                                    if (tempNode !== null) {
+                                        $scope.referenceNode = tempNode;
+                                        $scope.referenceType = 'prev';
+                                        return;
+                                    }
+                                    tempNode = treeNodes[0].getParentNode();
+                                    if (tempNode !== null) {
+                                        $scope.referenceNode = tempNode;
+                                        $scope.referenceType = 'inner';
+                                        return;
+                                    }
+                                },
+                                onClick: function (event, treeId, treeNode) {
+                                    $scope.$emit('onClick', treeNode);//点击节点前监听
+                                },
+                                beforeDrop: function (treeId, treeNodes, targetNode, moveType) {
+                                    var retObj = { ret: true };
+                                    $scope.$emit('beforeDrop', treeNodes, targetNode, moveType, retObj);
+                                    return retObj.ret;
+                                }
+                            }
+                        }, result.data);
+                        layuiForm.render();
+                        $('#' + $scope.id + ' .left-tree').height($('#' + $scope.id + ' .right-content').height());
+                    });
+                };
+                $scope.loadTree();
+            }
+        };
+    }
+</script>
