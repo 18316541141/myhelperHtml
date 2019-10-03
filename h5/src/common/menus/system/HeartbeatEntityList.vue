@@ -89,7 +89,7 @@
           {{ scope.row.lastHeartbeatTime }}
         </template>
       </el-table-column>
-      <el-table-column prop="robotMac" label="机器人ip"></el-table-column>
+      <el-table-column prop="robotMac" label="机器人MAC"></el-table-column>
       <el-table-column prop="remark" label="机器人备注" width="150px"></el-table-column>
       <el-table-column label="运行状态">
         <template slot-scope="scope">
