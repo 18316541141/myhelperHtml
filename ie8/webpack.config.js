@@ -1,5 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const es3ifyPlugin = require('es3ify-webpack-plugin');
 module.exports = {
     context: path.resolve(__dirname, 'src'),
     entry: './main.js',
@@ -32,24 +34,42 @@ module.exports = {
             }
         ]
     },
-    plugins:[
+    plugins: [
+        new es3ifyPlugin(),
         new webpack.ProvidePlugin({
-            jQuery:'jquery',
-            $:'jquery',
-        }),
+            jQuery: 'jquery',
+            $: 'jquery',
+        }), new UglifyJsPlugin({
+            uglifyOptions: {
+                ie8: true,
+                output: {
+                    comments: false,
+                    beautify: false,
+                    ie8:true
+                },
+                compress: {
+                    drop_debugger: true,
+                    drop_console: true,
+                    ie8:true
+                },
+                warnings: false
+            },
+            sourceMap: true,
+            parallel: true,
+        })
     ],
-    devServer:{	
-		https: false,
-		compress: true,
-		proxy:{
-			'/api':{
-				target:'http://localhost:46054/',
-				ws:true,
-				changOrigin: true,
-				pathRewrite: {
-					'^/api': ''
-				}
-			}
-		}
-	}
+    devServer: {
+        https: false,
+        compress: true,
+        proxy: {
+            '/api': {
+                target: 'http://localhost:46054/',
+                ws: true,
+                changOrigin: true,
+                pathRewrite: {
+                    '^/api': ''
+                }
+            }
+        }
+    }
 };
