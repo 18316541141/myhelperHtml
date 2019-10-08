@@ -1,4 +1,4 @@
-export default function logEntity($scope, layer) {
+function logEntity($scope, $moment, layer) {
     $scope.postData = {
         level: '',
         threadNoLike: '',
@@ -8,8 +8,8 @@ export default function logEntity($scope, layer) {
         typeNameLike: '',
         funcNameLike: '',
         usernameLike: $.cookie('username'),
-        createDateStart: moment().subtract("seconds", 1800).format("YYYY-MM-DD HH:mm:ss"),
-        createDateEnd: moment().format("YYYY-MM-DD HH:mm:ss"),
+        createDateStart: $moment().subtract("seconds", 1800).format("YYYY-MM-DD HH:mm:ss"),
+        createDateEnd: $moment().format("YYYY-MM-DD HH:mm:ss"),
     };
     $scope.cols = [
         { field: "username", title: '日志用户名', sort: true },
@@ -75,3 +75,4 @@ export default function logEntity($scope, layer) {
         }
     });
 }
+module.exports = logEntity;

@@ -3,7 +3,7 @@
     <input type="checkbox" ng-if="type==='primary'" lay-skin="primary" title="{{title}}" id="{{id}}" filter="{{id}}">
 </template>
 <script>
-    export default function myCheckbox() {
+    function myCheckbox() {
         return {
             restrict: 'EA',
             /**
@@ -24,4 +24,5 @@
             }
         };
     }
+    module.exports = myCheckbox;
 </script>

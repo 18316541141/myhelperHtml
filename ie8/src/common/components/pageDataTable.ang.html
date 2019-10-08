@@ -2,7 +2,7 @@
     <div id="data-table-{{id}}" lay-filter="dataTable{{id}}"></div>
 </template>
 <script>
-    export default function pageDataTable() {
+    function pageDataTable() {
         return {
             restrict: 'EA',
             scope: { url: "@", tableToolbar: "@", showCheckCol: "@", showDefaultOperCol: "@", height: "@", postData: "=", cols: "=", perms: "=" },
@@ -66,4 +66,5 @@
             }
         };
     }
+    module.exports = pageDataTable;
 </script>

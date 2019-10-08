@@ -2,7 +2,7 @@
     <input type="text" class="layui-input" id="{{id}}" placeholder="{{placeholder}}" ng-model="value" style="width:{{width}}px;"/>
 </template>
 <script>
-    export default function datetime() {
+    function datetime() {
         return {
             restrict: 'EA',
             scope: { placeholder: "@", format: "@",value:"=",width:"@" },
@@ -24,4 +24,5 @@
             }
         };
     }
+    module.exports = datetime;
 </script>

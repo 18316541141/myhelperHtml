@@ -4,7 +4,7 @@
     </select>
 </template>
 <script>
-    export default function mySelect() {
+    function mySelect() {
         return {
             restrict: 'EA',
             scope: { options: "=", value: "=" },
@@ -29,4 +29,5 @@
             }
         };
     }
+    module.exports = mySelect;
 </script>

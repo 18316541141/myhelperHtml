@@ -2,7 +2,7 @@
     <div id="histogram{{id}}"></div>
 </template>
 <script>
-    export default function histogram() {
+    function histogram() {
         return {
             restrict: 'EA',
             scope: { title: "@", unit: "@", rowAxisTitle: "=", yAxisTitle: "=", histogramData: "=" },
@@ -46,4 +46,5 @@
             }
         };
     }
+    module.exports = histogram;
 </script>

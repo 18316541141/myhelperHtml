@@ -1,4 +1,3 @@
-let loaderUtils = require('loader-utils');
 var DOMParser = require('xmldom').DOMParser;
 module.exports = function (source) {
   var parser = new DOMParser();

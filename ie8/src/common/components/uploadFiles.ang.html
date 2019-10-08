@@ -49,7 +49,7 @@
     </div>
 </template>
 <script>
-    export default function uploadFiles() {
+    function uploadFiles() {
         return {
             restrict: 'EA',
             scope: { fileDescMaxWidth: "@", files: "=" },
@@ -132,4 +132,5 @@
             }
         };
     }
+    module.exports = uploadFiles;
 </script>

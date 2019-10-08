@@ -1,13 +1,44 @@
-const path = require('path');
-const webpack = require('webpack');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const es3ifyPlugin = require('es3ify-webpack-plugin');
+let path = require('path')
+let webpack = require('webpack')
+let HtmlWebpackPlugin = require('html-webpack-plugin')
+let UglifyjsWebpackPlugin = require('uglifyjs-webpack-plugin')
 module.exports = {
-    context: path.resolve(__dirname, 'src'),
-    entry: './main.js',
+    optimization: {
+        minimizer: [new UglifyjsWebpackPlugin({
+            uglifyOptions: {
+                ie8: true,
+                compress: {
+                    drop_console: true
+                },
+                output: {
+                    // 最紧凑的输出
+                    beautify: false,
+                    // 删除所有的注释
+                    comments: false,
+                }
+            }
+        })]
+    },
+    devServer: {
+        contentBase: './dist',
+        https: false,
+        compress: true,
+        proxy: {
+            '/api': {
+                target: 'http://localhost:46054/',
+                ws: true,
+                changOrigin: true,
+                pathRewrite: {
+                    '^/api': ''
+                }
+            }
+        }
+    },
+    mode: 'development',
+    entry: './src/main.js',
     output: {
-        path: path.resolve(__dirname, 'dist'),
-        filename: 'my-first-webpack.bundle.js'
+        filename: 'bundle.js',
+        path: path.resolve(__dirname, 'dist')
     },
     module: {
         rules: [
@@ -21,7 +52,7 @@ module.exports = {
             },
             {
                 test: /\.(woff|woff2|eot|ttf|otf|svg|gif|png|xml)$/,
-                use: [{
+                loader: [{
                     loader: 'file-loader',
                     options: {
                         name: '[path][name].[ext]',//path为相对于context的路径
@@ -31,45 +62,31 @@ module.exports = {
                         }
                     }
                 }]
+            },
+            {
+                test: /\.html$/,
+                exclude: /\.ang\.html$/,
+                loader: [{
+                    loader: 'file-loader',
+                    options: {
+                        outputPath: 'html/'//options会直接传给fallback指定的loader
+                    }
+                }]
             }
         ]
     },
     plugins: [
-        new es3ifyPlugin(),
         new webpack.ProvidePlugin({
-            jQuery: 'jquery',
             $: 'jquery',
-        }), new UglifyJsPlugin({
-            uglifyOptions: {
-                ie8: true,
-                output: {
-                    comments: false,
-                    beautify: false,
-                    ie8:true
-                },
-                compress: {
-                    drop_debugger: true,
-                    drop_console: true,
-                    ie8:true
-                },
-                warnings: false
+            jQuery: 'jquery'
+        }),
+        new HtmlWebpackPlugin({
+            template: './src/index.html',//模板文件
+            filename: 'index.html',//输出文件名
+            minify: {
+                collapseWhitespace: true //压缩换行，注意，有些标签<pre>压缩换行后会出问题的。
             },
-            sourceMap: true,
-            parallel: true,
+            hash: true //对js添加hash参数，避免更新代码后使用缓存
         })
-    ],
-    devServer: {
-        https: false,
-        compress: true,
-        proxy: {
-            '/api': {
-                target: 'http://localhost:46054/',
-                ws: true,
-                changOrigin: true,
-                pathRewrite: {
-                    '^/api': ''
-                }
-            }
-        }
-    }
-};
+    ]
+}

@@ -1,64 +1,82 @@
-import angular from 'angular';
-import layui from 'layui-src/dist/layui.all.js';
-import 'layui-src/dist/css/modules/laydate/default/laydate.css';
-import 'layui-src/dist/css/modules/layer/default/layer.css';
-import 'layui-src/dist/css/modules/code.css';
-import 'layui-src/dist/css/layui.css'
-import './css/login.css'
-import $ from 'jquery';
-import 'jquery.cookie';
-import registerHttp from './common/utils/http.js';
-import UUID from './common/utils/UUID.js';
-import Hashes from "jshashes";
-import webuploader from 'webuploader';
-import Highcharts from 'highcharts';
-import 'webuploader/css/webuploader.css'
-import '@ztree/ztree_v3/js/jquery.ztree.core.min.js';
-import '@ztree/ztree_v3/js/jquery.ztree.excheck.min.js';
-import '@ztree/ztree_v3/css/metroStyle/metroStyle.css';
-import './common/utils/ng-layer.js';
-import ngRequired2 from './common/validate/ngRequired2.js';
-import ngLength from './common/validate/ngLength.js';
-import ngMinlength2 from './common/validate/ngMinlength2.js';
-import ngMaxlength2 from './common/validate/ngMaxlength2.js';
-import ngMinDouble from './common/validate/ngMinDouble.js';
-import ngMaxDouble from './common/validate/ngMaxDouble.js';
-import ngUrl from './common/validate/ngUrl.js';
-import ngMobile from './common/validate/ngMobile.js';
-import ngEqualTo from './common/validate/ngEqualTo.js';
-import ngIsInt from './common/validate/ngIsInt.js';
-import datetime from './common/components/datetime.ang.html';
-import mySelect from './common/components/mySelect.ang.html';
-import myCheckbox from './common/components/myCheckbox.ang.html';
-import pageDataTable from './common/components/pageDataTable.ang.html';
-import pieChart from './common/components/pieChart.ang.html';
-import histogram from './common/components/histogram.ang.html';
-import uploadFiles from './common/components/uploadFiles.ang.html';
-import uploadExcel from './common/components/uploadExcel.ang.html';
-import treeForm from './common/components/treeForm.ang.html';
-import editLogEntity from './common/menus/system/editLogEntity.js';
-import heartbeatEntity from './common/menus/system/heartbeatEntity.js';
-import logEntity from './common/menus/system/logEntity.js';
-import moment from 'moment';
-import $realTime from './common/factory/$realTime.js';
+var angular = require('angular');
+require('layui-src/dist/layui.all');
+require('layui-src/dist/css/modules/laydate/default/laydate.css');
+require('layui-src/dist/css/modules/layer/default/layer.css');
+require('layui-src/dist/css/modules/code.css');
+require('layui-src/dist/css/layui.css');
+require('./css/login.css');
+require('webuploader/css/webuploader.css');
+require('jquery.cookie');
+require('./common/utils/ng-layer.js');
+require('@ztree/ztree_v3/js/jquery.ztree.core.min.js');
+require('@ztree/ztree_v3/js/jquery.ztree.excheck.min.js');
+require('@ztree/ztree_v3/css/metroStyle/metroStyle.css');
+window.UUID = require('./common/utils/UUID.js');
+window.Hashes = require('jshashes');
+// window.Moment = require('moment');//引入后ie8有问题。
+window.webuploader = require('webuploader');
+window.Highcharts = require('highcharts');
+window.$ = $;
+window.layui = layui;
+window.layuiForm = layui.form;
+window.layuiLayer = layui.layer;
+window.layuiElement = layui.element;
+window.layuiTree = layui.tree;
+window.layuiTable = layui.table;
+window.layuiLaypage = layui.laypage;
+window.layuiLaydate = layui.laydate;
 
-window.Highcharts = Highcharts;
-window.UUID = UUID;
-window.moment = moment;
-window.angular = angular;
-window.layuiForm = window.layui.form;
-window.layuiLayer = window.layui.layer;
-window.layuiElement = window.layui.element;
-window.layuiTree = window.layui.tree;
-window.layuiTable = window.layui.table;
-window.layuiLaypage = window.layui.laypage;
-window.layuiLaydate = window.layui.laydate;
 window.myApp = angular.module('my-app', ['ng-layer']);
+
+//注册通用组件
+(function () {
+    window.myApp.directive('datetime', require('./common/components/datetime.ang.html'));
+    window.myApp.directive('mySelect', require('./common/components/mySelect.ang.html'));
+    window.myApp.directive('myCheckbox', require('./common/components/myCheckbox.ang.html'));
+    window.myApp.directive('pageDataTable', require('./common/components/pageDataTable.ang.html'));
+    window.myApp.directive('pieChart', require('./common/components/pieChart.ang.html'));
+    window.myApp.directive('histogram', require('./common/components/histogram.ang.html'));
+    window.myApp.directive('uploadFiles', require('./common/components/uploadFiles.ang.html'));
+    window.myApp.directive('uploadExcel', require('./common/components/uploadExcel.ang.html'));
+    window.myApp.directive('treeForm', require('./common/components/treeForm.ang.html'));
+    require('./regComponents.js')(window.myApp);
+}());
+
+//注册通用菜单
+(function () {
+    window.myApp.controller('editLogEntity', require('./common/menus/system/editLogEntity.js'));
+    window.myApp.controller('heartbeatEntity', require('./common/menus/system/heartbeatEntity.js'));
+    window.myApp.controller('logEntity', require('./common/menus/system/logEntity.js'));
+    require('./regMenus.js')(window.myApp);
+}());
+
+//注册通用校验
+(function () {
+    window.myApp.directive('ngRequired2', require('./common/validates/ngRequired2.js'));
+    window.myApp.directive('ngLength', require('./common/validates/ngLength.js'));
+    window.myApp.directive('ngMinlength2', require('./common/validates/ngMinlength2.js'));
+    window.myApp.directive('ngMaxlength2', require('./common/validates/ngMaxlength2.js'));
+    window.myApp.directive('ngMinDouble', require('./common/validates/ngMinDouble.js'));
+    window.myApp.directive('ngMaxDouble', require('./common/validates/ngMaxDouble.js'));
+    window.myApp.directive('ngUrl', require('./common/validates/ngUrl.js'));
+    window.myApp.directive('ngMobile', require('./common/validates/ngMobile.js'));
+    window.myApp.directive('ngEqualTo', require('./common/validates/ngEqualTo.js'));
+    window.myApp.directive('ngIsInt', require('./common/validates/ngIsInt.js'));
+    require('./regValidates.js')(window.myApp);
+}());
+
+//注册业务组件
+(function () {
+    window.myApp.factory('$myHttp', require('./common/factories/$myHttp.js'));
+    window.myApp.factory('$realTime', require('./common/factories/$realTime.js'));
+    window.myApp.factory('$moment', require('./common/factories/$moment.js'));
+    require('./regFactories.js')(window.myApp);
+}());
 
 /**
  * layui的datatable默认的配置
  */
-window.layuiTable.set({
+layuiTable.set({
     autoSort: false,
     page: {
         layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
@@ -82,65 +100,25 @@ window.layuiTable.set({
             }
             ret = { code: result.code, count: 0, data: [] };
         }
-            //用户无权限，无法操作，但需要后续处理
+        //用户无权限，无法操作，但需要后续处理
         else if (result.code === -9) {
             ret = { code: result.code, msg: '当前用户组无操作权限！', count: 0, data: [] };
         }
-            //用户无权限，无法操作
+        //用户无权限，无法操作
         else if (result.code === -8) {
             ret = { code: result.code, msg: '当前用户组无操作权限！', count: 0, data: [] };
         }
-            //常规错误，
+        //常规错误，
         else if (result.code === -1) {
             ret = { code: result.code, msg: response.msg, count: 0, data: [] };
         }
-            //成功
+        //成功
         else if (result.code === 0) {
             ret = { code: result.code, count: data.totalItemCount, data: data.pageDataList };
         }
         return ret;
     }
 });
-
-//注册通用组件
-(function () {
-    window.myApp.directive('datetime', datetime);
-    window.myApp.directive('mySelect', mySelect);
-    window.myApp.directive('myCheckbox', myCheckbox);
-    window.myApp.directive('pageDataTable', pageDataTable);
-    window.myApp.directive('pieChart', pieChart);
-    window.myApp.directive('histogram', histogram);
-    window.myApp.directive('uploadFiles', uploadFiles);
-    window.myApp.directive('uploadExcel', uploadExcel);
-    window.myApp.directive('treeForm', treeForm);
-}());
-
-//注册通用菜单
-(function () {
-    window.myApp.controller('editLogEntity', editLogEntity);
-    window.myApp.controller('heartbeatEntity', heartbeatEntity);
-    window.myApp.controller('logEntity', logEntity);
-}());
-
-//注册通用校验
-(function () {
-    window.myApp.directive('ngRequired2', ngRequired2);
-    window.myApp.directive('ngLength', ngLength);
-    window.myApp.directive('ngMinlength2', ngMinlength2);
-    window.myApp.directive('ngMaxlength2', ngMaxlength2);
-    window.myApp.directive('ngMinDouble', ngMinDouble);
-    window.myApp.directive('ngMaxDouble', ngMaxDouble);
-    window.myApp.directive('ngUrl', ngUrl);
-    window.myApp.directive('ngMobile', ngMobile);
-    window.myApp.directive('ngEqualTo', ngEqualTo);
-    window.myApp.directive('ngIsInt', ngIsInt);
-}());
-
-//注册业务组件
-(function(){
-    window.myApp.factory('$realTime',$realTime);
-
-}());
 
 window.myApp.controller('main-body', function ($scope, $myHttp, $timeout) {
     $myHttp.get('/api/index/loadLoginData').mySuccess(function (result) {
@@ -282,7 +260,6 @@ window.myApp.controller('main-body', function ($scope, $myHttp, $timeout) {
     };
 });
 
-registerHttp();
 
 /**
  * 表单校验
