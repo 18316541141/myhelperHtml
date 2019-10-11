@@ -55,21 +55,17 @@ module.exports = {
                 loader: [{
                     loader: 'file-loader',
                     options: {
-                        name: '[path][name].[ext]',//path为相对于context的路径
-                        context: 'src',
-                        publicPath: function (url) {//返回最终的资源相对路径
-                            return path.relative(__dirname, url).replace(/\\/g, '/');
-                        }
+                        name: '[path][name].[ext]'
                     }
                 }]
             },
             {
                 test: /\.html$/,
-                exclude: /\.ang\.html$/,
+                exclude: /(\.ang\.html|index\.html)$/,
                 loader: [{
                     loader: 'file-loader',
                     options: {
-                        outputPath: 'html/'//options会直接传给fallback指定的loader
+                        name: '[path][name].[ext]?v=[hash]'
                     }
                 }]
             }

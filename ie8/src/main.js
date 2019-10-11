@@ -28,6 +28,14 @@ window.layuiLaydate = layui.laydate;
 
 window.myApp = angular.module('my-app', ['ng-layer']);
 
+//注册异步页面
+(function(){
+    require('../static/common/system/editLogEntity.html');
+    require('../static/common/system/heartbeatEntity.html');
+    require('../static/common/system/logEntity.html');
+    require('./regHtmlPages.js')();
+}());
+
 //注册通用组件
 (function () {
     window.myApp.directive('datetime', require('./common/components/datetime.ang.html'));

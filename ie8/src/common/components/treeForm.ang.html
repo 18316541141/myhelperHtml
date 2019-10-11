@@ -109,9 +109,8 @@
                                     $scope.$emit('onClick', treeNode);//点击节点前监听
                                 },
                                 beforeDrop: function (treeId, treeNodes, targetNode, moveType) {
-                                    var retObj = { ret: true };
-                                    $scope.$emit('beforeDrop', treeNodes, targetNode, moveType, retObj);
-                                    return retObj.ret;
+                                    $scope.$emit('beforeDrop', treeNodes, targetNode, moveType);
+                                    return true;
                                 }
                             }
                         }, result.data);
