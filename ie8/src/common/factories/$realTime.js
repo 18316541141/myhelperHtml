@@ -53,7 +53,7 @@ function $realTime($http) {
         get: function (poolName) {
             var thiz = this;
             regPoolMap[poolName].wait = true;
-            $http({ method: 'GET', params: { v: Math.random(),realTimePool:poolName, realTimeVersion:regPoolMap[poolName].version }, url: '/api/index/realTime' })
+            $http({ method: 'GET', params: { v: Math.random(),realTimePool:poolName, realTimeVersion:regPoolMap[poolName].version }, url: PROXY+'/index/realTime' })
                 .success(function (response, status, headers, config) {
                     regPoolMap[poolName].wait = false;
                     regPoolMap[poolName].version = headers('Real-Time-Version');

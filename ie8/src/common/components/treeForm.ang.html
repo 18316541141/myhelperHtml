@@ -1,8 +1,16 @@
 <template>
     <div class="tree-container" id="{{id}}">
         <div class="left-tree">
-            <input placeholder="按节点名称搜索" autocomplete="off" class="layui-input" ng-model="searchParam"
-                ng-blur="search()" />
+            <div style="width: 100%;">
+                <div style="width:153px;position: relative;display:inline-block;">
+                    <input placeholder="按节点名称搜索" autocomplete="off" class="layui-input" ng-model="searchParam" />
+                </div>
+                <div style="position: relative;display:inline-block;top:-2px;">
+                    <button type="button" class="layui-btn layui-btn-primary" ng-click="search()" style="border-color: #D2D2D2;padding:0 10px;">
+                        <i class="layui-icon layui-icon-search"></i>
+                    </button>
+                </div>
+            </div>
             <div class="left-tree-contain">
                 <div id="tree-{{id}}" class="ztree layui-side-scroll"></div>
             </div>
@@ -27,7 +35,7 @@
                     if ($scope.dragNode === null || $scope.referenceNode === null) {
                         return;
                     }
-                    $scope.ztree.moveNode($scope.referenceNode,$scope.dragNode,$scope.referenceType);
+                    $scope.ztree.moveNode($scope.referenceNode, $scope.dragNode, $scope.referenceType);
                 });
                 //删除节点
                 $scope.$on('delNode', function (event, id) {

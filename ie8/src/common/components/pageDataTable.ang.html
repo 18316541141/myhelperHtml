@@ -5,7 +5,7 @@
     function pageDataTable() {
         return {
             restrict: 'EA',
-            scope: { url: "@", tableToolbar: "@", showCheckCol: "@", showDefaultOperCol: "@", height: "@", postData: "=", cols: "=", perms: "=" },
+            scope: { url: "@", tableToolbar: "@", showCheckCol: "@", showDefaultOperCol: "@", height: "@", postData: "=", cols: "="},
             controller: function ($scope, $timeout, $myHttp) {
                 $scope.id = new UUID().id;
                 if ($scope.cols === undefined) {

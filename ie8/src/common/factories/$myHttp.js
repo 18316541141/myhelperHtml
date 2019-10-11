@@ -107,6 +107,8 @@ function myCallback(callback, ani) {
                 window.layuiLayer.msg(result.msg, { icon: 1 });
             }
             callback(result, textStatus, req);
+        }else{
+            throw new Error('返回状态码错误，状态码是：'+result.code+'！');
         }
         callback = null;
     }

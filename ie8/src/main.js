@@ -9,7 +9,7 @@ require('webuploader/css/webuploader.css');
 require('jquery.cookie');
 require('./common/utils/ng-layer.js');
 require('@ztree/ztree_v3/js/jquery.ztree.core.min.js');
-require('@ztree/ztree_v3/js/jquery.ztree.excheck.min.js');
+require('@ztree/ztree_v3/js/jquery.ztree.exhide.min.js');
 require('@ztree/ztree_v3/css/metroStyle/metroStyle.css');
 window.UUID = require('./common/utils/UUID.js');
 window.Hashes = require('jshashes');
@@ -27,6 +27,12 @@ window.layuiLaypage = layui.laypage;
 window.layuiLaydate = layui.laydate;
 
 window.myApp = angular.module('my-app', ['ng-layer']);
+
+//注册全局变量
+(function(){
+    window.myApp.value('PROXY',PROXY);
+    window.myApp.value('supportPlaceholder','placeholder' in document.createElement('input'));
+}());
 
 //注册异步页面
 (function(){
@@ -129,7 +135,7 @@ layuiTable.set({
 });
 
 window.myApp.controller('main-body', function ($scope, $myHttp, $timeout) {
-    $myHttp.get('/api/index/loadLoginData').mySuccess(function (result) {
+    $myHttp.get($scope.PROXY+'/index/loadLoginData').mySuccess(function (result) {
         var data = result.data;
         $scope.leftMenus = data.leftMenus;
         $.cookie('username', data.username);
@@ -221,7 +227,7 @@ window.myApp.controller('main-body', function ($scope, $myHttp, $timeout) {
      * 退出登陆的方法
      */
     $scope.logout = function () {
-        $myHttp.get('/api/session/logout').mySuccess(logoutCallback);
+        $myHttp.get($scope.PROXY+'/session/logout').mySuccess(logoutCallback);
         // $realTime.cancelAll();
     };
 
@@ -236,7 +242,7 @@ window.myApp.controller('main-body', function ($scope, $myHttp, $timeout) {
         }
         if (validate($scope.loginForm)) {
             $scope.loginData.password = new Hashes.SHA1().hex($scope.loginData.password);
-            $myHttp.post('/api/session/login', $scope.loginData).mySuccess(function (result) {
+            $myHttp.post($scope.PROXY+'/session/login', $scope.loginData).mySuccess(function (result) {
                 if (result.code === -1) {
                     $scope.loginData.rNum = Math.random();
                     $scope.loginData.password = '';

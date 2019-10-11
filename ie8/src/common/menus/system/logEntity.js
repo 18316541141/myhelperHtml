@@ -39,15 +39,6 @@ function logEntity($scope, $moment, layer) {
         { text: 'FATAL', value: 'FATAL' },
         { text: 'OFF', value: 'OFF' }
     ];
-    $scope.perms = {
-        enabled: false,
-        disabled: false,
-        add: false,
-        'export': false,
-        delBatch: false,
-        del: false,
-        edit: false
-    };
     $scope.search = function () {
         $scope.$broadcast('searchPage');
     };

@@ -11,30 +11,12 @@ module.exports = {
                     drop_console: true
                 },
                 output: {
-                    // 最紧凑的输出
                     beautify: false,
-                    // 删除所有的注释
                     comments: false,
                 }
             }
         })]
     },
-    devServer: {
-        contentBase: './dist',
-        https: false,
-        compress: true,
-        proxy: {
-            '/api': {
-                target: 'http://localhost:46054/',
-                ws: true,
-                changOrigin: true,
-                pathRewrite: {
-                    '^/api': ''
-                }
-            }
-        }
-    },
-    mode: 'development',
     entry: './src/main.js',
     output: {
         filename: 'bundle.js',

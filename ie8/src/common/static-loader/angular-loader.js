@@ -1,7 +1,7 @@
 var DOMParser = require('xmldom').DOMParser;
 module.exports = function (source) {
   var parser = new DOMParser();
-  var domObj = parser.parseFromString(source, "text/xml");
+  var domObj = parser.parseFromString(source, "text/html");
   var template = domObj.getElementsByTagName('template')[0];
   var script = domObj.getElementsByTagName('script')[0];
   var templateHtml='';

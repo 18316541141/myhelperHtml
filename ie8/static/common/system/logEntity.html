@@ -4,51 +4,61 @@
 <div ng-controller="logEntity">
     <form class="layui-form log-entity-query-form">
         <div class="layui-inline" style="padding-bottom: 5px;">
+            <label ng-if="$scope.supportPlaceholder===false" class="layui-form-label">用户名</label>
             <div class="layui-input-inline">
                 <input style="width:150px;" type="text" name="usernameLike" ng-model="postData.usernameLike" placeholder="用户名" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-inline" style="padding-bottom: 5px;">
+            <label ng-if="$scope.supportPlaceholder===false" class="layui-form-label">请选择日志级别</label>
             <div class="layui-input-inline">
                 <span my-select value="postData.level" options="options"></span>
             </div>
         </div>
         <div class="layui-inline" style="padding-bottom: 5px;">
+            <label ng-if="$scope.supportPlaceholder===false" class="layui-form-label">线程号</label>
             <div class="layui-input-inline">
                 <input style="width:100px;" type="text" name="threadNoLike" ng-model="postData.threadNoLike" placeholder="线程号" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-inline" style="padding-bottom: 5px;">
+            <label ng-if="$scope.supportPlaceholder===false" class="layui-form-label">异常信息</label>
             <div class="layui-input-inline">
                 <input style="width:120px;" type="text" name="messageLike" ng-model="postData.messageLike" placeholder="异常信息" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-inline" style="padding-bottom: 5px;">
+            <label ng-if="$scope.supportPlaceholder===false" class="layui-form-label">堆栈信息</label>
             <div class="layui-input-inline">
                 <input style="width:120px;" type="text" name="exceptionLike" ng-model="postData.exceptionLike" placeholder="堆栈信息" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-inline" style="padding-bottom: 5px;">
+            <label ng-if="$scope.supportPlaceholder===false" class="layui-form-label">项目名称</label>
             <div class="layui-input-inline">
                 <input style="width:120px;" type="text" name="projectNameLike" ng-model="postData.projectNameLike" placeholder="项目名称" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-inline" style="padding-bottom: 5px;">
+            <label ng-if="$scope.supportPlaceholder===false" class="layui-form-label">异常发生类</label>
             <div class="layui-input-inline">
                 <input style="width:150px;" type="text" name="typeNameLike" ng-model="postData.typeNameLike" placeholder="异常发生类" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-inline" style="padding-bottom: 5px;">
+            <label ng-if="$scope.supportPlaceholder===false" class="layui-form-label">异常发生方法</label>
             <div class="layui-input-inline">
                 <input style="width:150px;" type="text" name="funcNameLike" ng-model="postData.funcNameLike" placeholder="异常发生方法" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-inline" style="padding-bottom: 5px;">
+            <label ng-if="$scope.supportPlaceholder===false" class="layui-form-label">起始日期</label>
             <div class="layui-input-inline">
                 <span datetime placeholder="起始日期" format="yyyy-MM-dd HH:mm:ss" value="postData.createDateStart"></span>
             </div>
         </div>
         <div class="layui-inline" style="padding-bottom: 5px;">
+            <label ng-if="$scope.supportPlaceholder===false" class="layui-form-label">结束日期</label>
             <div class="layui-input-inline">
                 <span datetime placeholder="结束日期" format="yyyy-MM-dd HH:mm:ss" value="postData.createDateEnd"></span>
             </div>
@@ -64,5 +74,5 @@
             </div>
         </div>
     </form>
-    <div page-data-table perms="perms" height="full-340" url="/api/LogEntity/page" table-toolbar="#tableToolbar" post-data="postData" cols="cols"></div>
+    <div page-data-table height="full-340" url="{{$scope.PROXY+'/LogEntity/page'}}" table-toolbar="#tableToolbar" post-data="postData" cols="cols"></div>
 </div>
