@@ -10,6 +10,7 @@ require('jquery.cookie');
 require('./common/utils/ng-layer.js');
 require('@ztree/ztree_v3/js/jquery.ztree.core.min.js');
 require('@ztree/ztree_v3/js/jquery.ztree.exhide.min.js');
+require('@ztree/ztree_v3/js/jquery.ztree.exedit.min.js');
 require('@ztree/ztree_v3/css/metroStyle/metroStyle.css');
 window.UUID = require('./common/utils/UUID.js');
 window.Hashes = require('jshashes');
@@ -135,6 +136,7 @@ layuiTable.set({
 });
 
 window.myApp.controller('main-body', function ($scope, $myHttp, $timeout) {
+    $scope.PROXY=PROXY;
     $myHttp.get($scope.PROXY+'/index/loadLoginData').mySuccess(function (result) {
         var data = result.data;
         $scope.leftMenus = data.leftMenus;

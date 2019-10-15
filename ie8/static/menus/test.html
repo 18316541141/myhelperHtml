@@ -1,5 +1,5 @@
 <div ng-controller="test">
-    <div tree-form url="{{$scope.PROXY+'/Test/loadTreeNode'}}">
+    <div tree-form url="url">
         asdasd<br>
         asdasd<br>
         asdasd<br>
@@ -16,5 +16,7 @@
         asdasd<br>
         asdasd<br>
         asdasd<br> asdasd<br>
+        <button class="layui-btn layui-btn-primary" type="button" ng-click="delNode();">删除节点</button>
+        <button class="layui-btn layui-btn-primary" type="button" ng-click="restoreNode();">还原删除</button>
     </div>
 </div>

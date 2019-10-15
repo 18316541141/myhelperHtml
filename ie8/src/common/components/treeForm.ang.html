@@ -27,7 +27,7 @@
         return {
             restrict: 'EA',
             transclude: true,
-            scope: { url: "@", targetController: "@" },
+            scope: { url: "=", targetController: "@" },
             controller: function ($scope, $myHttp) {
                 $scope.id = new UUID().id;
                 //还原最近一次移动的节点，只能还原一步

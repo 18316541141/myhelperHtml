@@ -1,4 +1,6 @@
 function heartbeatEntity($scope, $myHttp) {
+    $scope.PROXY=PROXY;
+    $scope.url=$scope.PROXY+'/HeartbeatEntity/page';
     $scope.postData = {
         robotMacLike: '',
         remarkLike: '',
