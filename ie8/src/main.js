@@ -31,8 +31,7 @@ window.myApp = angular.module('my-app', ['ng-layer']);
 
 //注册全局变量
 (function(){
-    window.myApp.value('PROXY',PROXY);
-    window.myApp.value('supportPlaceholder','placeholder' in document.createElement('input'));
+    window.myApp.value('supportPlaceholder','placeholder' in document.createElement('input')); //是否支持placeholder
 }());
 
 //注册异步页面
@@ -40,21 +39,21 @@ window.myApp = angular.module('my-app', ['ng-layer']);
     require('../static/common/system/editLogEntity.html');
     require('../static/common/system/heartbeatEntity.html');
     require('../static/common/system/logEntity.html');
-    require('./regHtmlPages.js')();
+    require('./reg/regHtmlPages.js')();
 }());
 
 //注册通用组件
 (function () {
-    window.myApp.directive('datetime', require('./common/components/datetime.ang.html'));
-    window.myApp.directive('mySelect', require('./common/components/mySelect.ang.html'));
-    window.myApp.directive('myCheckbox', require('./common/components/myCheckbox.ang.html'));
-    window.myApp.directive('pageDataTable', require('./common/components/pageDataTable.ang.html'));
-    window.myApp.directive('pieChart', require('./common/components/pieChart.ang.html'));
-    window.myApp.directive('histogram', require('./common/components/histogram.ang.html'));
-    window.myApp.directive('uploadFiles', require('./common/components/uploadFiles.ang.html'));
-    window.myApp.directive('uploadExcel', require('./common/components/uploadExcel.ang.html'));
-    window.myApp.directive('treeForm', require('./common/components/treeForm.ang.html'));
-    require('./regComponents.js')(window.myApp);
+    window.myApp.directive('datetime', require('./common/components/datetime.ang.html')); //日期组件
+    window.myApp.directive('mySelect', require('./common/components/mySelect.ang.html')); //下拉框控件
+    window.myApp.directive('myCheckbox', require('./common/components/myCheckbox.ang.html')); //复选框控件
+    window.myApp.directive('pageDataTable', require('./common/components/pageDataTable.ang.html')); //分页表格控件
+    window.myApp.directive('pieChart', require('./common/components/pieChart.ang.html')); //饼状图控件
+    window.myApp.directive('histogram', require('./common/components/histogram.ang.html')); //柱状图控件
+    window.myApp.directive('uploadFiles', require('./common/components/uploadFiles.ang.html')); //上传控件
+    window.myApp.directive('uploadExcel', require('./common/components/uploadExcel.ang.html')); //上传excel控件
+    window.myApp.directive('treeForm', require('./common/components/treeForm.ang.html')); //树表单控件
+    require('./reg/regComponents.js')(window.myApp);
 }());
 
 //注册通用菜单
@@ -62,7 +61,7 @@ window.myApp = angular.module('my-app', ['ng-layer']);
     window.myApp.controller('editLogEntity', require('./common/menus/system/editLogEntity.js'));
     window.myApp.controller('heartbeatEntity', require('./common/menus/system/heartbeatEntity.js'));
     window.myApp.controller('logEntity', require('./common/menus/system/logEntity.js'));
-    require('./regMenus.js')(window.myApp);
+    require('./reg/regMenus.js')(window.myApp);
 }());
 
 //注册通用校验
@@ -77,7 +76,7 @@ window.myApp = angular.module('my-app', ['ng-layer']);
     window.myApp.directive('ngMobile', require('./common/validates/ngMobile.js'));
     window.myApp.directive('ngEqualTo', require('./common/validates/ngEqualTo.js'));
     window.myApp.directive('ngIsInt', require('./common/validates/ngIsInt.js'));
-    require('./regValidates.js')(window.myApp);
+    require('./reg/regValidates.js')(window.myApp);
 }());
 
 //注册业务组件
@@ -85,7 +84,7 @@ window.myApp = angular.module('my-app', ['ng-layer']);
     window.myApp.factory('$myHttp', require('./common/factories/$myHttp.js'));
     window.myApp.factory('$realTime', require('./common/factories/$realTime.js'));
     window.myApp.factory('$moment', require('./common/factories/$moment.js'));
-    require('./regFactories.js')(window.myApp);
+    require('./reg/regFactories.js')(window.myApp);
 }());
 
 /**

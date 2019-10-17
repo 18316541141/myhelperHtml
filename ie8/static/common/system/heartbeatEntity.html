@@ -4,31 +4,31 @@
 <div ng-controller="heartbeatEntity">
     <form class="layui-form log-entity-query-form">
         <div class="layui-inline">
-            <label ng-if="$scope.supportPlaceholder===false" class="layui-form-label">机器人的mac地址</label>
+            <label ng-if="supportPlaceholder===false" class="layui-form-label">机器人的mac地址</label>
             <div class="layui-input-inline">
                 <input style="width:180px;" type="text" name="robotMacLike" ng-model="postData.robotMacLike" placeholder="机器人的mac地址" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-inline">
-            <label ng-if="$scope.supportPlaceholder===false" class="layui-form-label">机器人备注</label>
+            <label ng-if="supportPlaceholder===false" class="layui-form-label">机器人备注</label>
             <div class="layui-input-inline">
                 <input style="width:150px;" type="text" name="remarkLike" ng-model="postData.remarkLike" placeholder="机器人备注" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-inline">
-            <label ng-if="$scope.supportPlaceholder===false" class="layui-form-label">扩展字段</label>
+            <label ng-if="supportPlaceholder===false" class="layui-form-label">扩展字段</label>
             <div class="layui-input-inline">
                 <input style="width:150px;" type="text" name="extendFieldLike" ng-model="postData.extendFieldLike" placeholder="扩展字段" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-inline">
-            <label ng-if="$scope.supportPlaceholder===false" class="layui-form-label">起始心跳时间</label>
+            <label ng-if="supportPlaceholder===false" class="layui-form-label">起始心跳时间</label>
             <div class="layui-input-inline">
                 <span datetime placeholder="起始心跳时间" format="yyyy-MM-dd HH:mm:ss" value="postData.lastHeartbeatTimeStart"></span>
             </div>
         </div>
         <div class="layui-inline">
-            <label ng-if="$scope.supportPlaceholder===false" class="layui-form-label">结束心跳时间</label>
+            <label ng-if="supportPlaceholder===false" class="layui-form-label">结束心跳时间</label>
             <div class="layui-input-inline">
                 <span datetime placeholder="结束心跳时间" format="yyyy-MM-dd HH:mm:ss" value="postData.lastHeartbeatTimeEnd"></span>
             </div>

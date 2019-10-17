@@ -1,0 +1,66 @@
+<template>
+    <div ng-if="type=='line'">
+        <div class="layui-inline" ng-if="deep >= 0">
+            <label class="layui-form-label" ng-if="supportPlaceholder===false">请选择省</label>
+            <div class="layui-input-inline">
+                <span my-select options="provinces" value="province"></span>
+            </div>
+        </div>
+        <div class="layui-inline" ng-if="deep >= 1">
+            <label class="layui-form-label" ng-if="supportPlaceholder===false">请选择市</label>
+            <div class="layui-input-inline">
+                <span my-select options="cities" value="city"></span>
+            </div>
+        </div>
+        <div class="layui-inline" ng-if="deep >= 2">
+            <label class="layui-form-label" ng-if="supportPlaceholder===false">请选择区</label>
+            <div class="layui-input-inline">
+                <span my-select options="counties" value="county"></span>
+            </div>
+        </div>
+        <div class="layui-inline" ng-if="deep >= 3">
+            <label class="layui-form-label" ng-if="supportPlaceholder===false">请选择镇</label>
+            <div class="layui-input-inline">
+                <span my-select options="towns" value="town"></span>
+            </div>
+        </div>
+    </div>
+    <div ng-if="type=='form'">
+        <div class="layui-form-item" ng-if="deep >= 0">
+            <label class="layui-form-label">请选择省</label>
+            <div class="layui-input-block">
+                <span my-select options="provinces" value="province"></span>
+            </div>
+        </div>
+        <div class="layui-form-item" ng-if="deep >= 1">
+            <label class="layui-form-label">请选择市</label>
+            <div class="layui-input-block">
+                <span my-select options="cities" value="city"></span>
+            </div>
+        </div>
+        <div class="layui-form-item" ng-if="deep >= 2">
+            <label class="layui-form-label">请选择区</label>
+            <div class="layui-input-block">
+                <span my-select options="counties" value="county"></span>
+            </div>
+        </div>
+        <div class="layui-form-item" ng-if="deep >= 3">
+            <label class="layui-form-label">请选择镇</label>
+            <div class="layui-input-block">
+                <span my-select options="towns" value="town"></span>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    function areaSelect(){
+        return {
+            restrict: 'EA',
+            scope: { type: "@", deep: "@"},
+            controller: function ($scope, $myHttp, $timeout) {
+                
+            }
+        };
+    }
+    module.exports = areaSelect;
+</script>

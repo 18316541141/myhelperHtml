@@ -36,6 +36,8 @@
                         return;
                     }
                     $scope.ztree.moveNode($scope.referenceNode, $scope.dragNode, $scope.referenceType);
+                    $scope.referenceNode = null;
+                    $scope.dragNode = null;
                 });
                 //删除节点
                 $scope.$on('delNode', function (event, id) {

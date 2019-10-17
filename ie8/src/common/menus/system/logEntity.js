@@ -1,5 +1,6 @@
-function logEntity($scope, $moment, layer) {
+function logEntity($scope,supportPlaceholder, $moment, layer) {
     $scope.PROXY=PROXY;
+    $scope.supportPlaceholder=supportPlaceholder;
     $scope.url=$scope.PROXY+'/LogEntity/page';
     $scope.postData = {
         level: '',
