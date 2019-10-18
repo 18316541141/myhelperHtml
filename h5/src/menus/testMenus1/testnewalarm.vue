@@ -8,7 +8,7 @@ export default {
     name:'n11',
     methods:{
         add(){
-            this.$getUpdate(this.$store.state.proxyApi+'/newAlarm/add', {},function(){
+            this.$getUpdate(this.$store.state.PROXY+'/newAlarm/add', {},function(){
 
             }, ['newsAlarm']);
         }

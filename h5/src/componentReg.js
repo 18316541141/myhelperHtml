@@ -38,3 +38,11 @@ export function componentReg(Vue){
 export function directiveReg(Vue){
 
 }
+
+/**
+ * 自定义校验注册
+ * @param {*} $validator 
+ */
+export function validatorReg($validator){
+
+}

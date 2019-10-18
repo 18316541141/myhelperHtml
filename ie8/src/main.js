@@ -39,6 +39,7 @@ window.myApp = angular.module('my-app', ['ng-layer']);
     require('../static/common/system/editLogEntity.html');
     require('../static/common/system/heartbeatEntity.html');
     require('../static/common/system/logEntity.html');
+    require('../static/common/execelList.html');
     require('./reg/regHtmlPages.js')();
 }());
 
@@ -53,6 +54,7 @@ window.myApp = angular.module('my-app', ['ng-layer']);
     window.myApp.directive('uploadFiles', require('./common/components/uploadFiles.ang.html')); //上传控件
     window.myApp.directive('uploadExcel', require('./common/components/uploadExcel.ang.html')); //上传excel控件
     window.myApp.directive('treeForm', require('./common/components/treeForm.ang.html')); //树表单控件
+    window.myApp.directive('areaSelect', require('./common/components/areaSelect.ang.html')); //省市区镇多级联动菜单
     require('./reg/regComponents.js')(window.myApp);
 }());
 
@@ -61,6 +63,7 @@ window.myApp = angular.module('my-app', ['ng-layer']);
     window.myApp.controller('editLogEntity', require('./common/menus/system/editLogEntity.js'));
     window.myApp.controller('heartbeatEntity', require('./common/menus/system/heartbeatEntity.js'));
     window.myApp.controller('logEntity', require('./common/menus/system/logEntity.js'));
+    window.myApp.controller('excelUploadWin', require('./common/menus/system/logEntity.js'));
     require('./reg/regMenus.js')(window.myApp);
 }());
 

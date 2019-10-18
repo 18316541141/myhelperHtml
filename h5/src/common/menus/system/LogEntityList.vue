@@ -107,12 +107,12 @@
     </el-form>
     <default-page
       ref="table"
-      :url="$store.state.proxyApi+'/LogEntity/page'"
+      :url="$store.state.PROXY+'/LogEntity/page'"
       v-bind:post-data="postData"
       v-bind:ret-data.sync="retData"
       v-bind:reduce-height="170"
       excel-title="测试数据.xlsx"
-      :export-url="$store.state.proxyApi+'/LogEntity/export'"
+      :export-url="$store.state.PROXY+'/LogEntity/export'"
     >
       <el-table-column
         prop="username"
@@ -457,7 +457,7 @@ export default {
   methods: {
     // 编辑一条数据
     edit(key) {
-      this.$get(this.$store.state.proxyApi+"/LogEntity/load", { id: key }, function(result) {
+      this.$get(this.$store.state.PROXY+"/LogEntity/load", { id: key }, function(result) {
         this.formData = result.data;
         this.editDialog = true;
       });

@@ -33,6 +33,8 @@
                         toolbar: $scope.tableToolbar,
                         id: $scope.id + '-checked',
                         done: function (res, curr, count) {
+                            $scope.totalItemCount=count;
+                            $scope.$apply();
                             $scope.$emit('done', res, curr, count);
                         },
                         cols: [$scope.cols],

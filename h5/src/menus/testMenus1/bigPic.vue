@@ -8,7 +8,7 @@
             <el-table v-bind:data="tableData" style="width: 100%" class="testabcaa">
                 <el-table-column label="图片" width="180">
                     <template slot-scope="scope">
-                        <el-image v-bind:src="$store.state.proxyApi+scope.row.img" v-bind:data-original="$store.state.proxyApi+scope.row.bigImg"></el-image>
+                        <el-image v-bind:src="$store.state.PROXY+scope.row.img" v-bind:data-original="$store.state.PROXY+scope.row.bigImg"></el-image>
                     </template>
                 </el-table-column>
             </el-table>

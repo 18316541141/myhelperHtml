@@ -7,7 +7,7 @@
     function mySelect() {
         return {
             restrict: 'EA',
-            scope: { options: "=", value: "=" },
+            scope: { options: "=", value: "=", name: "@"},
             controller: function ($scope, $timeout) {
                 $scope.id = new UUID().id;
                 $timeout(function () {
@@ -24,6 +24,7 @@
                     layuiForm.on('select(' + $scope.id + ')', function (data) {
                         scope.value = data.value;
                         scope.$apply();
+                        $scope.$emit('onchange', data.value, $scope.name);
                     });
                 });
             }

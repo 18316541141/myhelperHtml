@@ -10,7 +10,7 @@
             drop 节点拖拽释放的回调函数，参数是：before（被拖拽节点对应的 Node）,after（结束拖拽时最后进入的节点）,inner（被拖拽节点的放置位置（before、after、inner））,event。
             nodeClick 节点点击时触发函数，参数是：data（节点数据）,node（节点对象）,nodeComponent（节点的组件对象）
         -->
-        <tree-form :url="$store.state.proxyApi+'/index/loadTreeNode'" v-on:drop="drop" ref="treeForm" v-on:nodeClick="nodeClick">
+        <tree-form :url="$store.state.PROXY+'/index/loadTreeNode'" v-on:drop="drop" ref="treeForm" v-on:nodeClick="nodeClick">
             <el-form ref="form" :model="form" label-width="80px">
                 <el-form-item label="活动名称">
                     <el-input v-model="form.name"></el-input>

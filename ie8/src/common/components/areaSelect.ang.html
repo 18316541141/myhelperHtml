@@ -1,64 +1,72 @@
 <template>
-    <div ng-if="type=='line'">
-        <div class="layui-inline" ng-if="deep >= 0">
-            <label class="layui-form-label" ng-if="supportPlaceholder===false">请选择省</label>
-            <div class="layui-input-inline">
-                <span my-select options="provinces" value="province"></span>
+    <div>
+        <div ng-if="type=='line'">
+            <div class="layui-inline" ng-if="deep >= 0">
+                <label class="layui-form-label" ng-if="supportPlaceholder===false">请选择省</label>
+                <div class="layui-input-inline">
+                    <span my-select options="provinces" value="province" name="province"></span>
+                </div>
+            </div>
+            <div class="layui-inline" ng-if="deep >= 1">
+                <label class="layui-form-label" ng-if="supportPlaceholder===false">请选择市</label>
+                <div class="layui-input-inline">
+                    <span my-select options="cities" value="city" name="city"></span>
+                </div>
+            </div>
+            <div class="layui-inline" ng-if="deep >= 2">
+                <label class="layui-form-label" ng-if="supportPlaceholder===false">请选择区</label>
+                <div class="layui-input-inline">
+                    <span my-select options="counties" value="county" name="county"></span>
+                </div>
+            </div>
+            <div class="layui-inline" ng-if="deep >= 3">
+                <label class="layui-form-label" ng-if="supportPlaceholder===false">请选择镇</label>
+                <div class="layui-input-inline">
+                    <span my-select options="towns" value="town" name="town"></span>
+                </div>
             </div>
         </div>
-        <div class="layui-inline" ng-if="deep >= 1">
-            <label class="layui-form-label" ng-if="supportPlaceholder===false">请选择市</label>
-            <div class="layui-input-inline">
-                <span my-select options="cities" value="city"></span>
+        <div ng-if="type=='form'">
+            <div class="layui-form-item" ng-if="deep >= 0">
+                <label class="layui-form-label">请选择省</label>
+                <div class="layui-input-block">
+                    <span my-select options="provinces" value="province" name="province"></span>
+                </div>
             </div>
-        </div>
-        <div class="layui-inline" ng-if="deep >= 2">
-            <label class="layui-form-label" ng-if="supportPlaceholder===false">请选择区</label>
-            <div class="layui-input-inline">
-                <span my-select options="counties" value="county"></span>
+            <div class="layui-form-item" ng-if="deep >= 1">
+                <label class="layui-form-label">请选择市</label>
+                <div class="layui-input-block">
+                    <span my-select options="cities" value="city" name="city"></span>
+                </div>
             </div>
-        </div>
-        <div class="layui-inline" ng-if="deep >= 3">
-            <label class="layui-form-label" ng-if="supportPlaceholder===false">请选择镇</label>
-            <div class="layui-input-inline">
-                <span my-select options="towns" value="town"></span>
+            <div class="layui-form-item" ng-if="deep >= 2">
+                <label class="layui-form-label">请选择区</label>
+                <div class="layui-input-block">
+                    <span my-select options="counties" value="county" name="county"></span>
+                </div>
             </div>
-        </div>
-    </div>
-    <div ng-if="type=='form'">
-        <div class="layui-form-item" ng-if="deep >= 0">
-            <label class="layui-form-label">请选择省</label>
-            <div class="layui-input-block">
-                <span my-select options="provinces" value="province"></span>
-            </div>
-        </div>
-        <div class="layui-form-item" ng-if="deep >= 1">
-            <label class="layui-form-label">请选择市</label>
-            <div class="layui-input-block">
-                <span my-select options="cities" value="city"></span>
-            </div>
-        </div>
-        <div class="layui-form-item" ng-if="deep >= 2">
-            <label class="layui-form-label">请选择区</label>
-            <div class="layui-input-block">
-                <span my-select options="counties" value="county"></span>
-            </div>
-        </div>
-        <div class="layui-form-item" ng-if="deep >= 3">
-            <label class="layui-form-label">请选择镇</label>
-            <div class="layui-input-block">
-                <span my-select options="towns" value="town"></span>
+            <div class="layui-form-item" ng-if="deep >= 3">
+                <label class="layui-form-label">请选择镇</label>
+                <div class="layui-input-block">
+                    <span my-select options="towns" value="town" name="town"></span>
+                </div>
             </div>
         </div>
     </div>
 </template>
 <script>
-    function areaSelect(){
+    function areaSelect() {
         return {
             restrict: 'EA',
-            scope: { type: "@", deep: "@"},
+            scope: { type: "@", deep: "@", provinces: "=", cities: "=", counties: "=", towns: "=" },
             controller: function ($scope, $myHttp, $timeout) {
-                
+                $scope.deep=parseInt($scope.deep);
+                $scope.$on('onchange',function(event,value,name){
+                    $scope.$emit('onchange',value,name);
+                });
+                $scope.$on('render',function(){
+                    layuiForm.render('select');
+                });
             }
         };
     }

@@ -69,7 +69,7 @@
     </el-form>
     <default-page
       ref="table"
-      :url="$store.state.proxyApi+'/HeartbeatEntity/page'"
+      :url="$store.state.PROXY+'/HeartbeatEntity/page'"
       v-bind:post-data="postData"
       v-bind:ret-data.sync="retData"
       v-bind:reduce-height="120"
@@ -248,7 +248,7 @@ export default {
         inputPattern: /^确认删除$/,
         inputErrorMessage: '请输入“确认删除”',
       }).then(({ value }) => {;
-        thiz.$post(thiz.$store.state.proxyApi+"/HeartbeatEntity/del", { id: key }, function(result) {
+        thiz.$post(thiz.$store.state.PROXY+"/HeartbeatEntity/del", { id: key }, function(result) {
           thiz.$refs.table.refresh();
         });
       });

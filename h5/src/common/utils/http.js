@@ -360,7 +360,7 @@ export function regPool(poolName,callback){
 export function realTimeGet(poolName){
     regPoolMap[poolName].wait = true;
     var thiz=this;
-    axios.get(this.$store.state.proxyApi+'/index/realTime',{
+    axios.get(this.$store.state.PROXY+'/index/realTime',{
         params:{
             'realTimePool': poolName, 
             'realTimeVersion': regPoolMap[poolName].version

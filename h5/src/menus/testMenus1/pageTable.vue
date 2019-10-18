@@ -54,8 +54,8 @@
             excel-title     导出的excel表显示的名称
             export-url      导出操作的url
         -->
-        <default-page ref="table" :url="$store.state.proxyApi+'/IRobotQrCodePayTask/page'" v-bind:post-data="postData" v-bind:ret-data.sync="retData" v-bind:reduce-height="120" v-bind:checked-datas.sync="checkedDatas"
-            v-bind:show-checked="true" excel-title="测试数据.xlsx" :export-url="$store.state.proxyApi+'/IRobotQrCodePayTask/export'">
+        <default-page ref="table" :url="$store.state.PROXY+'/IRobotQrCodePayTask/page'" v-bind:post-data="postData" v-bind:ret-data.sync="retData" v-bind:reduce-height="120" v-bind:checked-datas.sync="checkedDatas"
+            v-bind:show-checked="true" excel-title="测试数据.xlsx" :export-url="$store.state.PROXY+'/IRobotQrCodePayTask/export'">
             <!--
                 这里用的仍然是el-table组件的列。
             -->

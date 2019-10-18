@@ -1,0 +1,24 @@
+<div ng-controller="excelUploadWin">
+    <div class="layer-body">
+        <table class="layui-table">
+            <colgroup>
+                <col width="50">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>标题</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="excel in excelList">
+                    <td ng-text="excel.title"></td>
+                    <td><a href="javascript:void(0);" ng-click="exportExcel(excel.currentPageIndex)">导出</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="layer-foot">
+
+    </div>
+</div>
