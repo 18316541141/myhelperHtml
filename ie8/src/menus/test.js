@@ -1,4 +1,4 @@
-function test($scope) {
+function test($scope,$exportExcel) {
     $scope.PROXY = PROXY;
     $scope.url = $scope.PROXY + '/Test/loadTreeNode';
     $scope.provinces = [{ value: '', text: '请选择' }];
@@ -10,6 +10,9 @@ function test($scope) {
     };
     $scope.restoreNode = function () {
         $scope.$broadcast('restoreNode');
+    };
+    $scope.exportExcel = function () {
+        $exportExcel.run($scope.PROXY+'/Test/ExportExcelTest',{},43,10000,'测试excel');
     };
 }
 module.exports = test;

@@ -63,7 +63,7 @@ window.myApp = angular.module('my-app', ['ng-layer']);
     window.myApp.controller('editLogEntity', require('./common/menus/system/editLogEntity.js'));
     window.myApp.controller('heartbeatEntity', require('./common/menus/system/heartbeatEntity.js'));
     window.myApp.controller('logEntity', require('./common/menus/system/logEntity.js'));
-    window.myApp.controller('excelUploadWin', require('./common/menus/system/logEntity.js'));
+    window.myApp.controller('excelUploadWin', require('./common/menus/excelUploadWin.js'));
     require('./reg/regMenus.js')(window.myApp);
 }());
 
@@ -87,6 +87,7 @@ window.myApp = angular.module('my-app', ['ng-layer']);
     window.myApp.factory('$myHttp', require('./common/factories/$myHttp.js'));
     window.myApp.factory('$realTime', require('./common/factories/$realTime.js'));
     window.myApp.factory('$moment', require('./common/factories/$moment.js'));
+    window.myApp.factory('$exportExcel', require('./common/factories/$exportExcel.js'));
     require('./reg/regFactories.js')(window.myApp);
 }());
 

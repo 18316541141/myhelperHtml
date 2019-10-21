@@ -5,8 +5,11 @@ function $exportExcel(layer, $timeout) {
          * @param {*} exportUrl 导出的url
          * @param {*} postData 筛选参数
          * @param {*} totalItemCount 数据总量
+         * @param {*} pageSize 每页显示数据量
+         * @param {*} title excel标题
          */
-        run: function (exportUrl, postData, totalItemCount, title) {
+        run: function (exportUrl, postData, totalItemCount, pageSize, title) {
+            pageSize = parseInt(pageSize);
             if (exportUrl === undefined) {
                 throw new Error("请传入exportUrl");
             }
@@ -19,7 +22,7 @@ function $exportExcel(layer, $timeout) {
             if (title === undefined) {
                 throw new Error("请传入title");
             }
-            if (totalItemCount <= 10000) {
+            if (totalItemCount <= pageSize) {
                 var id = new UUID().id;
                 $('body').append('<form style="display:none;" id="' + id + '" target="_blank" action="' + exportUrl + '" method="post"></form>');
                 var $form = $('#' + id);
@@ -28,6 +31,8 @@ function $exportExcel(layer, $timeout) {
                         $form.append($('<input type="hidden" name="' + key + '">').val(postData[key]));
                     }
                 }
+                $form.append($('<input type="hidden" name="currentPageIndex">').val(1));
+                $form.append($('<input type="hidden" name="pageSize">').val(pageSize));
                 $form.submit();
                 $timeout(function () {
                     $form.remove();
@@ -36,6 +41,7 @@ function $exportExcel(layer, $timeout) {
                 $scope.exportUrl = exportUrl;
                 $scope.postData = postData;
                 $scope.totalItemCount = totalItemCount;
+                $scope.pageSize = pageSize;
                 $scope.title = title;
                 layer.ngOpen({
                     type: 1,
