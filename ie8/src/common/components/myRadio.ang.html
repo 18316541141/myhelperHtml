@@ -1,0 +1,29 @@
+<template>
+    <input ng-repeat="x in options" type="radio" lay-filter="{{id}}" name="{{id}}" value="{{x.value}}" title="{{x.title}}">
+</template>
+<script>
+    function myRadio(){
+        return {
+            restrict: 'EA',
+            scope: { options: "=", value: "=", name: "@"},
+            controller: function ($scope, $timeout) {
+                $scope.id = new UUID().id;
+                $('[name="'+$scope.id+'"]').each(function(){
+                    if(this.value === $scope.value){
+                        $(this).prop('checked',true);
+                        return false;
+                    }
+                });
+                $timeout(function () {
+                    layuiForm.render('radio');
+                    var $scope = $scope;
+                    layuiForm.on('radio('+$scope.id+')',function(data){
+                        $scope.value=data.value;
+                        $scope.$apply();
+                    });
+                });
+            }
+        };
+    }
+    module.exports = myRadio;
+</script>

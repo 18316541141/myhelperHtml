@@ -55,6 +55,7 @@ window.myApp = angular.module('my-app', ['ng-layer']);
     window.myApp.directive('uploadExcel', require('./common/components/uploadExcel.ang.html')); //上传excel控件
     window.myApp.directive('treeForm', require('./common/components/treeForm.ang.html')); //树表单控件
     window.myApp.directive('areaSelect', require('./common/components/areaSelect.ang.html')); //省市区镇多级联动菜单
+    window.myApp.directive('myRadio', require('./common/components/myRadio.ang.html')); //单选框控件
     require('./reg/regComponents.js')(window.myApp);
 }());
 
@@ -285,7 +286,7 @@ window.myApp.controller('main-body', function ($scope, $myHttp, $timeout) {
  * @formObj angularjs的表单对象
  * @return 返回true校验通过，否则校验不过
  */
-function validate(formObj) {
+window.validate=function(formObj) {
     if (formObj.$invalid) {
         var formName = formObj.$name;
         for (var key1 in formObj) {
