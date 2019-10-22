@@ -4,9 +4,17 @@ function ngMinDouble() {
         restrict: 'A',
         require: 'ngModel',
         link: function (scope, el, attrs, ctrl) {
+            var validateId = el.attr('data-validate-id');
+            if (validateId === undefined) {
+                var tempId = new UUID().id;
+                ctrl.$validateId = tempId;
+                el.attr('data-validate-id', tempId);
+            } else {
+                ctrl.$validateId = validateId;
+            }
             scope.$watch(attrs.ngModel, function () {
                 if ($.type(ctrl.$modelValue) === 'string' && ctrl.$modelValue.length > 0) {
-                    var val=parseFloat(ctrl.$modelValue);
+                    var val = parseFloat(ctrl.$modelValue);
                     if (isNaN(val)) {
                         ctrl.$setValidity('minDouble', false);
                         if (ctrl.$messages === undefined) {
@@ -19,7 +27,7 @@ function ngMinDouble() {
                         if (val < minDouble) {
                             ctrl.$setValidity('minDouble', false);
                             if (ctrl.$messages === undefined) {
-                                ctrl.$messages = { minDouble: attrs.ngMinDoubleMsg === undefined ?'该字段值不能小于' + minDouble:attrs.ngMinDoubleMsg };
+                                ctrl.$messages = { minDouble: attrs.ngMinDoubleMsg === undefined ? '该字段值不能小于' + minDouble : attrs.ngMinDoubleMsg };
                             } else {
                                 ctrl.$messages['minDouble'] = attrs.ngMinDoubleMsg === undefined ? '该字段值不能小于' + minDouble : attrs.ngMinDoubleMsg;
                             }
@@ -27,7 +35,7 @@ function ngMinDouble() {
                             ctrl.$setValidity('minDouble', true);
                         }
                     }
-                }else {
+                } else {
                     ctrl.$setValidity('minDouble', true);
                 }
             });

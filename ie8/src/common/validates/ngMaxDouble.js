@@ -4,6 +4,14 @@ function ngMaxDouble() {
         restrict: 'A',
         require: 'ngModel',
         link: function (scope, el, attrs, ctrl) {
+            var validateId = el.attr('data-validate-id');
+            if (validateId === undefined) {
+                var tempId = new UUID().id;
+                ctrl.$validateId = tempId;
+                el.attr('data-validate-id', tempId);
+            } else {
+                ctrl.$validateId = validateId;
+            }
             scope.$watch(attrs.ngModel, function () {
                 if ($.type(ctrl.$modelValue) === 'string' && ctrl.$modelValue.length > 0) {
                     var val = parseFloat(ctrl.$modelValue);

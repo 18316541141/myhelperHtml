@@ -14,6 +14,9 @@ function $myHttp($http) {
             }
             var ret = $http({ method: 'GET', params: params, url: url });
             ret.mySuccess = function (callback) {
+                if (callback === undefined) {
+                    callback = function () { };
+                }
                 ret.success(myCallback(callback, ani));
             };
             return ret;
@@ -30,6 +33,9 @@ function $myHttp($http) {
             }
             var ret = $http({ method: 'GET', params: params, url: url });
             ret.mySuccess = function (callback) {
+                if (callback === undefined) {
+                    callback = function () { };
+                }
                 ret.success(myCallback(callback, ani));
             };
             return ret;
@@ -46,6 +52,9 @@ function $myHttp($http) {
             }
             var ret = $http({ method: 'POST', url: url, params: params });
             ret.mySuccess = function (callback) {
+                if (callback === undefined) {
+                    callback = function () { };
+                }
                 ret.success(myCallback(callback, ani));
             };
             return ret;
@@ -53,6 +62,9 @@ function $myHttp($http) {
         jsonp: function (url, params) {
             var ret = $http.jsonp(url + '?callback=JSON_CALLBACK&' + $.param(params));
             ret.mySuccess = function (callback) {
+                if (callback === undefined) {
+                    callback = function () { };
+                }
                 ret.success(callback);
             };
         }

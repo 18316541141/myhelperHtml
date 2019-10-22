@@ -30,15 +30,16 @@ window.layuiLaydate = layui.laydate;
 window.myApp = angular.module('my-app', ['ng-layer']);
 
 //注册全局变量
-(function(){
-    window.myApp.value('supportPlaceholder','placeholder' in document.createElement('input')); //是否支持placeholder
+(function () {
+    window.myApp.value('supportPlaceholder', 'placeholder' in document.createElement('input')); //是否支持placeholder
 }());
 
 //注册异步页面
-(function(){
+(function () {
     require('../static/common/system/editLogEntity.html');
     require('../static/common/system/heartbeatEntity.html');
     require('../static/common/system/logEntity.html');
+    require('../static/common/system/globalVariable.html');
     require('../static/common/execelList.html');
     require('./reg/regHtmlPages.js')();
 }());
@@ -64,6 +65,7 @@ window.myApp = angular.module('my-app', ['ng-layer']);
     window.myApp.controller('editLogEntity', require('./common/menus/system/editLogEntity.js'));
     window.myApp.controller('heartbeatEntity', require('./common/menus/system/heartbeatEntity.js'));
     window.myApp.controller('logEntity', require('./common/menus/system/logEntity.js'));
+    window.myApp.controller('globalVariable', require('./common/menus/system/globalVariable.js'));
     window.myApp.controller('excelUploadWin', require('./common/menus/excelUploadWin.js'));
     require('./reg/regMenus.js')(window.myApp);
 }());
@@ -140,8 +142,8 @@ layuiTable.set({
 });
 
 window.myApp.controller('main-body', function ($scope, $myHttp, $timeout) {
-    $scope.PROXY=PROXY;
-    $myHttp.get($scope.PROXY+'/index/loadLoginData').mySuccess(function (result) {
+    $scope.PROXY = PROXY;
+    $myHttp.get($scope.PROXY + '/index/loadLoginData').mySuccess(function (result) {
         var data = result.data;
         $scope.leftMenus = data.leftMenus;
         $.cookie('username', data.username);
@@ -222,7 +224,7 @@ window.myApp.controller('main-body', function ($scope, $myHttp, $timeout) {
         password: password == 'null' ? '' : password,
         vercode: "",
         rememberPassword: $.cookie('rememberPassword') === 'true',
-        rNum : Math.random()
+        rNum: Math.random()
     };
 
     $scope.refreshVercode = function () {
@@ -233,7 +235,7 @@ window.myApp.controller('main-body', function ($scope, $myHttp, $timeout) {
      * 退出登陆的方法
      */
     $scope.logout = function () {
-        $myHttp.get($scope.PROXY+'/session/logout').mySuccess(logoutCallback);
+        $myHttp.get($scope.PROXY + '/session/logout').mySuccess(logoutCallback);
         // $realTime.cancelAll();
     };
 
@@ -248,7 +250,7 @@ window.myApp.controller('main-body', function ($scope, $myHttp, $timeout) {
         }
         if (validate($scope.loginForm)) {
             $scope.loginData.password = new Hashes.SHA1().hex($scope.loginData.password);
-            $myHttp.post($scope.PROXY+'/session/login', $scope.loginData).mySuccess(function (result) {
+            $myHttp.post($scope.PROXY + '/session/login', $scope.loginData).mySuccess(function (result) {
                 if (result.code === -1) {
                     $scope.loginData.rNum = Math.random();
                     $scope.loginData.password = '';
@@ -286,26 +288,23 @@ window.myApp.controller('main-body', function ($scope, $myHttp, $timeout) {
  * @formObj angularjs的表单对象
  * @return 返回true校验通过，否则校验不过
  */
-window.validate=function(formObj) {
+window.validate = function (formObj) {
     if (formObj.$invalid) {
-        var formName = formObj.$name;
-        for (var key1 in formObj) {
-            if (formObj.hasOwnProperty(key1) && key1.indexOf('$') != 0) {
-                if (formObj[key1].$invalid) {
-                    var error = formObj[key1].$error;
-                    var messages = formObj[key1].$messages;
-                    for (var key2 in error) {
-                        if (error.hasOwnProperty(key2) && error[key2] === true) {
-                            var tipIndex = layuiLayer.tips(messages[key2], $('[name="' + formName + '"] [name="' + key1 + '"]'), {
-                                tips: 1,
-                                time: 3000
-                            });
-                            $('[name="' + formName + '"] [name="' + key1 + '"]').one('blur', function () {
-                                layuiLayer.close(tipIndex);
-                            });
-                            return false;
-                        }
-                    }
+        var $error = formObj.$error;
+        for (var key in $error) {
+            if ($error.hasOwnProperty(key) && $.type($error[key]) === 'array') {
+                var validateArray = $error[key];
+                for (var i = 0, len = validateArray.length; i < len; i++) {
+                    var $input = $('[data-validate-id="' + validateArray[i].$validateId + '"]');
+                    $input.trigger('focus');
+                    var tipIndex = layuiLayer.tips(validateArray[i].$messages[key], $input, {
+                        tips: 1,
+                        time: 3000
+                    });
+                    $input.one('blur', function () {
+                        layuiLayer.close(tipIndex);
+                    });
+                    return false;
                 }
             }
         }

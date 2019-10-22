@@ -10,15 +10,15 @@
             scope: { options: "=", value: "=", name: "@"},
             controller: function ($scope, $timeout) {
                 $scope.id = new UUID().id;
-                var select = document.getElementById($scope.id);
-                select.selectedIndex = 0;
-                for (var i = 0, len = select.options.length; i < len; i++) {
-                    if (select.options[i].value === ($scope.value + '')) {
-                        select.selectedIndex = i;
-                        break;
-                    }
-                }
                 $timeout(function () {
+                    var select = document.getElementById($scope.id);
+                    select.selectedIndex = 0;
+                    for (var i = 0, len = select.options.length; i < len; i++) {
+                        if (select.options[i].value === ($scope.value + '')) {
+                            select.selectedIndex = i;
+                            break;
+                        }
+                    }
                     layuiForm.render('select');
                     var scope = $scope;
                     layuiForm.on('select(' + $scope.id + ')', function (data) {

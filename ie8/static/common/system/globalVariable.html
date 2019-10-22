@@ -1,0 +1,31 @@
+<fieldset class="layui-elem-field layui-field-title">
+    <legend>系统全局变量</legend>
+</fieldset>
+<div ng-controller="globalVariable">
+    <form class="layui-form layui-form-pane" ng-submit="save();" novalidate="" name="globalVariableForm">
+        <div id="{{scrollId}}" style="max-height:{{formMaxHeight}}px;overflow-y: auto;">
+            <div class="layui-form-item layui-anim-fadein" style="animation-duration: .2s;" ng-repeat="globalVariable in globalVariableList">
+                <label class="layui-form-label">变量{{$index+1}}：</label>
+                <div class="layui-input-inline">
+                    <input ng-required2 ng-maxlength2="30" ng-model="globalVariable.varName" type="text" placeholder="请输入变量名称" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-input-inline">
+                    <input ng-required2 ng-maxlength2="50" ng-model="globalVariable.varValue" type="text" placeholder="请输入变量值" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-input-inline">
+                    <button type="button" class="layui-btn layui-btn-danger" ng-if="globalVariableList.length>1" ng-click="del($index);">
+                        <i class="layui-icon">&#xe640;</i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button type="button" class="layui-btn layui-btn-primary" ng-click="add();">
+                    <i class="layui-icon">&#xe654;</i> 添加
+                </button>
+                <button class="layui-btn" ng-click="save();" type="button">立即提交</button>
+            </div>
+        </div>
+    </form>
+</div>

@@ -4,6 +4,14 @@ function ngRequired2() {
         restrict: 'A',
         require: 'ngModel',
         link: function (scope, el, attrs, ctrl) {
+            var validateId = el.attr('data-validate-id');
+            if (validateId === undefined) {
+                var tempId = new UUID().id;
+                ctrl.$validateId = tempId;
+                el.attr('data-validate-id', tempId);
+            } else {
+                ctrl.$validateId = validateId;
+            }
             scope.$watch(attrs.ngModel, function () {
                 if ($.type(ctrl.$modelValue) === 'string') {
                     if (ctrl.$modelValue.length > 0) {
@@ -11,7 +19,7 @@ function ngRequired2() {
                     } else {
                         ctrl.$setValidity('required', false);
                         if (ctrl.$messages === undefined) {
-                            ctrl.$messages = { required:attrs.ngRequired2Msg===undefined? '该字段不能为空': attrs.ngRequired2Msg};
+                            ctrl.$messages = { required: attrs.ngRequired2Msg === undefined ? '该字段不能为空' : attrs.ngRequired2Msg };
                         } else {
                             ctrl.$messages['required'] = attrs.ngRequired2Msg === undefined ? '该字段不能为空' : attrs.ngRequired2Msg;
                         }

@@ -4,6 +4,14 @@ function ngMinlength2() {
         restrict: 'A',
         require: 'ngModel',
         link: function (scope, el, attrs, ctrl) {
+            var validateId = el.attr('data-validate-id');
+            if (validateId === undefined) {
+                var tempId = new UUID().id;
+                ctrl.$validateId = tempId;
+                el.attr('data-validate-id', tempId);
+            } else {
+                ctrl.$validateId = validateId;
+            }
             scope.$watch(attrs.ngModel, function () {
                 var len = parseInt(attrs.ngMinlength2);
                 if ($.type(ctrl.$modelValue) === 'string') {
