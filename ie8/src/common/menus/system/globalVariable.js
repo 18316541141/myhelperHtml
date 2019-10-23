@@ -1,12 +1,12 @@
 function globalVariable($scope, $myHttp,$timeout) {
     $scope.PROXY = PROXY;
-    $scope.globalVariableList = [{ varName: '', varValue: '' }];
+    $scope.globalVariableList = [{ varName: '', varValue: '', varRemark: '' }];
     $scope.formMaxHeight = $(window).height()-285;
     $scope.scrollId = new UUID().id;
     $myHttp.get($scope.PROXY + '/GlobalVariable/showAllGlobalVariable').mySuccess(function (result) {
         if (result.code === 0) {
             if (result.data.length === 0) {
-                $scope.globalVariableList = [{ varName: '', varValue: '' }];
+                $scope.globalVariableList = [{ varName: '', varValue: '', varRemark: '' }];
             } else {
                 $scope.globalVariableList = result.data;
             }
@@ -14,7 +14,7 @@ function globalVariable($scope, $myHttp,$timeout) {
     });
     $scope.add = function () {
         $scope.globalVariableList[$scope.globalVariableList.length] = {
-            varName: '', varValue: '',
+            varName: '', varValue: '', varRemark: ''
         };
         $timeout(function(){
             var scrollHeight = $('#'+$scope.scrollId).prop('scrollHeight');
@@ -38,6 +38,7 @@ function globalVariable($scope, $myHttp,$timeout) {
             for (var i = 0, len = globalVariableList.length; i < len; i++) {
                 postData['globalVariableList[' + i + '].varName'] = globalVariableList[i].varName;
                 postData['globalVariableList[' + i + '].varValue'] = globalVariableList[i].varValue;
+                postData['globalVariableList[' + i + '].varRemark'] = globalVariableList[i].varRemark;
             }
             $myHttp.post($scope.PROXY + '/GlobalVariable/saveAllGlobalVariable', postData).mySuccess();
         }

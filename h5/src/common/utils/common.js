@@ -168,7 +168,7 @@ export function validateForm(callback){
                 break;
             }
         }else{
-            callback.call(this);
+            callback.call(thiz);
         }
     });
 }

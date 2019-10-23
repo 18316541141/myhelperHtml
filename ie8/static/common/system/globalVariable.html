@@ -2,20 +2,28 @@
     <legend>系统全局变量</legend>
 </fieldset>
 <div ng-controller="globalVariable">
-    <form class="layui-form layui-form-pane" ng-submit="save();" novalidate="" name="globalVariableForm">
+    <form class="layui-form" ng-submit="save();" novalidate="" name="globalVariableForm">
         <div id="{{scrollId}}" style="max-height:{{formMaxHeight}}px;overflow-y: auto;">
-            <div class="layui-form-item layui-anim-fadein" style="animation-duration: .2s;" ng-repeat="globalVariable in globalVariableList">
-                <label class="layui-form-label">变量{{$index+1}}：</label>
-                <div class="layui-input-inline">
-                    <input ng-required2 ng-maxlength2="30" ng-model="globalVariable.varName" type="text" placeholder="请输入变量名称" autocomplete="off" class="layui-input">
+            <div ng-repeat="globalVariable in globalVariableList" class="layui-anim-fadein" style="animation-duration: .2s;">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">变量{{$index+1}}：</label>
+                    <div class="layui-input-inline">
+                        <input ng-required2 ng-maxlength2="30" ng-model="globalVariable.varName" type="text" placeholder="请输入变量名称" autocomplete="off" class="layui-input">
+                    </div>
+                    <div class="layui-input-inline">
+                        <input ng-required2 ng-maxlength2="50" ng-model="globalVariable.varValue" type="text" placeholder="请输入变量值" autocomplete="off" class="layui-input">
+                    </div>
+                    <div class="layui-input-inline">
+                        <button type="button" class="layui-btn layui-btn-danger" ng-if="globalVariableList.length>1" ng-click="del($index);">
+                            <i class="layui-icon">&#xe640;</i>
+                        </button>
+                    </div>
                 </div>
-                <div class="layui-input-inline">
-                    <input ng-required2 ng-maxlength2="50" ng-model="globalVariable.varValue" type="text" placeholder="请输入变量值" autocomplete="off" class="layui-input">
-                </div>
-                <div class="layui-input-inline">
-                    <button type="button" class="layui-btn layui-btn-danger" ng-if="globalVariableList.length>1" ng-click="del($index);">
-                        <i class="layui-icon">&#xe640;</i>
-                    </button>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">备注{{$index+1}}：</label>
+                    <div class="layui-input-inline" style="width: 390px;">
+                        <textarea ng-model="globalVariable.varRemark" style="resize: none;" ng-maxlength2="200" placeholder="请输入备注内容" class="layui-textarea"></textarea>
+                    </div>
                 </div>
             </div>
         </div>
