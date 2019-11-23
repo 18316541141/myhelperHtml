@@ -45,6 +45,8 @@ import plateNo from './common/validators/plateNo.js'
 import rangeLength from './common/validators/rangeLength.js'
 import noToChinese from './common/filters/noToChinese.js'
 import numToChinese from './common/filters/numToChinese.js'
+import clock from './common/directives/clock.js'
+import countDown from './common/directives/countDown.js'
 window.$ = $;
 window.Viewer = Viewer;
 window.uploadCallback = uploadCallback;
@@ -72,57 +74,42 @@ window.postOpenWin = postOpenWin;
 (function () {
   directiveReg(Vue);
   //按钮倒数指令，按钮点击后会进入倒数状态（倒数时不能点击），倒数完毕后才可以点击。
-  Vue.directive('countDown', {
-    inserted(el, binding) {
-      el.addEventListener("click", function () {
-        var seconds = parseInt(binding.value);
-        var beforeText = el.innerText;
-        this.setAttribute('disabled', true);
-        this.innerText = seconds;
-        var interval = setInterval(function () {
-          if (seconds > 0) {
-            el.innerText = --seconds;
-          }
-        }, 1000);
-        setTimeout(function () {
-          clearInterval(interval);
-          el.innerText = beforeText;
-          el.setAttribute('disabled', false);
-        }, seconds * 1000);
-      }, false);
-    }
-  });
+  Vue.directive('countDown', countDown);
   //时钟指令，会使得元素的内容变成一个时钟，需要用户传入日期的显示格式，日期的格式规则参考moment.js
-  Vue.directive('clock', {
-    inserted(el, binding) {
-      el.innerText = moment().format(binding.value);
-      setInterval(function () {
-        el.innerText = moment().format(binding.value);
-      }, 1000);
-    }
-  });
+  Vue.directive('clock', clock);
 }());
 
 //通用组件注册
 (function () {
   componentReg(Vue);
+  // 默认首页
   Vue.component('default-page', defaultPage)
+  // 树表单
   Vue.component('tree-form', treeForm)
+  // 省市区镇地区选择器
   Vue.component('area-select', areaSelect)
+  // 图片查看器
   Vue.component('img-viewer', imgViewer)
+  // 饼状统计图
   Vue.component('pie-chart', pieChart)
+  // 柱状统计图
   Vue.component('histogram', histogram)
-  Vue.component('default-page', defaultPage)
+  // excel上传组件
   Vue.component('upload-excel', uploadExcel)
+  // 文件上传组件
   Vue.component('upload-files', uploadFiles)
+  // 图片上传组件
   Vue.component('upload-image', uploadImage)
 }());
 
 //业务组件注册
 (function () {
   menuReg(Vue);
+  // 日志菜单组件
   Vue.component('logEntity', logEntityList);
+  // 心跳菜单组件
   Vue.component('heartbeatEntity', heartbeatEntityList);
+  // 全局变量菜单组件
   Vue.component('globalVariable', globalVariableList);
 }());
 
@@ -159,7 +146,9 @@ const store = new Vuex.Store({
 
 //自定义过滤器
 (function () {
+  //编号转中文，例如：123 => 一二三
   Vue.filter('noToChinese', noToChinese);
+  //数字转中文，例如：123 => 一百二十三
   Vue.filter('numToChinese', numToChinese);
 }());
 
@@ -187,50 +176,3 @@ new Vue({
     this.$validator.extend('courierNum', courierNum);
   }
 });
-
-//异步加载静态图片素材
-(function () {
-  var images = [
-    //256x256的图标
-    "/images/256x256/accdb-256.png",
-    "/images/256x256/avi-256.png",
-    "/images/256x256/bmp-256.png",
-    "/images/256x256/css-256.png",
-    "/images/256x256/docx-256.png",
-    "/images/256x256/eml-256.png",
-    "/images/256x256/eps-256.png",
-    "/images/256x256/fla-256.png",
-    "/images/256x256/gif-256.png",
-    "/images/256x256/html-256.png",
-    "/images/256x256/ind-256.png",
-    "/images/256x256/ini-256.png",
-    "/images/256x256/jpeg-256.png",
-    "/images/256x256/jsf-256.png",
-    "/images/256x256/mdi-256.png",
-    "/images/256x256/mov-256.png",
-    "/images/256x256/mp3-256.png",
-    "/images/256x256/mpeg-256.png",
-    "/images/256x256/pdf-256.png",
-    "/images/256x256/png-256.png",
-    "/images/256x256/pptx-256.png",
-    "/images/256x256/proj-256.png",
-    "/images/256x256/psd-256.png",
-    "/images/256x256/pst-256.png",
-    "/images/256x256/pub-256.png",
-    "/images/256x256/rar-256.png",
-    "/images/256x256/read-256.png",
-    "/images/256x256/set-256.png",
-    "/images/256x256/tiff-256.png",
-    "/images/256x256/txt-256.png",
-    "/images/256x256/url-256.png",
-    "/images/256x256/vsd-256.png",
-    "/images/256x256/wav-256.png",
-    "/images/256x256/wma-256.png",
-    "/images/256x256/wmv-256.png",
-    "/images/256x256/xlsx-256.png",
-    "/images/256x256/zip-256.png"
-  ];
-  for (var i = 0, len = images.length; i < len; i++) {
-    new Image().src = images[i];
-  }
-}());

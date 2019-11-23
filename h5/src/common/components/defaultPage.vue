@@ -100,11 +100,13 @@ export default {
             this.postData.currentPageIndex = this.retData_.data.currentPageIndex;
             this.postData.pageSize=this.retData_.data.pageSize;
             this.$post(this.url,this.postData,function(result){
-                this.retData_=result;
-                this.$emit('update:retData',result);
-                this.$emit('finish',result);
-                if(this.tableHeight===undefined){
-                    this.tableHeight_=window.innerHeight-148-this.reduceHeight+'px';
+                if(result.code === 0){
+                    this.retData_=result;
+                    this.$emit('update:retData',result);
+                    this.$emit('finish',result);
+                    if(this.tableHeight===undefined){
+                        this.tableHeight_=window.innerHeight-148-this.reduceHeight+'px';
+                    }
                 }
             },loadAni);
         },
