@@ -124,7 +124,7 @@ export function post(url,postData,callback,loadAni){
                 var connChar='';
                 for (let it in data) {
                     if(data.hasOwnProperty(it)){
-                        ret += connChar+encodeURIComponent(it) + '=' + encodeURIComponent(data[it]);
+						ret += connChar + encodeURIComponent(it) + '=' + encodeURIComponent(data[it] === null || data[it] === undefined ? '' : data[it]);
                         connChar='&';
                     }
                 }
@@ -205,7 +205,7 @@ export function postUpdate(url,postData,callback,poolNames){
             var connChar='';
             for (let it in data) {
                 if(data.hasOwnProperty(it)){
-                    ret += connChar+encodeURIComponent(it) + '=' + encodeURIComponent(data[it]);
+					ret += connChar + encodeURIComponent(it) + '=' + encodeURIComponent(data[it] === null || data[it] === undefined ? '' : data[it]);
                     connChar='&';
                 }
             }
