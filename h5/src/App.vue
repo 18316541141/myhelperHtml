@@ -335,7 +335,7 @@ export default {
   bottom: 0;
   top: 0;
   background: #909399;
-  z-index: 99;
+  z-index: 2500;
   overflow: hidden;
   opacity: 0;
   transition: all 0.4s linear;
