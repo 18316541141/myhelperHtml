@@ -24,7 +24,7 @@
 <script>
 export default {
     name:'defaultPage',
-    props:['url','postData','retData','reduceHeight','checkedDatas','showChecked','tableHeight','excelTitle','exportUrl'],
+    props:['url','postData','retData','reduceHeight','checkedDatas','showChecked','tableHeight','excelTitle','exportUrl','exportCoolingTime'],
     data(){
         return {
             exportList:[],
@@ -38,11 +38,27 @@ export default {
                     pageSize:20,
                     pageDataList:[]
                 }
-            }
+            },
+            lastExportMillisecond:{}
         };
     },
     methods:{
         exportExcel(currentPageIndex,excelType){
+            var exportCoolingTime = this.exportCoolingTime;
+            if(this.exportCoolingTime !== undefined){
+                if(this.lastExportMillisecond.hasOwnProperty(this.exportUrl)){
+                    if(new Date().getTime()-this.lastExportMillisecond[this.exportUrl] <= exportCoolingTime){
+                        this.$message({
+                            message: "禁止频繁导出，" + parseInt(exportCoolingTime/1000) + "秒内只能导出一次。",
+                            type: "warning",
+                            customClass: 'message-float',
+                            showClose: true
+                        });
+                        return;
+                    }
+                }
+            }
+            this.lastExportMillisecond[this.exportUrl]=new Date().getTime();
             this.postData.currentPageIndex = currentPageIndex;
             this.postData.pageSize=10000;
 	        this.postData.excelType=excelType;
