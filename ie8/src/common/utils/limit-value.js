@@ -11,8 +11,8 @@ var NonNegativeIntLimitValue;
      * @param {*} keys 变量名称
      */
     NonNegativeIntLimitValue = function (threshold, limitValueRule, keys) {
-        if (limitValueRule !== 0 && limitValueRule !== 1) {
-            throw new Error("limitValueRule的值必须是0:'全等限制或'、1:'小于等于限制'");
+        if (limitValueRule !== 0 && limitValueRule !== 1 && limitValueRule !== 2) {
+            throw new Error("limitValueRule的值必须是0:'全等限制或'、1:'小于等于限制（自动）'、2:'小于等于限制（手动）'");
         }
         this.__MemberVarKey = Math.random() + "" + new Date().getTime();
         var _selfVar = __MemberVarMap[this.__MemberVarKey] = {
@@ -65,7 +65,7 @@ var NonNegativeIntLimitValue;
         var changeThreadHold = 0;
         if (limitValueRule == 0) {
             changeThreadHold = newThreadHold - threshold;
-        } else if (limitValueRule == 1) {
+        } else if (limitValueRule == 1 || limitValueRule == 2) {
             changeThreadHold = newThreadHold - valSum(valuesMap);
             if (changeThreadHold > 0) {
                 _selfVar.threshold = newThreadHold;
@@ -118,6 +118,7 @@ var NonNegativeIntLimitValue;
         }
         var _selfVar = __MemberVarMap[this.__MemberVarKey];
         var valuesMap = _selfVar.valuesMap;
+        var limitValueRule = _selfVar.limitValueRule;
         if (valuesMap.hasOwnProperty(key)) {
             throw new Error("变量已存在，无需再次添加！");
         }
@@ -130,6 +131,12 @@ var NonNegativeIntLimitValue;
         valuesMap[key] = val;
         var lossVal = threshold - valSum(valuesMap);
         if (lossVal >= 0) {
+            console.log('add '+key+'='+val);
+            console.log(this.outputDebug());
+            return;
+        }
+        if(limitValueRule === 2){
+            valuesMap[key] = 0;
             console.log('add '+key+'='+val);
             console.log(this.outputDebug());
             return;
@@ -223,7 +230,13 @@ var NonNegativeIntLimitValue;
         }
         valuesMap[key] = newVal;
         var lossVal = valSum(valuesMap) - threshold;
-        if (limitValueRule === 1 && lossVal < 0) {
+        if (lossVal <= 0) {
+            console.log('update '+key+'='+newVal);
+            console.log(this.outputDebug());
+            return;
+        }
+        if (limitValueRule == 2) {
+            valuesMap[key] -= lossVal;
             console.log('update '+key+'='+newVal);
             console.log(this.outputDebug());
             return;
