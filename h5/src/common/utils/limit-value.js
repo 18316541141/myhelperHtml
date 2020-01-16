@@ -245,6 +245,19 @@ var NonNegativeIntLimitValue;
     }
 
     /**
+     * 获取变量值
+     * @param {*} key 变量名称
+     */
+    NonNegativeIntLimitValue.prototype.getVal = function(key){
+        var _selfVar = __MemberVarMap[this.__MemberVarKey];
+        var valuesMap = _selfVar.valuesMap;
+        if (!valuesMap.hasOwnProperty(key)){
+            throw new Error("变量不存在，获取失败！");
+        }
+        return valuesMap[key];
+    }
+
+    /**
      * 对变量表的变量数进行计算
      * @param {*} valuesMap 
      */
