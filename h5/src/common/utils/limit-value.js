@@ -350,7 +350,7 @@ var NonNegativeDoubleLimitValue;
         __MemberVarMap[this.__MemberVarKey] = {
             threshold: threshold,
             decimalCount: decimalCount,
-            nonNegativeIntLimitValue: new NonNegativeIntLimitValue(parseInt(threshold * Math.pow(10, decimalCount)), limitValueRule, keys)
+            nonNegativeIntLimitValue: new NonNegativeIntLimitValue(parseInt(threshold * Math.pow(10, decimalCount + 1) / 10), limitValueRule, keys)
         };
     }
 
@@ -369,7 +369,7 @@ var NonNegativeDoubleLimitValue;
         var nonNegativeIntLimitValue = _selfVar.nonNegativeIntLimitValue;
         var decimalCount = _selfVar.decimalCount;
         _selfVar.threshold = newThreshold < 0 ? 0 : newThreshold;
-        nonNegativeIntLimitValue.updateThreshold(parseInt(newThreshold * Math.pow(10, decimalCount)));
+        nonNegativeIntLimitValue.updateThreshold(parseInt(newThreshold * Math.pow(10, decimalCount + 1) / 10));
         console.log("update newThreshold=" + newThreshold);
         console.log(this.outputDebug());
     }
@@ -424,7 +424,7 @@ var NonNegativeDoubleLimitValue;
         var _selfVar = __MemberVarMap[this.__MemberVarKey];
         var nonNegativeIntLimitValue = _selfVar.nonNegativeIntLimitValue;
         var decimalCount = _selfVar.decimalCount;
-        nonNegativeIntLimitValue.addVal(key, parseInt(val * Math.pow(10, decimalCount)));
+        nonNegativeIntLimitValue.addVal(key, parseInt(val * Math.pow(10, decimalCount + 1) / 10));
         console.log("add " + key + "=" + val);
         console.log(this.outputDebug());
     }
@@ -438,7 +438,7 @@ var NonNegativeDoubleLimitValue;
         var _selfVar = __MemberVarMap[this.__MemberVarKey];
         var nonNegativeIntLimitValue = _selfVar.nonNegativeIntLimitValue;
         var decimalCount = _selfVar.decimalCount;
-        nonNegativeIntLimitValue.updateVal(key, parseInt(newVal * Math.pow(10, decimalCount)));
+        nonNegativeIntLimitValue.updateVal(key, parseInt(newVal * Math.pow(10, decimalCount + 1) / 10));
         console.log("update " + key + "=" + newVal);
         console.log(this.outputDebug());
     }
