@@ -27,7 +27,21 @@ var NonNegativeIntLimitValue;
             _selfVar.valuesMap[keys[i]] = avg;
         }
         _selfVar.valuesMap[keys[0]] += rest;
-        console.log(this.outputDebug());
+        if (NonNegativeIntLimitValue._DebugOutput) {
+            console.log(this.outputDebug());
+        }
+    }
+
+    /**
+     * 调试输出的开关
+     */
+    NonNegativeIntLimitValue._DebugOutput = true;
+
+    /**
+     * 关闭调试输出
+     */
+    NonNegativeIntLimitValue.CloseDebugOutput = function () {
+        NonNegativeIntLimitValue._DebugOutput = false;
     }
 
     /**
@@ -41,19 +55,19 @@ var NonNegativeIntLimitValue;
                 copyMap[key] = valuesMap[key];
             }
         }
-        return true;
+        return copyMap;
     }
 
     /**
      * 更新阈值
-     * @param {*} newThreadHold 更新的阈值
+     * @param {*} newThreshold 更新的阈值
      */
-    NonNegativeIntLimitValue.prototype.updateThreadHold = function (newThreadHold) {
+    NonNegativeIntLimitValue.prototype.updateThreshold = function (newThreshold) {
         var _selfVar = __MemberVarMap[this.__MemberVarKey];
         var threshold = _selfVar.threshold;
         var valuesMap = _selfVar.valuesMap;
         var limitValueRule = _selfVar.limitValueRule;
-        if (newThreadHold < 0) {
+        if (newThreshold < 0) {
             _selfVar.threshold = 0;
             for (var key in valuesMap) {
                 if (valuesMap.hasOwnProperty(key)) {
@@ -62,40 +76,42 @@ var NonNegativeIntLimitValue;
             }
             return;
         }
-        var changeThreadHold = 0;
+        var changeThreshold = 0;
         if (limitValueRule == 0) {
-            changeThreadHold = newThreadHold - threshold;
+            changeThreshold = newThreshold - threshold;
         } else if (limitValueRule == 1 || limitValueRule == 2) {
-            changeThreadHold = newThreadHold - valSum(valuesMap);
-            if (changeThreadHold > 0) {
-                _selfVar.threshold = newThreadHold;
-                console.log('update threshold='+newThreadHold);
-                console.log(this.outputDebug());
+            changeThreshold = newThreshold - valSum(valuesMap);
+            if (changeThreshold > 0) {
+                _selfVar.threshold = newThreshold;
+                if (NonNegativeIntLimitValue._DebugOutput) {
+                    console.log('update threshold=' + newThreshold);
+                    console.log(this.outputDebug());
+                }
                 return;
             }
         }
-        _selfVar.threshold = newThreadHold;
-        var restChangeThreadHold = changeThreadHold % varCount(valuesMap);
-        var avgChangeThreadHold = (changeThreadHold - restChangeThreadHold) / varCount(valuesMap);
+        _selfVar.threshold = newThreshold;
+        var restChangeThreshold = changeThreshold % varCount(valuesMap);
+        var avgChangeThreshold = (changeThreshold - restChangeThreshold) / varCount(valuesMap);
         var afterVal;
         for (var key in valuesMap) {
             if (valuesMap.hasOwnProperty(key)) {
-                afterVal = valuesMap[key] + avgChangeThreadHold;
+                afterVal = valuesMap[key] + avgChangeThreshold;
                 if (afterVal >= 0) {
                     valuesMap[key] = afterVal;
                 } else {
                     valuesMap[key] = 0;
-                    restChangeThreadHold += afterVal;
+                    restChangeThreshold += afterVal;
                 }
             }
         }
-        if (restChangeThreadHold != 0) {
+        if (restChangeThreshold != 0) {
             for (var key in valuesMap) {
                 if (valuesMap.hasOwnProperty(key)) {
-                    afterVal = restChangeThreadHold + valuesMap[key];
+                    afterVal = restChangeThreshold + valuesMap[key];
                     if (afterVal < 0) {
                         valuesMap[key] = 0;
-                        restChangeThreadHold = afterVal;
+                        restChangeThreshold = afterVal;
                     } else {
                         valuesMap[key] = afterVal;
                         break;
@@ -103,8 +119,10 @@ var NonNegativeIntLimitValue;
                 }
             }
         }
-        console.log('update threshold='+newThreadHold);
-        console.log(this.outputDebug());
+        if (NonNegativeIntLimitValue._DebugOutput) {
+            console.log('update threshold=' + newThreshold);
+            console.log(this.outputDebug());
+        }
     }
 
     /**
@@ -131,14 +149,18 @@ var NonNegativeIntLimitValue;
         valuesMap[key] = val;
         var lossVal = threshold - valSum(valuesMap);
         if (lossVal >= 0) {
-            console.log('add '+key+'='+val);
-            console.log(this.outputDebug());
+            if (NonNegativeIntLimitValue._DebugOutput) {
+                console.log('add ' + key + '=' + val);
+                console.log(this.outputDebug());
+            }
             return;
         }
-        if(limitValueRule === 2){
+        if (limitValueRule === 2) {
             valuesMap[key] = 0;
-            console.log('add '+key+'='+val);
-            console.log(this.outputDebug());
+            if (NonNegativeIntLimitValue._DebugOutput) {
+                console.log('add ' + key + '=' + val);
+                console.log(this.outputDebug());
+            }
             return;
         }
         var rest = lossVal % (varCount(valuesMap) - 1);
@@ -170,8 +192,10 @@ var NonNegativeIntLimitValue;
                 }
             }
         }
-        console.log('add '+key+'='+val);
-        console.log(this.outputDebug());
+        if (NonNegativeIntLimitValue._DebugOutput) {
+            console.log('add ' + key + '=' + val);
+            console.log(this.outputDebug());
+        }
     }
 
     /**
@@ -204,10 +228,10 @@ var NonNegativeIntLimitValue;
      * 获取变量值
      * @param {*} key 变量名称
      */
-    NonNegativeIntLimitValue.prototype.getVal = function(key){
+    NonNegativeIntLimitValue.prototype.getVal = function (key) {
         var _selfVar = __MemberVarMap[this.__MemberVarKey];
         var valuesMap = _selfVar.valuesMap;
-        if (!valuesMap.hasOwnProperty(key)){
+        if (!valuesMap.hasOwnProperty(key)) {
             throw new Error("变量不存在，获取失败！");
         }
         return valuesMap[key];
@@ -230,15 +254,21 @@ var NonNegativeIntLimitValue;
         }
         valuesMap[key] = newVal;
         var lossVal = valSum(valuesMap) - threshold;
-        if (lossVal <= 0) {
-            console.log('update '+key+'='+newVal);
-            console.log(this.outputDebug());
+        if (lossVal <= 0 && limitValueRule == 1) {
+            if (NonNegativeIntLimitValue._DebugOutput) {
+                console.log('update ' + key + '=' + newVal);
+                console.log(this.outputDebug());
+            }
             return;
         }
         if (limitValueRule == 2) {
-            valuesMap[key] -= lossVal;
-            console.log('update '+key+'='+newVal);
-            console.log(this.outputDebug());
+            if (lossVal > 0) {
+                valuesMap[key] -= lossVal;
+            }
+            if (NonNegativeIntLimitValue._DebugOutput) {
+                console.log('update ' + key + '=' + newVal);
+                console.log(this.outputDebug());
+            }
             return;
         }
         var rest = lossVal % (varCount(valuesMap) - 1);
@@ -266,8 +296,10 @@ var NonNegativeIntLimitValue;
                 }
             }
         }
-        console.log('update '+key+'='+newVal);
-        console.log(this.outputDebug());
+        if (NonNegativeIntLimitValue._DebugOutput) {
+            console.log('update ' + key + '=' + newVal);
+            console.log(this.outputDebug());
+        }
     }
 
     /**
@@ -298,4 +330,134 @@ var NonNegativeIntLimitValue;
         return sum;
     }
 }());
+
+var NonNegativeDoubleLimitValue;
+(function () {
+
+    //成员变量保存的对象，使用闭包防止成员变量被随意修改，导致程序出错。
+    var __MemberVarMap = {};
+
+    /**
+     * 创建非负浮点数限制
+     * @param {*} threshold 阈值，所有变量的和必须等于阈值
+     * @param {*} decimalCount 小数位数
+     * @param {*} limitValueRule 限制规则
+     * @param {*} keys 变量的key值
+     */
+    NonNegativeDoubleLimitValue = function (threshold, decimalCount, limitValueRule, keys) {
+        NonNegativeIntLimitValue.CloseDebugOutput();
+        this.__MemberVarKey = Math.random() + "" + new Date().getTime();
+        __MemberVarMap[this.__MemberVarKey] = {
+            threshold: threshold,
+            decimalCount: decimalCount,
+            nonNegativeIntLimitValue: new NonNegativeIntLimitValue(parseInt(threshold * Math.pow(10, decimalCount)), limitValueRule, keys)
+        };
+    }
+
+    /**
+     * 更新阈值，当阈值相对之前的阈值增加时
+     *      在“全等限制”下，所有变量都增加，直到符合全等限制为止、
+     *      在“等于或小于限制（自动、手动）”下，所有变量不变
+     * 当阈值相对之前的阈值减少时
+     *      在“全等限制”下，所有变量都减少，直到符合全等限制为止、
+     *      在“等于或小于限制（自动、手动）”下，所有变量和不超过阈值时变量不变；
+     *      超过阈值时所有变量都减少，直到符合全等限制为止
+     * @param {*} newThreshold 更新的阈值
+     */
+    NonNegativeDoubleLimitValue.prototype.updateThreshold = function (newThreshold) {
+        var _selfVar = __MemberVarMap[this.__MemberVarKey];
+        var nonNegativeIntLimitValue = _selfVar.nonNegativeIntLimitValue;
+        var decimalCount = _selfVar.decimalCount;
+        _selfVar.threshold = newThreshold < 0 ? 0 : newThreshold;
+        nonNegativeIntLimitValue.updateThreshold(parseInt(newThreshold * Math.pow(10, decimalCount)));
+        console.log("update newThreshold=" + newThreshold);
+        console.log(this.outputDebug());
+    }
+
+    /**
+     * 输出调试信息
+     */
+    NonNegativeDoubleLimitValue.prototype.outputDebug = function () {
+        var _selfVar = __MemberVarMap[this.__MemberVarKey];
+        var threshold = _selfVar.threshold;
+        var outPut = "Threshold=" + threshold + "，";
+        var dictionary = this.getDictionary();
+        for (var key in dictionary) {
+            if (dictionary.hasOwnProperty(key)) {
+                outPut += key + "=" + dictionary[key] + "，";
+            }
+        }
+        var connChar = "";
+        var sum = 0;
+        for (var key in dictionary) {
+            if (dictionary.hasOwnProperty(key)) {
+                outPut += connChar + key;
+                connChar = "+";
+                sum += dictionary[key];
+            }
+        }
+        outPut += "=" + sum.toFixed(2);
+        return outPut;
+    }
+
+    /**
+     * 获取变量值
+     * @param {*} key 变量名
+     * @returns 返回变量值
+     */
+    NonNegativeDoubleLimitValue.prototype.getVal = function (key) {
+        var _selfVar = __MemberVarMap[this.__MemberVarKey];
+        var nonNegativeIntLimitValue = _selfVar.nonNegativeIntLimitValue;
+        var decimalCount = _selfVar.decimalCount;
+        return nonNegativeIntLimitValue.getVal(key) / Math.pow(10, decimalCount);
+    }
+
+    /**
+     * 追加新变量
+     * @param {*} key 变量名
+     * @param {*} val 变量值，可以不传入，默认是0
+     */
+    NonNegativeDoubleLimitValue.prototype.addVal = function (key, val) {
+        if (val === undefined) {
+            val = 0;
+        }
+        var _selfVar = __MemberVarMap[this.__MemberVarKey];
+        var nonNegativeIntLimitValue = _selfVar.nonNegativeIntLimitValue;
+        var decimalCount = _selfVar.decimalCount;
+        nonNegativeIntLimitValue.addVal(key, parseInt(val * Math.pow(10, decimalCount)));
+        console.log("add " + key + "=" + val);
+        console.log(this.outputDebug());
+    }
+
+    /**
+     * 更新值
+     * @param {*} key 变量名
+     * @param {*} newVal 新值
+     */
+    NonNegativeDoubleLimitValue.prototype.updateVal = function (key, newVal) {
+        var _selfVar = __MemberVarMap[this.__MemberVarKey];
+        var nonNegativeIntLimitValue = _selfVar.nonNegativeIntLimitValue;
+        var decimalCount = _selfVar.decimalCount;
+        nonNegativeIntLimitValue.updateVal(key, parseInt(newVal * Math.pow(10, decimalCount)));
+        console.log("update " + key + "=" + newVal);
+        console.log(this.outputDebug());
+    }
+
+    /**
+     * 获取只读的map，用于遍历。
+     */
+    NonNegativeDoubleLimitValue.prototype.getDictionary = function () {
+        var _selfVar = __MemberVarMap[this.__MemberVarKey];
+        var nonNegativeIntLimitValue = _selfVar.nonNegativeIntLimitValue;
+        var decimalCount = _selfVar.decimalCount;
+        var tempMap = nonNegativeIntLimitValue.getDictionary();
+        for (var key in tempMap) {
+            if (tempMap.hasOwnProperty(key)) {
+                tempMap[key] /= Math.pow(10, decimalCount);
+            }
+        }
+        return tempMap;
+    }
+}());
 module.exports = NonNegativeIntLimitValue;
+module.exports = NonNegativeDoubleLimitValue;
