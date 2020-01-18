@@ -21,12 +21,19 @@ var NonNegativeIntLimitValue;
             valuesMap: {}
         };
         var len = keys.length;
-        var rest = threshold % len;
-        var avg = (threshold - rest) / len;
-        for (var i = 0; i < len; i++) {
-            _selfVar.valuesMap[keys[i]] = avg;
+        if (limitValueRule === 0) {
+            var rest = threshold % len;
+            var avg = (threshold - rest) / len;
+            for (var i = 0; i < len; i++) {
+                _selfVar.valuesMap[keys[i]] = avg;
+            }
+            _selfVar.valuesMap[keys[0]] += rest;
+        } else if (limitValueRule === 1 || limitValueRule === 2) {
+            for (var i = 0; i < len; i++) {
+                _selfVar.valuesMap[keys[i]] = 0;
+            }
         }
-        _selfVar.valuesMap[keys[0]] += rest;
+
         if (NonNegativeIntLimitValue._DebugOutput) {
             console.log(this.outputDebug());
         }
