@@ -129,29 +129,33 @@ export function typeImgByMime(ext) {
 export function postOpenWin(url, params, searchParam) {
     var times = new Date().getTime();
     var input = '';
-    if (params) {
+    if ($.type(params) === 'object') {
         for (var key in params) {
-            if (params.hasOwnProperty(key))
+            if (params.hasOwnProperty(key)){
                 input += '<textarea name="' + key + '"></textarea>';
+            }
         }
     }
     if ($.type(searchParam) === 'object') {
         for (var key in searchParam) {
-            if (searchParam.hasOwnProperty(key))
+            if (searchParam.hasOwnProperty(key)){
                 input += '<textarea name="' + key + '"></textarea>';
+            }
         }
     }
     $('body').append('<form style="display:none;" id="' + times + '" method="post" target="_blank" action="' + url + '">' + input + '</form>');
-    if (params) {
+    if ($.type(params) === 'object') {
         for (var key in params) {
-            if (params.hasOwnProperty(key))
+            if (params.hasOwnProperty(key)){
                 $('#' + times).find('textarea[name="' + key + '"]').val(params[key]);
+            }
         }
     }
     if ($.type(searchParam) === 'object') {
         for (var key in searchParam) {
-            if (searchParam.hasOwnProperty(key))
+            if (searchParam.hasOwnProperty(key)){
                 $('#' + times).find('textarea[name="' + key + '"]').val(searchParam[key]);
+            }
         }
     }
     $('#' + times).submit();

@@ -7,7 +7,7 @@ var NonNegativeIntLimitValue;
      * 非负数整数限制值，假设池中有a、b、c三个变量，在满足变量和
      * 等于阈值时，三个变量也必须是非负数
      * @param {*} threshold 阈值
-     * @param {*} limitValueRule 限制规则，0:全等限制、1:小于等于限制
+     * @param {*} limitValueRule 限制规则，0:全等限制、1:小于等于限制（自动）、2:小于等于限制（手动）
      * @param {*} keys 变量名称
      */
     NonNegativeIntLimitValue = function (threshold, limitValueRule, keys) {
