@@ -1,4 +1,8 @@
 export default {
+    /**
+     * 快递单号正则校验
+     * @param {*} value 
+     */
     validate(value) {
         if (value === null || value === '') {
             return true;
