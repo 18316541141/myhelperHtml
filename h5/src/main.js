@@ -45,6 +45,7 @@ import plateNo from './common/validators/plateNo.js'
 import rangeLength from './common/validators/rangeLength.js'
 import noToChinese from './common/filters/noToChinese.js'
 import numToChinese from './common/filters/numToChinese.js'
+import numToMoney from './common/filters/numToMoney.js'
 import clock from './common/directives/clock.js'
 import countDown from './common/directives/countDown.js'
 window.$ = $;
@@ -150,6 +151,8 @@ const store = new Vuex.Store({
   Vue.filter('noToChinese', noToChinese);
   //数字转中文，例如：123 => 一百二十三
   Vue.filter('numToChinese', numToChinese);
+  //数字转金钱
+  Vue.filter('numToMoney', numToMoney);
 }());
 
 new Vue({
