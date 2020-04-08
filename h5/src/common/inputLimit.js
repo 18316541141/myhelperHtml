@@ -29,10 +29,18 @@ export default function intRangeLimit(text, min, max) {
 function doubleRangeLimit(text, decimalCount, min, max) {
     text = text + '';
     var num = parseFloat(text);
-    if (isNaN(num) || num < min) {
+    var isUpdate = false;
+    if (isNaN(num)) {
         num = min;
-    } else if (num > max) {
-        num = max;
+    } else {
+        if (num < min) {
+            num = min;
+            isUpdate = true;
+        } else if (num > max) {
+            num = max;
+            isUpdate = true;
+        }
     }
-    return { val: num, update: !/^\d{0,}\.?\d{0,2}$/.test(text)};
+    var regex = new RegExp('^\\d{0,}\\.?\\d{0,' + decimalCount + '}$');
+    return { val: num.toFixed(decimalCount), update: !regex.test(text) || isUpdate };
 }
