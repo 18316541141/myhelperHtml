@@ -41,6 +41,6 @@ function doubleRangeLimit(text, decimalCount, min, max) {
             isUpdate = true;
         }
     }
-    var regex = new RegExp('^\\d{0,}\\.?\\d{0,' + decimalCount + '}$');
+    var regex = new RegExp('^\\d{1,}\\.?\\d{0,' + decimalCount + '}$');
     return { val: num.toFixed(decimalCount), update: !regex.test(text) || isUpdate };
 }
