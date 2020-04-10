@@ -346,7 +346,7 @@ var NonNegativeDoubleLimitValue;
 
     /**
      * 创建非负浮点数限制
-     * @param {*} threshold 阈值，所有变量的和必须等于阈值
+     * @param {*} threshold 阈值，所有变量的和必须小于等于阈值
      * @param {*} decimalCount 小数位数
      * @param {*} limitValueRule 限制规则
      * @param {*} keys 变量的key值
