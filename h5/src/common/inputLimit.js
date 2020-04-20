@@ -27,20 +27,23 @@ export default function intRangeLimit(text, min, max) {
  * @returns 返回一个对象，val：限制后的数值、update：如果为true则修改输入框的值，如果为false则可以不修改。
  */
 function doubleRangeLimit(text, decimalCount, min, max) {
-    text = text + '';
+    text = text + "";
     var num = parseFloat(text);
     var isUpdate = false;
     if (isNaN(num)) {
-        num = min;
+      num = min;
     } else {
-        if (num < min) {
-            num = min;
-            isUpdate = true;
-        } else if (num > max) {
-            num = max;
-            isUpdate = true;
-        }
+      if (num < min) {
+        num = min;
+        isUpdate = true;
+      } else if (num > max) {
+        num = max;
+        isUpdate = true;
+      }
     }
-    var regex = new RegExp('^\\d{1,}\\.?\\d{0,' + decimalCount + '}$');
-    return { val: num.toFixed(decimalCount), update: !regex.test(text) || isUpdate };
-}
+    var regex = new RegExp("^\\d{0,}\\.?\\d{0," + decimalCount + "}$");
+    return {
+      val: num.toFixed(decimalCount),
+      update: !regex.test(text) || isUpdate || text === ''
+    };
+  }
