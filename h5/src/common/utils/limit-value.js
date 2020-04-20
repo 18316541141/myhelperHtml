@@ -21,15 +21,16 @@ var NonNegativeIntLimitValue;
             valuesMap: {}
         };
         var len = keys.length;
+        var i;
         if (limitValueRule === 0) {
             var rest = threshold % len;
             var avg = (threshold - rest) / len;
-            for (var i = 0; i < len; i++) {
+            for (i = 0; i < len; i++) {
                 _selfVar.valuesMap[keys[i]] = avg;
             }
             _selfVar.valuesMap[keys[0]] += rest;
         } else if (limitValueRule === 1 || limitValueRule === 2) {
-            for (var i = 0; i < len; i++) {
+            for (i = 0; i < len; i++) {
                 _selfVar.valuesMap[keys[i]] = 0;
             }
         }
@@ -74,9 +75,10 @@ var NonNegativeIntLimitValue;
         var threshold = _selfVar.threshold;
         var valuesMap = _selfVar.valuesMap;
         var limitValueRule = _selfVar.limitValueRule;
+        var key;
         if (newThreshold < 0) {
             _selfVar.threshold = 0;
-            for (var key in valuesMap) {
+            for (key in valuesMap) {
                 if (valuesMap.hasOwnProperty(key)) {
                     valuesMap[key] = 0;
                 }
@@ -101,7 +103,7 @@ var NonNegativeIntLimitValue;
         var restChangeThreshold = changeThreshold % varCount(valuesMap);
         var avgChangeThreshold = (changeThreshold - restChangeThreshold) / varCount(valuesMap);
         var afterVal;
-        for (var key in valuesMap) {
+        for (key in valuesMap) {
             if (valuesMap.hasOwnProperty(key)) {
                 afterVal = valuesMap[key] + avgChangeThreshold;
                 if (afterVal >= 0) {
@@ -113,7 +115,7 @@ var NonNegativeIntLimitValue;
             }
         }
         if (restChangeThreshold != 0) {
-            for (var key in valuesMap) {
+            for (key in valuesMap) {
                 if (valuesMap.hasOwnProperty(key)) {
                     afterVal = restChangeThreshold + valuesMap[key];
                     if (afterVal < 0) {
@@ -173,7 +175,8 @@ var NonNegativeIntLimitValue;
         var rest = lossVal % (varCount(valuesMap) - 1);
         var avgLossVal = (lossVal - rest) / (varCount(valuesMap) - 1);
         var afterVal;
-        for (var tempKey in valuesMap) {
+        var tempKey;
+        for (tempKey in valuesMap) {
             if (valuesMap.hasOwnProperty(tempKey) && tempKey != key) {
                 afterVal = valuesMap[tempKey] + avgLossVal;
                 if (afterVal < 0) {
@@ -185,7 +188,7 @@ var NonNegativeIntLimitValue;
             }
         }
         if (rest != 0) {
-            for (var tempKey in valuesMap) {
+            for (tempKey in valuesMap) {
                 if (valuesMap.hasOwnProperty(tempKey) && tempKey != key && valuesMap[tempKey] > 0) {
                     afterVal = valuesMap[tempKey] + rest;
                     if (afterVal < 0) {
@@ -213,14 +216,15 @@ var NonNegativeIntLimitValue;
         var threshold = _selfVar.threshold;
         var valuesMap = _selfVar.valuesMap;
         var outPut = "Threshold=" + threshold + "，";
-        for (var tempKey in valuesMap) {
+        var tempKey;
+        for (tempKey in valuesMap) {
             if (valuesMap.hasOwnProperty(tempKey)) {
                 outPut += tempKey + "=" + valuesMap[tempKey] + "，";
             }
         }
         var connChar = "";
         var sum = 0;
-        for (var tempKey in valuesMap) {
+        for (tempKey in valuesMap) {
             if (valuesMap.hasOwnProperty(tempKey)) {
                 outPut += connChar + tempKey;
                 connChar = "+";
@@ -280,7 +284,8 @@ var NonNegativeIntLimitValue;
         }
         var rest = lossVal % (varCount(valuesMap) - 1);
         var lossValAvg = (lossVal - rest) / (varCount(valuesMap) - 1);
-        for (var tempKey in valuesMap) {
+        var tempKey;
+        for (tempKey in valuesMap) {
             if (valuesMap.hasOwnProperty(tempKey) && tempKey != key) {
                 if (valuesMap[tempKey] < lossValAvg) {
                     valuesMap[tempKey] = 0;
@@ -291,7 +296,7 @@ var NonNegativeIntLimitValue;
             }
         }
         if (rest != 0) {
-            for (var tempKey in valuesMap) {
+            for (tempKey in valuesMap) {
                 if (valuesMap.hasOwnProperty(tempKey) && tempKey != key && valuesMap[tempKey] > 0) {
                     if (valuesMap[tempKey] < rest) {
                         valuesMap[tempKey] = 0;
@@ -389,14 +394,15 @@ var NonNegativeDoubleLimitValue;
         var threshold = _selfVar.threshold;
         var outPut = "Threshold=" + threshold + "，";
         var dictionary = this.getDictionary();
-        for (var key in dictionary) {
+        var key;
+        for (key in dictionary) {
             if (dictionary.hasOwnProperty(key)) {
                 outPut += key + "=" + dictionary[key] + "，";
             }
         }
         var connChar = "";
         var sum = 0;
-        for (var key in dictionary) {
+        for (key in dictionary) {
             if (dictionary.hasOwnProperty(key)) {
                 outPut += connChar + key;
                 connChar = "+";
