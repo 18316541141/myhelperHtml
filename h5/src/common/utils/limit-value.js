@@ -367,6 +367,19 @@ var NonNegativeDoubleLimitValue;
     }
 
     /**
+     * 调试输出的开关
+     */
+    NonNegativeDoubleLimitValue._DebugOutput = true;
+
+    /**
+     * 关闭调试输出
+     */
+    NonNegativeDoubleLimitValue.CloseDebugOutput = function () {
+        NonNegativeDoubleLimitValue._DebugOutput = false;
+        NonNegativeIntLimitValue._DebugOutput = false;
+    }
+
+    /**
      * 更新阈值，当阈值相对之前的阈值增加时
      *      在“全等限制”下，所有变量都增加，直到符合全等限制为止、
      *      在“等于或小于限制（自动、手动）”下，所有变量不变
@@ -382,8 +395,10 @@ var NonNegativeDoubleLimitValue;
         var decimalCount = _selfVar.decimalCount;
         _selfVar.threshold = newThreshold < 0 ? 0 : newThreshold;
         nonNegativeIntLimitValue.updateThreshold(parseInt(newThreshold * Math.pow(10, decimalCount + 1) / 10));
-        console.log("update newThreshold=" + newThreshold);
-        console.log(this.outputDebug());
+        if (NonNegativeDoubleLimitValue._DebugOutput) {
+            console.log("update newThreshold=" + newThreshold);
+            console.log(this.outputDebug());
+        }
     }
 
     /**
@@ -438,8 +453,10 @@ var NonNegativeDoubleLimitValue;
         var nonNegativeIntLimitValue = _selfVar.nonNegativeIntLimitValue;
         var decimalCount = _selfVar.decimalCount;
         nonNegativeIntLimitValue.addVal(key, parseInt(val * Math.pow(10, decimalCount + 1) / 10));
-        console.log("add " + key + "=" + val);
-        console.log(this.outputDebug());
+        if (NonNegativeDoubleLimitValue._DebugOutput) {
+            console.log("add " + key + "=" + val);
+            console.log(this.outputDebug());
+        }
     }
 
     /**
@@ -452,8 +469,10 @@ var NonNegativeDoubleLimitValue;
         var nonNegativeIntLimitValue = _selfVar.nonNegativeIntLimitValue;
         var decimalCount = _selfVar.decimalCount;
         nonNegativeIntLimitValue.updateVal(key, parseInt(newVal * Math.pow(10, decimalCount + 1) / 10));
-        console.log("update " + key + "=" + newVal);
-        console.log(this.outputDebug());
+        if (NonNegativeDoubleLimitValue._DebugOutput) {
+            console.log("update " + key + "=" + newVal);
+            console.log(this.outputDebug());
+        }
     }
 
     /**
