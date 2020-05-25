@@ -7,6 +7,9 @@
  * @param {*} splitChar 分隔符，默认使用“,”（splitChar=','）
  */
 export default function numToMoney(num, type, splitChar) {
+    if (num === null || isNaN(num)) {
+        return null;
+    }
     if (type === undefined) {
         type = 0;
         if (splitChar === undefined) {
