@@ -1,4 +1,26 @@
 /**
+ * 把数组数据按拼接符进行拼接
+ * @param {*} value 
+ * @param {*} connChar 
+ */
+export default function connToString(value, connChar) {
+    if (value === null || value === '' || value === undefined || value.constructor !== Array) {
+        return '';
+    } else {
+        var ret = '';
+        var connC = '';
+        for (var i = 0, len = value.length; i < len; i++) {
+            if (value[i] === null || value === undefined || value === '') {
+                continue;
+            } else {
+                ret += connC + key;
+                connC = connChar;
+            }
+        }
+        return ret;
+    }
+}
+/**
  * 按照枚举匹配，对类似aaa,bbb,ccc的数据进行分割，然后按枚举转义，
  * 例如枚举类型是： aaa:'火车',bbb:'面条',ccc:'乙醇'
  * 使用“、”拼接符号对数据进行拼接：火车、面条、乙醇
@@ -8,7 +30,7 @@
  * @param {*} connChar 拼接符
  * @param {*} envm 枚举，把枚举的key作为转义的输出值，value作为转义的匹配值
  */
-export default function splitToTagByEnum(value, splitChar, connChar, envm) {
+export default function splitToStringByEnum(value, splitChar, connChar, envm) {
     if (value === null || value === '' || value === undefined) {
         return '';
     } else {
@@ -36,15 +58,15 @@ export default function splitToTagByEnum(value, splitChar, connChar, envm) {
  * @param {*} connChar 拼接符
  * @param {*} envm 枚举，把枚举的key作为转义的输出值，value作为转义的匹配值
  */
-function connToTagByEnum(array, connChar, envm) {
-    if (value === null || value === undefined || !Object.prototype.hasOwnProperty.call(array,'length')) {
+function connToStringByEnum(array, connChar, envm) {
+    if (value === null || value === undefined || !Object.prototype.hasOwnProperty.call(array, 'length')) {
         return '';
     } else {
         var connC = '';
         var ret = '';
         for (var i = 0, len = array.length; i < len; i++) {
             for (var key in envm) {
-                if (envm[key] + '' === array[i]+'') {
+                if (envm[key] + '' === array[i] + '') {
                     ret += connC + key;
                     connC = connChar;
                     break;
@@ -63,7 +85,7 @@ function connToTagByEnum(array, connChar, envm) {
  * @param {*} connChar 分割后的拼接符号
  * @param {*} envm 枚举，把枚举的key作为转义的输出值，value作为转义的匹配值
  */
-function calcToTagByEnum(value, connChar, envm) {
+function calcToStringByEnum(value, connChar, envm) {
     if (value === null || value === '' || value === undefined || isNaN(value)) {
         return '';
     } else {
