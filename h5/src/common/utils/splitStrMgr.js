@@ -44,6 +44,22 @@ var SplitStrMgr;
     };
 
     /**
+     * 去除空串项
+     */
+    SplitStrMgr.prototype.removeEmpty = function () {
+        var _selfVar = __MemberVarMap[this.__MemberVarKey];
+        var splitStrArray = _selfVar.splitStrArray;
+        var newArray = [];
+        for (var i = 0, len_i = splitStrArray.length; i < len_i; i++) {
+            if (splitStrArray[i] !== '') {
+                newArray[newArray.length] = splitStrArray[i];
+            }
+        }
+        _selfVar.splitStrArray = newArray;
+        _selfVar.splitStr = newArray.join(_selfVar.connChar);
+    };
+
+    /**
      * 去除重复项
      */
     SplitStrMgr.prototype.removeRepeat = function () {
@@ -57,14 +73,20 @@ var SplitStrMgr;
                 }
             }
         }
-        repeatIndexArray = repeatIndexArray.sort();
-        for (i = 0, len_i = repeatIndexArray.length - 1; i < len_i; i++) {
-            for (j = repeatIndexArray[i], len_j = repeatIndexArray[i + 1]; j < len_j; j++) {
-                splitStrArray[j] = splitStrArray[j + 1];
-            }
+        if (repeatIndexArray.length === 0) {
+            return;
         }
-        splitStrArray.length -= repeatIndexArray.length;
-        _selfVar.splitStr = splitStrArray.join(_selfVar.connChar);
+        repeatIndexArray = repeatIndexArray.sort();
+        var newArray = [];
+        j = 0;
+        for (i = 0, len_i = repeatIndexArray.length - 1; i < len_i; i++) {
+            for (len_j = repeatIndexArray[i]; j < len_j; j++) {
+                newArray[newArray.length] = splitStrArray[j];
+            }
+            j = repeatIndexArray[i] + 1;
+        }
+        _selfVar.splitStrArray = newArray;
+        _selfVar.splitStr = newArray.join(_selfVar.connChar);
     };
 
     /**
