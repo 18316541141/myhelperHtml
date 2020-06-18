@@ -33,6 +33,17 @@ export default {
     "isRoot",
     "sort"
   ],
+  /**
+   * 组件事件
+   * select事件，使用 @select="回调函数" 绑定后，每次选中树节点都会触发该事件。
+   * drop事件，使用 @drop="回调函数" 绑定后，每次拖动后节点都会触发该事件。
+   */
+  /**
+   * 组件方法（使用ref指定组件名称，使用$refs获取组件就可以调用）
+   * keywordSearch方法，该方法根据当前参数进行关键字查询
+   * delNode方法，该方法根据传入的key删除节点
+   * restoreLastDrag方法，该方法用于还原最近的一次拖拽操作
+   */
   data() {
     return {
       treeData: [],
