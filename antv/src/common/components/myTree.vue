@@ -180,12 +180,10 @@ export default {
     drop(value) {
       this.backups = JSON.stringify(this.treeData);
       var dropPosArray = value.node.pos.split("-"); // 放置的目标的绝对位置
-      var dropPosRelative; //放置节点的相对位置
       var dropMenuNode; //放置的目标元素，
       var dropMenuSibling; //放置的目标位置的同级节点列表
       for (let i = 1, len = dropPosArray.length; i < len; i++) {
         let tempIndex = parseInt(dropPosArray[i]);
-        dropPosRelative = tempIndex;
         if (dropMenuNode === undefined) {
           dropMenuNode = this.treeData[tempIndex];
           dropMenuSibling = this.treeData;
