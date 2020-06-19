@@ -148,7 +148,7 @@ export default {
      */
     delNode(key) {
       this.delNodeRecursive(this.treeData, key);
-      this.cloneTreeData = JSON.parse(this.treeData);
+      this.cloneTreeData = JSON.parse(JSON.stringify(this.treeData));
     },
     /**
      * 根据节点id递归删除节点
