@@ -132,12 +132,13 @@ export default {
       for (var i = treeData.length - 1; i >= 0; i--) {
         var tempNode = treeData[i];
         var child = tempNode[this._childProp];
+        if (child.length > 0) {
+          this.removeNotMatch(child, keyword);
+        }
         if (child.length === 0) {
           if (tempNode[this._titleProp].indexOf(keyword) === -1) {
             treeData.splice(i, 1);
           }
-        } else {
-          this.removeNotMatch(child, keyword);
         }
       }
     },
