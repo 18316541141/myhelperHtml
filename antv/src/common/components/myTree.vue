@@ -157,12 +157,12 @@ export default {
      */
     delNodeRecursive(list, key) {
       for (var i = list.length - 1; i >= 0; i--) {
-        if (list[i][this._keyProp] === key) {
-          list.splice(i, 1);
-        }
         var child = list[i][this._childProp];
         if (child.length > 0) {
           this.delNodeRecursive(child, key);
+        }
+        if (list[i][this._keyProp] === key) {
+          list.splice(i, 1);
         }
       }
     },
