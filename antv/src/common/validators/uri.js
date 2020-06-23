@@ -4,10 +4,9 @@
  */
 export default function (message) {
     return function (rule, value, callback) {
-        value += '';
-        if (value.length > 0) {
+        if (value != null && value != undefined && ('' + value).length > 0) {
             if (
-                /^(\/\w+)+(\?(\w+=[\w%]*)(&\w+=[\w%]*)*)?(#(\/\w+)+)?$/i.test(value)
+                /^(\/\w+)+(\?(\w+=[\w%]*)(&\w+=[\w%]*)*)?(#(\/\w+)+)?$/i.test('' + value)
             ) {
                 callback();
             } else {

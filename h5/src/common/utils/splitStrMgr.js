@@ -180,13 +180,21 @@ var SplitStrMgr;
 
     /**
      * 获取连接串的数组副本
+     * @param {*} parse 类型转换器，用于对数据进行统一转化
      */
-    SplitStrMgr.prototype.splitStrArray = function () {
+    SplitStrMgr.prototype.splitStrArray = function (parse) {
         var _selfVar = __MemberVarMap[this.__MemberVarKey];
         var splitStrArray = _selfVar.splitStrArray;
         var ret = [];
-        for (var i = 0, len = splitStrArray.length; i < len; i++) {
-            ret[i] = splitStrArray[i];
+        var i,len;
+        if (parse === undefined) {
+            for (i = 0, len = splitStrArray.length; i < len; i++) {
+                ret[i] = splitStrArray[i];
+            }
+        } else {
+            for (i = 0, len = splitStrArray.length; i < len; i++) {
+                ret[i] = parse(splitStrArray[i]);
+            }
         }
         return ret;
     };
