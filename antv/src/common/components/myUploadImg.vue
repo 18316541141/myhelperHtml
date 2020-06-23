@@ -179,11 +179,16 @@ export default {
   },
   watch: {
     srcList(list) {
+      for (var i = 0, len = list.length; i < len; i++) {
+        if (list[i] === undefined || list[i] === null || list[i] === '') {
+          list.splice(i, 1);
+        }
+      }
       if (list.length === 0) {
         return;
       }
       var fileList = [];
-      for (var i = 0, len = list.length; i < len; i++) {
+      for (i = 0, len = list.length; i < len; i++) {
         fileList.push({
           uid: this.maxUid + "",
           name: list[i].name,
