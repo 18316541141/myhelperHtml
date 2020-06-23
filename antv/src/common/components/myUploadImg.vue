@@ -35,7 +35,7 @@
       :centered="true"
       @cancel="visible = false"
     >
-      <div :style="{overflow:'auto',height:innerHeight+'px'}">
+      <div :style="{overflow:'auto',height:innerHeight+'px',textAlign:'center'}">
         <img :src="imgSrc" />
       </div>
     </a-modal>
@@ -110,6 +110,12 @@ export default {
         img.height + 133 > document.body.clientHeight
           ? document.body.clientHeight - 133
           : img.height;
+      if (vm.modalWidth < 300) {
+        vm.modalWidth = 300;
+      }
+      if (vm.innerHeight < 200) {
+        vm.innerHeight = 200;
+      }
       vm.imgSrc = img.src;
       vm.$emit("loadBigPic", 1);
       vm.visible = true;
@@ -180,7 +186,7 @@ export default {
   watch: {
     srcList(list) {
       for (var i = 0, len = list.length; i < len; i++) {
-        if (list[i] === undefined || list[i] === null || list[i] === '') {
+        if (list[i] === undefined || list[i] === null || list[i] === "") {
           list.splice(i, 1);
         }
       }
