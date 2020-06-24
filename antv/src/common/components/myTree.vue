@@ -183,7 +183,12 @@ export default {
         }
         var child = tempNode[this._childProp];
         if (child.length > 0) {
+          var beforeLen = ret.length;
           this.getMatchParent(child, keyword, ret);
+          var afterLen = ret.length;
+          if (beforeLen < afterLen) {
+            ret[ret.length] = tempNode[this._keyProp];
+          }
         }
       }
     },
