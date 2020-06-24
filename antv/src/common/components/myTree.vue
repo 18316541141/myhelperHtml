@@ -103,6 +103,11 @@ export default {
     }
   },
   watch: {
+    checkedKeys(value){
+      this.$nextTick(function() {
+        this.slowCheckedKeys = value;
+      });
+    },
     /**
      * 数据源设置时触发事件，用于把非树结构的集合转化为树结构集合
      * @param {*} value 数据
