@@ -32,6 +32,7 @@ export default {
    * @param {*} checkable 是否在树节点前加复选框，默认为false
    * @param {*} checkedKeys 复选框选中项，当且仅当checkable=true时有效
    * @param {*} expandAll 展开全部项，设置为true时开启全部项，设置为false时关闭全部项，默认为false
+   * @param {*} keyword 关键字，会根据该关键字搜索，并高亮显示符合条件的节点
    */
   props: [
     "titleProp",
@@ -46,7 +47,8 @@ export default {
     "draggable",
     "checkable",
     "checkedKeys",
-    "expandAll"
+    "expandAll",
+    "keyword"
   ],
   /**
    * 组件事件
@@ -56,7 +58,6 @@ export default {
    */
   /**
    * 组件方法（使用ref指定组件名称，使用$refs获取组件就可以调用）
-   * keywordSearch方法，该方法根据当前参数进行关键字查询
    * delNode方法，该方法根据传入的key删除节点
    * restoreLastDrag方法，该方法用于还原最近的一次拖拽操作
    */
@@ -66,8 +67,7 @@ export default {
       slowCheckedKeys: [],
       backups: "",
       replaceFields: {},
-      expandedKeys: [],
-      keyword: ""
+      expandedKeys: []
     };
   },
   created() {
@@ -103,7 +103,17 @@ export default {
     }
   },
   watch: {
-    checkedKeys(value){
+    keyword(value) {
+      if (value === "" || value === null || value === undefined) {
+        return;
+      }
+      var ret = [];
+      this.getMatchParent(this.treeData, value, ret);
+      this.$nextTick(function() {
+        this.expandedKeys = ret;
+      });
+    },
+    checkedKeys(value) {
       this.$nextTick(function() {
         this.slowCheckedKeys = value;
       });
@@ -153,23 +163,6 @@ export default {
      */
     select(value) {
       this.$emit("select", value);
-    },
-    /**
-     * 关键字搜索节点方法，输入关键字，重点显示关键字匹配项
-     * @param {*} keyword 关键字
-     */
-    keywordSearch(keyword) {
-      this.keyword = keyword;
-      if (
-        this.keyword === "" ||
-        this.keyword === null ||
-        this.keyword === undefined
-      ) {
-        return;
-      }
-      var ret = [];
-      this.getMatchParent(this.treeData, keyword, ret);
-      this.expandedKeys = ret;
     },
     /**
      * 获取匹配的父节点集合
