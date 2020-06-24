@@ -1,11 +1,17 @@
 <template>
   <div>
     <a-tree
-      :draggable="true"
+      :draggable="draggable"
+      :checkable="checkable"
+      :checkedKeys="slowCheckedKeys"
       @select="select"
       :tree-data="treeData"
       @drop="drop"
+      @check="check"
       :replaceFields="replaceFields"
+      :filterTreeNode="filterTreeNode"
+      @expand="expand"
+      :expanded-keys="expandedKeys"
     ></a-tree>
   </div>
 </template>
@@ -18,9 +24,14 @@ export default {
    * @param {*} parentKeyProp 节点的上级节点的属性名，默认是：parent
    * @param {*} childProp 节点的子节点属性名，默认是：children
    * @param {*} listType 节点的数据结构：'list'：普通列表集合，'treeList'：树集合，默认是 treeList
+   * @param {*} dataSource 数据源，设置后重新渲染树
    * @param {*} maxLevel 最大转化层级，对于 listType='list' 时必须传入
    * @param {*} isRoot 判断是否为根节点，对于 listType='list' 时必须传入
    * @param {*} sort 节点排序方法，不设置则不排序
+   * @param {*} draggable 是否可拖拽，默认为false
+   * @param {*} checkable 是否在树节点前加复选框，默认为false
+   * @param {*} checkedKeys 复选框选中项，当且仅当checkable=true时有效
+   * @param {*} expandAll 展开全部项，设置为true时开启全部项，设置为false时关闭全部项，默认为false
    */
   props: [
     "titleProp",
@@ -31,12 +42,17 @@ export default {
     "dataSource",
     "maxLevel",
     "isRoot",
-    "sort"
+    "sort",
+    "draggable",
+    "checkable",
+    "checkedKeys",
+    "expandAll"
   ],
   /**
    * 组件事件
    * select事件，使用 @select="回调函数" 绑定后，每次选中树节点都会触发该事件。
    * drop事件，使用 @drop="回调函数" 绑定后，每次拖动后节点都会触发该事件。
+   * check时间，使用 @check="回调函数" 绑定后，每次选择复选框时都触发该时间。
    */
   /**
    * 组件方法（使用ref指定组件名称，使用$refs获取组件就可以调用）
@@ -47,9 +63,11 @@ export default {
   data() {
     return {
       treeData: [],
-      cloneTreeData: [],
+      slowCheckedKeys: [],
       backups: "",
-      replaceFields: {}
+      replaceFields: {},
+      expandedKeys: [],
+      keyword: ""
     };
   },
   created() {
@@ -79,6 +97,9 @@ export default {
       return this.maxLevel === undefined || isNaN(this.maxLevel)
         ? 9007199254740992
         : this.maxLevel;
+    },
+    _expandAll() {
+      return this.expandAll === undefined ? false : this.expandAll;
     }
   },
   watch: {
@@ -97,14 +118,30 @@ export default {
         if (this.sort !== undefined) {
           this.treeSort(treeData);
         }
-        this.cloneTreeData = JSON.parse(JSON.stringify(treeData));
         this.$nextTick(function() {
           this.treeData = treeData;
+          this.slowCheckedKeys = this.checkedKeys;
+          var ret = [];
+          if (this._expandAll) {
+            this.getMatchParent(this.treeData, "", ret);
+          }
+          this.expandedKeys = ret;
         });
       }
     }
   },
   methods: {
+    expand(expandedKeys) {
+      this.expandedKeys = expandedKeys;
+    },
+    /**
+     * 复选框勾选时间
+     * @param {*} value 选中节点集合
+     */
+    check(value) {
+      this.slowCheckedKeys = value;
+      this.$emit("check", value);
+    },
     /**
      * 选中树节点时触发
      * @param {*} value 选中节点集合
@@ -117,30 +154,54 @@ export default {
      * @param {*} keyword 关键字
      */
     keywordSearch(keyword) {
-      if (keyword === undefined || keyword === null || keyword === "") {
-        this.treeData = JSON.parse(JSON.stringify(this.cloneTreeData));
-      } else {
-        this.removeNotMatch(this.treeData, keyword);
+      this.keyword = keyword;
+      if (
+        this.keyword === "" ||
+        this.keyword === null ||
+        this.keyword === undefined
+      ) {
+        return;
+      }
+      var ret = [];
+      this.getMatchParent(this.treeData, keyword, ret);
+      this.expandedKeys = ret;
+    },
+    /**
+     * 获取匹配的父节点集合
+     * @param {*} treeData 树集合
+     * @param {*} keyword 关键字
+     * @param {*} ret 匹配的父节点集合
+     */
+    getMatchParent(treeData, keyword, ret) {
+      var exist = false;
+      for (var i = treeData.length - 1; i >= 0; i--) {
+        var tempNode = treeData[i];
+        if (
+          tempNode[this._titleProp].indexOf(keyword) > -1 &&
+          exist === false
+        ) {
+          ret[ret.length] = tempNode[this._parentKeyProp];
+          exist = true;
+        }
+        var child = tempNode[this._childProp];
+        if (child.length > 0) {
+          this.getMatchParent(child, keyword, ret);
+        }
       }
     },
     /**
-     * 去除未匹配数据
-     * @param {*} treeData 树数据
-     * @param {*} keyword 关键字
+     * 对符合查询条件的数据高亮
+     * @param {*} node 当前匹配节点
      */
-    removeNotMatch(treeData, keyword) {
-      for (var i = treeData.length - 1; i >= 0; i--) {
-        var tempNode = treeData[i];
-        var child = tempNode[this._childProp];
-        if (child.length > 0) {
-          this.removeNotMatch(child, keyword);
-        }
-        if (child.length === 0) {
-          if (tempNode[this._titleProp].indexOf(keyword) === -1) {
-            treeData.splice(i, 1);
-          }
-        }
+    filterTreeNode(node) {
+      if (
+        this.keyword === "" ||
+        this.keyword === null ||
+        this.keyword === undefined
+      ) {
+        return false;
       }
+      return node.title.indexOf(this.keyword) > -1;
     },
     /**
      * 根据节点id删除节点
@@ -148,7 +209,6 @@ export default {
      */
     delNode(key) {
       this.delNodeRecursive(this.treeData, key);
-      this.cloneTreeData = JSON.parse(JSON.stringify(this.treeData));
     },
     /**
      * 根据节点id递归删除节点
@@ -172,7 +232,6 @@ export default {
      */
     restoreLastDrag() {
       this.treeData = JSON.parse(this.backups);
-      this.cloneTreeData = JSON.parse(this.backups);
     },
     /**
      * 节点拖动放下
@@ -230,7 +289,6 @@ export default {
         dropMenuNode[this._childProp].push(dragMenuNode);
         dropPos = 0;
       }
-      this.cloneTreeData = JSON.parse(JSON.stringify(this.treeData));
       this.$emit("drop", dragMenuNode, dropMenuNode, dropPos);
     },
     /**
