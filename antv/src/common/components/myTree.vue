@@ -276,11 +276,10 @@ export default {
           dragMenuNode[this._parentKeyProp] ===
           dropMenuNode[this._parentKeyProp]
         ) {
+          dropMenuSibling.splice(value.dropPosition + 1, 0, dragMenuNode);
           if (value.dropPosition < dragPosRelative) {
-            dropMenuSibling.splice(value.dropPosition + 1, 0, dragMenuNode);
             dragMenuSibling.splice(dragPosRelative + 1, 1);
           } else {
-            dropMenuSibling.splice(value.dropPosition, 0, dragMenuNode);
             dragMenuSibling.splice(dragPosRelative, 1);
           }
         } else {
