@@ -123,6 +123,7 @@ export default {
      * @param {*} value 数据
      */
     dataSource(value) {
+      this.slowCheckedKeys = [];
       if (value.length === 0) {
         this.treeData = [];
       } else {
