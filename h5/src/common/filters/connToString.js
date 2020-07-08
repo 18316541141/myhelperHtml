@@ -1,4 +1,34 @@
 /**
+ * 把集合数据按拼接字符进行拼接
+ * @param {*} value 集合数据
+ * @param {*} key 要拼接的属性名
+ * @param {*} connChar 拼接字符
+ */
+export default function connListToString(value, key, connChar) {
+    if (value === null || value === '' || value === undefined || value.constructor !== Array) {
+        return '';
+    } else {
+        var ret = '';
+        var connC = '';
+        var tempVal;
+        for (var i = 0, len = value.length; i < len; i++) {
+            tempVal = value[i];
+            if (tempVal === null || tempVal === undefined || tempVal === '') {
+                continue;
+            } else {
+                tempVal = tempVal[key];
+                if (tempVal === null || tempVal === undefined || tempVal === '') {
+                    continue;
+                } else {
+                    ret += connC + tempVal;
+                    connC = connChar;
+                }
+            }
+        }
+        return ret;
+    }
+}
+/**
  * 把数组数据按拼接符进行拼接
  * @param {*} value 
  * @param {*} connChar 
@@ -9,11 +39,13 @@ export default function connToString(value, connChar) {
     } else {
         var ret = '';
         var connC = '';
+        var tempVal;
         for (var i = 0, len = value.length; i < len; i++) {
-            if (value[i] === null || value === undefined || value === '') {
+            tempVal = value[i];
+            if (tempVal === null || tempVal === undefined || tempVal === '') {
                 continue;
             } else {
-                ret += connC + key;
+                ret += connC + tempVal;
                 connC = connChar;
             }
         }
