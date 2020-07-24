@@ -11,6 +11,7 @@
       :remove="remove"
       :data="data"
       :beforeUpload="beforeUpload"
+      method="post"
     >
       <div v-if="fileList.length < _len">
         <a-tooltip
