@@ -165,7 +165,10 @@ export default {
     },
     change(res) {
       var file = res.file;
-      if (this.beforeUpload(file)) {
+      if (
+        file.status !== undefined ||
+        (file.status === "upload" && this.beforeUpload(file))
+      ) {
         if (file.status === "done") {
           this.$emit("doneCallback", file.response);
         }
