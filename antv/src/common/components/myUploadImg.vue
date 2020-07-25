@@ -94,15 +94,15 @@ export default {
         "tiffxif",
         "wmf",
         "jfif",
-        "pdf"
-      ]
+        "pdf",
+      ],
     };
   },
   mounted() {
     var vm = this;
     var img = vm.img;
     var reader = vm.reader;
-    img.onload = function() {
+    img.onload = function () {
       vm.modalWidth =
         img.width + 48 > document.body.clientWidth - 10
           ? document.body.clientWidth - 10
@@ -121,14 +121,14 @@ export default {
       vm.$emit("loadBigPic", 1);
       vm.visible = true;
     };
-    img.onerror = function(event) {
+    img.onerror = function (event) {
       vm.$emit("loadBigPic", -1);
       vm.imgSrc = undefined;
     };
-    reader.onload = function(event) {
+    reader.onload = function (event) {
       img.src = event.target.result;
     };
-    reader.onerror = function(event) {};
+    reader.onerror = function (event) {};
   },
   computed: {
     _required() {
@@ -139,7 +139,7 @@ export default {
     },
     _title() {
       return this.title === undefined ? "查看大图" : this.title;
-    }
+    },
   },
   methods: {
     beforeUpload(file) {
@@ -152,9 +152,11 @@ export default {
         }
       }
       vm.tipVisible = !ret;
-      setTimeout(function() {
-        vm.tipVisible = false;
-      }, 5000);
+      if (vm.tipVisible) {
+        setTimeout(function () {
+          vm.tipVisible = false;
+        }, 5000);
+      }
       return ret;
     },
     remove(file) {
@@ -182,7 +184,7 @@ export default {
       } else {
         this.img.src = file.preview;
       }
-    }
+    },
   },
   watch: {
     srcList(list) {
@@ -201,14 +203,14 @@ export default {
           name: list[i].name,
           status: "done",
           url: list[i].url,
-          preview: list[i].preview
+          preview: list[i].preview,
         });
         this.maxUid--;
       }
-      this.$nextTick(function() {
+      this.$nextTick(function () {
         this.fileList = fileList;
       });
-    }
-  }
+    },
+  },
 };
 </script>
