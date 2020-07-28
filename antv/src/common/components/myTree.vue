@@ -12,7 +12,7 @@
       :filterTreeNode="filterTreeNode"
       @expand="expand"
       :expanded-keys="expandedKeys"
-      :checkStrictly="true"
+      :checkStrictly="checkStrictly"
     ></a-tree>
   </div>
 </template>
@@ -31,10 +31,12 @@ export default {
    * @param {*} sort 节点排序方法，不设置则不排序
    * @param {*} draggable 是否可拖拽，默认为false
    * @param {*} checkable 是否在树节点前加复选框，默认为false
-   * @param {*} checkedKeys 复选框选中项，结构为：{checked:[],halfChecked:[]}，checked表示选中状态，
-   *                      halfChecked表示半选中状态，当且仅当checkable=true时有效
+   * @param {*} checkedKeys 复选框选中项，若checkStrictly=true，则结构为：{checked:[],halfChecked:[]}，checked表示选中状态，
+   *                        halfChecked表示半选中状态；
+   *                      若checkStrictly=false，则结构为[]；
    * @param {*} expandAll 展开全部项，设置为true时开启全部项，设置为false时关闭全部项，默认为false
    * @param {*} keyword 关键字，会根据该关键字搜索，并高亮显示符合条件的节点
+   * @param {*} checkStrictly 勾选父级节点是否勾选子级节点，设为false则会关联勾选，设为true不会关联勾选，默认为false
    */
   props: [
     "titleProp",
@@ -50,7 +52,8 @@ export default {
     "checkable",
     "checkedKeys",
     "expandAll",
-    "keyword"
+    "keyword",
+    "checkStrictly"
   ],
   /**
    * 组件事件
