@@ -39,7 +39,6 @@ export default {
         "@vip.sina.com",
         "@yeah.net",
         "@hotmail.com",
-        "@gmail.com",
         "@yahoo.com",
         "@msn.com",
         "@aol.com"
