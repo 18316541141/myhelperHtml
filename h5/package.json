@@ -15,7 +15,7 @@
     "blob-polyfill": "^4.0.20190430",
     "core-js": "^2.6.5",
     "element-ui": "^2.10.1",
-    "highcharts": "^7.1.2",
+    "highcharts": "^7.2.2",
     "jcrop": "^3.0.1",
     "jquery": "^3.4.1",
     "jshashes": "^1.0.7",
