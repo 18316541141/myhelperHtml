@@ -14,12 +14,12 @@ export default function subStr(value, startIndex, len) {
             return value.substring(startIndex, startIndex + len);
         }
     } else if (startIndex < 0) {
-        var endIndex = value.length + startIndex;
+        var endIndex = value.length + startIndex + 1;
         if (len === undefined) {
-            return value.substring(0, endIndex + 1);
+            return value.substring(0, endIndex);
         } else {
             var startIndex = endIndex - len;
-            return value.substring(startIndex, endIndex + 1);
+            return value.substring(startIndex, endIndex);
         }
     }
 }
