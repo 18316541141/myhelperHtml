@@ -13,7 +13,7 @@
     "compression-webpack-plugin": "^3.0.0",
     "core-js": "^2.6.5",
     "cropperjs": "^1.5.5",
-    "highcharts": "^7.1.2",
+    "highcharts": "^9.0.0",
     "jcrop": "^3.0.1",
     "jquery": "^3.4.1",
     "jshashes": "^1.0.7",
