@@ -14,25 +14,25 @@
     "@ztree/ztree_v3": "^3.5.40",
     "angular": "^1.2.30",
     "es3ify-webpack-plugin": "0.0.1",
-    "file-loader": "^4.2.0",
+    "file-loader": "^6.2.0",
     "highcharts": "^7.2.0",
     "jquery": "^1.12.4",
     "jquery.cookie": "^1.4.1",
     "jshashes": "^1.0.7",
     "layui-src": "^2.5.5",
     "moment": "^2.24.0",
-    "webpack-cli": "^3.3.9",
+    "webpack-cli": "^5.0.1",
     "webuploader": "^0.1.8",
     "xmldom": "^0.1.27"
   },
   "devDependencies": {
-    "css-loader": "^3.2.0",
+    "css-loader": "^6.7.3",
     "dev-server": "^0.1.0",
     "expose-loader": "^0.7.5",
     "express": "^4.17.1",
     "style-loader": "^1.0.0",
     "uglifyjs-webpack-plugin": "^2.2.0",
-    "webpack": "^4.41.0",
+    "webpack": "^5.75.0",
     "webpack-dev-server": "^3.8.1"
   }
 }
